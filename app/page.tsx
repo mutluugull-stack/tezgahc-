@@ -5,7 +5,7 @@ import { CategoryIcon, SearchIcon, TruckIcon, WrenchIcon } from "@/components/Ic
 import ListingCard from "@/components/ListingCard";
 import EmptyState from "@/components/EmptyState";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 async function getLandingData() {
   const [vitrinListings, activeCount, dealerCount] = await Promise.all([
