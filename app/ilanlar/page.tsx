@@ -7,7 +7,7 @@ import ListingRow from "@/components/ListingRow";
 import EmptyState from "@/components/EmptyState";
 import SortSelect from "@/components/SortSelect";
 
-export const revalidate = 15;
+export const dynamic = "force-dynamic";
 
 type SearchParams = {
   q?: string;
