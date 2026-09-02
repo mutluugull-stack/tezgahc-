@@ -6,7 +6,7 @@ import MachineArt from "@/components/MachineArt";
 import { catLabel, conditionLabel, currencySymbol, fmtDate, fmtPrice } from "@/lib/constants";
 import ListingActions from "@/components/ListingActions";
 
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 async function getListing(id: string) {
   const listing = await prisma.listing.findUnique({
