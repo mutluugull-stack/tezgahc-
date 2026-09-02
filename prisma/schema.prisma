@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+  BIREYSEL
+  BAYI
+}
+
+enum ListingCondition {
+  SIFIR
+  IKINCI_EL
+  YENILENMIS
+}
+
+enum Currency {
+  TRY
+  USD
+  EUR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  accountType  AccountType @default(BIREYSEL)
+  fullName     String?
+  companyName  String?
+  phone        String?
+  city         String?
+  approved     Boolean  @default(true)
+  isAdmin      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  listings         Listing[]
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  @@map("users")
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  brand       String?
+  model       String?
+  year        Int?
+  condition   ListingCondition @default(IKINCI_EL)
+  controller  String?
+  axisCount   String?
+  workArea    String?
+  price       Int
+  currency    Currency @default(TRY)
+  city        String
+  description String   @db.Text
+  isSold      Boolean  @default(false)
+  isVitrin    Boolean  @default(false)
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sellerId String
+  seller   User   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  images   ListingImage[]
+  messages Message[]
+
+  @@index([category])
+  @@index([city])
+  @@index([sellerId])
+  @@index([createdAt])
+  @@map("listings")
+}
+
+model ListingImage {
+  id        String  @id @default(cuid())
+  url       String
+  order     Int     @default(0)
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+  @@map("listing_images")
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  body       String   @db.Text
+  createdAt  DateTime @default(now())
+  read       Boolean  @default(false)
+
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  senderId   String
+  sender     User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverId String
+  receiver   User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+  @@index([receiverId])
+  @@index([senderId])
+  @@map("messages")
+}

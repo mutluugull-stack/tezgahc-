@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f2f4f3;
+  --surface: #ffffff;
+  --surface-2: #e8ebe9;
+  --border: #d7dbd8;
+  --ink: #16201c;
+  --ink-muted: #5b6863;
+  --accent: #e8590c;
+  --accent-ink: #ffffff;
+  --blueprint: #004aad;
+}
+
+.dark {
+  --bg: #14181b;
+  --surface: #1b2124;
+  --surface-2: #232a2e;
+  --border: #323b3f;
+  --ink: #eef1ef;
+  --ink-muted: #9aa6a1;
+  --accent: #e8590c;
+  --accent-ink: #ffffff;
+  --blueprint: #3d90ff;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-oswald), sans-serif;
+  text-wrap: balance;
+}
+
+.font-mono-data {
+  font-family: var(--font-plex-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-accent:hover {
+  filter: brightness(1.08);
+}
+
+.btn-blueprint {
+  background: var(--blueprint);
+  color: #fff;
+}
+.btn-blueprint:hover {
+  filter: brightness(1.1);
+}
+
+.input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  border-radius: 8px;
+}
+.input:focus {
+  outline: 2px solid var(--blueprint);
+  outline-offset: 1px;
+}
+
+.machine-art {
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
