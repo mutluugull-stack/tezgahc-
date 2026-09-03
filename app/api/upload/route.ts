@@ -7,6 +7,8 @@ export const runtime = "nodejs";
 
 const MAX_SIZE = 8 * 1024 * 1024; // 8MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+// "ads" klasörüne yalnızca yöneticiler yükleme yapabilir (Reklamlar paneli).
+const ALLOWED_FOLDERS = ["listings", "ads"];
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -26,6 +28,15 @@ export async function POST(req: NextRequest) {
 
   const formData = await req.formData();
   const file = formData.get("file");
+  const folderRaw = formData.get("folder");
+  const folder = typeof folderRaw === "string" && folderRaw ? folderRaw : "listings";
+
+  if (!ALLOWED_FOLDERS.includes(folder)) {
+    return NextResponse.json({ error: "Geçersiz yükleme hedefi." }, { status: 400 });
+  }
+  if (folder === "ads" && !session.user.isAdmin) {
+    return NextResponse.json({ error: "Bu işlem için yönetici yetkisi gerekir." }, { status: 403 });
+  }
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "Dosya bulunamadı." }, { status: 400 });
@@ -38,7 +49,7 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-  const key = `listings/${session.user.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const key = `${folder}/${session.user.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
   const blob = await put(key, file, {
     access: "public",
