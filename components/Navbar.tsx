@@ -48,7 +48,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface/95 pt-[env(safe-area-inset-top)] backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image src="/logo.png" alt="Tezgahçı" width={36} height={36} className="rounded" priority />

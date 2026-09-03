@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-border bg-surface">
+    <footer className="mt-16 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-display text-base font-semibold text-blueprint">TEZGAHÇI</p>
