@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES } from "@/lib/constants";
+import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES, CONTROLLERS, AXIS_COUNTS } from "@/lib/constants";
 import BrandModelFields from "@/components/BrandModelFields";
+import ComboField from "@/components/ComboField";
 
 const emptyForm = {
   title: "",
@@ -195,28 +196,20 @@ export default function NewListingPage() {
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Kontrolör
-            </label>
-            <input
-              value={form.controller}
-              onChange={(e) => set("controller", e.target.value)}
-              placeholder="Fanuc, Siemens..."
-              className="input w-full rounded-lg px-3 py-2.5 text-sm"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Eksen Sayısı
-            </label>
-            <input
-              value={form.axisCount}
-              onChange={(e) => set("axisCount", e.target.value)}
-              placeholder="3 Eksen"
-              className="input w-full rounded-lg px-3 py-2.5 text-sm"
-            />
-          </div>
+          <ComboField
+            label="Kontrolör"
+            value={form.controller}
+            onChange={(v) => set("controller", v)}
+            options={CONTROLLERS}
+            placeholder="Fanuc, Siemens..."
+          />
+          <ComboField
+            label="Eksen Sayısı"
+            value={form.axisCount}
+            onChange={(v) => set("axisCount", v)}
+            options={AXIS_COUNTS}
+            placeholder="3 Eksen"
+          />
         </div>
 
         <div>
