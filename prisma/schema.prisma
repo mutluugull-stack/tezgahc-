@@ -62,6 +62,10 @@ model Listing {
   description String   @db.Text
   isSold      Boolean  @default(false)
   isVitrin    Boolean  @default(false)
+  // Satıcı (yalnızca Bayi hesapları), ilan fotoğraflarının "Makine Önizleme"
+  // panelinde marka/model bazlı olarak gösterilmesine bu alanla izin verir.
+  // Varsayılan false'tur — açık onay olmadan hiçbir ilan önizlemede görünmez.
+  previewConsent Boolean @default(false)
   viewCount   Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
