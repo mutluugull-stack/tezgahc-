@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CATEGORIES, CITIES, CONDITIONS, CONTROLLERS, AXIS_COUNTS } from "@/lib/constants";
@@ -8,6 +9,7 @@ import EmptyState from "@/components/EmptyState";
 import SortSelect from "@/components/SortSelect";
 import BrandModelFilterFields from "@/components/BrandModelFilterFields";
 import ComboFilterField from "@/components/ComboFilterField";
+import AdSlot from "@/components/AdSlot";
 
 export const dynamic = "force-dynamic";
 
@@ -82,12 +84,15 @@ async function getListings(sp: SearchParams) {
 export default async function ListingsPage({ searchParams }: { searchParams: SearchParams }) {
   const listings = await getListings(searchParams);
   const view = searchParams.view === "grid" ? "grid" : "list";
+  const adCategory = searchParams.category && searchParams.category !== "all" ? searchParams.category : undefined;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
       <h1 className="mb-5 font-display text-2xl font-bold sm:text-3xl">CNC Makine İlanları</h1>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
+      <AdSlot placement="LISTING_TOP_BANNER" category={adCategory} className="mb-5" />
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr] xl:grid-cols-[260px_1fr_300px]">
         <aside className="card h-fit p-4 lg:sticky lg:top-20">
           <form method="get" action="/ilanlar" className="flex flex-col gap-4">
             <input type="hidden" name="sort" value={searchParams.sort || "date_desc"} />
@@ -263,18 +268,38 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
             />
           ) : view === "grid" ? (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-              {listings.map((l) => (
-                <ListingCard key={l.id} listing={{ ...l, createdAt: l.createdAt.toISOString() }} />
+              {listings.map((l, i) => (
+                <Fragment key={l.id}>
+                  <ListingCard listing={{ ...l, createdAt: l.createdAt.toISOString() }} />
+                  {(i + 1) % 8 === 0 && i !== listings.length - 1 && (
+                    <AdSlot
+                      placement="LISTING_INFEED"
+                      category={adCategory}
+                      className="col-span-full"
+                    />
+                  )}
+                </Fragment>
               ))}
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {listings.map((l) => (
-                <ListingRow key={l.id} listing={{ ...l, createdAt: l.createdAt.toISOString() }} />
+              {listings.map((l, i) => (
+                <Fragment key={l.id}>
+                  <ListingRow listing={{ ...l, createdAt: l.createdAt.toISOString() }} />
+                  {(i + 1) % 8 === 0 && i !== listings.length - 1 && (
+                    <AdSlot placement="LISTING_INFEED" category={adCategory} />
+                  )}
+                </Fragment>
               ))}
             </div>
           )}
         </div>
+
+        <aside className="hidden xl:block">
+          <div className="sticky top-20">
+            <AdSlot placement="LISTING_SIDEBAR" category={adCategory} />
+          </div>
+        </aside>
       </div>
     </div>
   );
