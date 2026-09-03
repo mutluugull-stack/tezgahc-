@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES } from "@/lib/constants";
+import BrandModelFields from "@/components/BrandModelFields";
 
 const emptyForm = {
   title: "",
@@ -174,24 +175,12 @@ export default function NewListingPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">Marka</label>
-            <input
-              value={form.brand}
-              onChange={(e) => set("brand", e.target.value)}
-              className="input w-full rounded-lg px-3 py-2.5 text-sm"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">Model</label>
-            <input
-              value={form.model}
-              onChange={(e) => set("model", e.target.value)}
-              className="input w-full rounded-lg px-3 py-2.5 text-sm"
-            />
-          </div>
-        </div>
+        <BrandModelFields
+          brand={form.brand}
+          model={form.model}
+          onBrandChange={(v) => set("brand", v)}
+          onModelChange={(v) => set("model", v)}
+        />
 
         <div className="grid grid-cols-3 gap-3">
           <div>
