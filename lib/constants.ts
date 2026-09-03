@@ -29,6 +29,41 @@ export const CITIES = [
   "Diğer",
 ];
 
+export const CONTROLLERS = [
+  "Fanuc",
+  "Siemens",
+  "Mitsubishi",
+  "Heidenhain",
+  "Fagor",
+  "Mazatrol",
+  "Haas",
+  "Okuma OSP",
+  "GSK",
+  "Syntec",
+  "DMG Mori Celos",
+  "Num",
+  "Fidia",
+  "Baldor",
+  "Delta",
+  "Weihong",
+  "Centroid",
+  "LinuxCNC",
+  "Diğer",
+] as const;
+
+export const AXIS_COUNTS = [
+  "2 Eksen",
+  "2.5 Eksen",
+  "3 Eksen",
+  "3.5 Eksen",
+  "4 Eksen",
+  "4.5 Eksen",
+  "5 Eksen",
+  "5+ Eksen",
+  "6 Eksen",
+  "9 Eksen",
+] as const;
+
 export const CONDITIONS: { key: "SIFIR" | "IKINCI_EL" | "YENILENMIS"; label: string }[] = [
   { key: "SIFIR", label: "Sıfır" },
   { key: "IKINCI_EL", label: "İkinci El" },
