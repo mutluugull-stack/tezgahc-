@@ -8,7 +8,9 @@ export const runtime = "nodejs";
 const MAX_SIZE = 8 * 1024 * 1024; // 8MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 // "ads" klasörüne yalnızca yöneticiler yükleme yapabilir (Reklamlar paneli).
-const ALLOWED_FOLDERS = ["listings", "ads"];
+// "logos" klasörüne yalnızca bayi sahibi hesaplar yükleme yapabilir (ekip
+// üyeleri değil) — Bayi Paneli > Ayarlar.
+const ALLOWED_FOLDERS = ["listings", "ads", "logos"];
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -36,6 +38,9 @@ export async function POST(req: NextRequest) {
   }
   if (folder === "ads" && !session.user.isAdmin) {
     return NextResponse.json({ error: "Bu işlem için yönetici yetkisi gerekir." }, { status: 403 });
+  }
+  if (folder === "logos" && (session.user.accountType !== "BAYI" || session.user.parentDealerId)) {
+    return NextResponse.json({ error: "Logo yalnızca bayi sahibi hesaplar tarafından yüklenebilir." }, { status: 403 });
   }
 
   if (!(file instanceof File)) {
