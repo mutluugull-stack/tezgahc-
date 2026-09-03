@@ -18,6 +18,9 @@ const baseSchema = z.object({
   fullName: z.string().trim().optional(),
   companyName: z.string().trim().optional(),
   phone: z.string().trim().optional(),
+  address: z.string().trim().max(500).optional(),
+  activityCertificateUrl: z.string().trim().url().optional(),
+  signatureCircularUrl: z.string().trim().url().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -42,6 +45,12 @@ export async function POST(req: NextRequest) {
   if (data.accountType === "BAYI" && (!data.companyName || !data.phone)) {
     return NextResponse.json({ error: "Firma adı ve telefon gerekli." }, { status: 400 });
   }
+  if (data.accountType === "BAYI" && (!data.activityCertificateUrl || !data.signatureCircularUrl)) {
+    return NextResponse.json(
+      { error: "Güncel faaliyet belgesi ve imza sirküleri yüklemeniz gerekli." },
+      { status: 400 }
+    );
+  }
 
   const existingUsername = await prisma.user.findUnique({ where: { username: data.username } });
   if (existingUsername) {
@@ -64,6 +73,9 @@ export async function POST(req: NextRequest) {
       fullName: data.accountType === "BIREYSEL" ? data.fullName : null,
       companyName: data.accountType === "BAYI" ? data.companyName : null,
       phone: data.accountType === "BAYI" ? data.phone : null,
+      address: data.accountType === "BAYI" ? data.address || null : null,
+      activityCertificateUrl: data.accountType === "BAYI" ? data.activityCertificateUrl : null,
+      signatureCircularUrl: data.accountType === "BAYI" ? data.signatureCircularUrl : null,
       // Bireysel hesaplar otomatik onaylı, bayi hesapları admin onayı bekler.
       approved: data.accountType === "BIREYSEL",
     },
