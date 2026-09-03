@@ -9,6 +9,8 @@ const patchSchema = z.object({
   companyName: z.string().trim().max(120).optional(),
   phone: z.string().trim().max(40).optional(),
   city: z.string().trim().max(60).optional(),
+  address: z.string().trim().max(500).optional(),
+  logoUrl: z.string().trim().url().max(1000).optional(),
 });
 
 // GET /api/account/profile -> giriş yapan kullanıcının kendi profil bilgileri
@@ -29,8 +31,10 @@ export async function GET() {
       companyName: true,
       phone: true,
       city: true,
+      address: true,
       role: true,
       parentDealerId: true,
+      logoUrl: true,
       createdAt: true,
     },
   });
@@ -69,8 +73,24 @@ export async function PATCH(req: NextRequest) {
         : {}),
       ...(data.phone !== undefined ? { phone: data.phone || null } : {}),
       ...(data.city !== undefined ? { city: data.city || null } : {}),
+      ...(data.address !== undefined ? { address: data.address || null } : {}),
+      ...(data.logoUrl !== undefined &&
+      session.user.accountType === "BAYI" &&
+      !session.user.parentDealerId
+        ? { logoUrl: data.logoUrl || null }
+        : {}),
     },
   });
 
-  return NextResponse.json({ ok: true, user: { fullName: user.fullName, companyName: user.companyName, phone: user.phone, city: user.city } });
+  return NextResponse.json({
+    ok: true,
+    user: {
+      fullName: user.fullName,
+      companyName: user.companyName,
+      phone: user.phone,
+      city: user.city,
+      address: user.address,
+      logoUrl: user.logoUrl,
+    },
+  });
 }
