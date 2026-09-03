@@ -1,0 +1,116 @@
+name: Build Mobile App
+
+# Tezgahçı'nın mobil (Capacitor) kabuğunu derler. Bu iş GitHub'ın kendi
+# runner'larında çalışır çünkü npm/Android SDK indirmeleri bazı ortamlardan
+# engellenebiliyor — burada tam internet erişimi var.
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main, mobile-app-capacitor]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/build-mobile.yml"
+
+jobs:
+  build-android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm install
+
+      - name: Add Android platform
+        working-directory: mobile
+        run: npx cap add android
+
+      - name: Generate app icons & splash screen
+        working-directory: mobile
+        run: npx capacitor-assets generate --android
+
+      - name: Sync Capacitor
+        working-directory: mobile
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: mobile/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: tezgahci-android-debug-apk
+          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+  build-ios:
+    name: iOS project (simulator build)
+    runs-on: macos-latest
+    # iOS derlemesi bir Apple imzalama sertifikası olmadan gerçek cihaza
+    # kurulabilir bir .ipa üretemez. Bu adım yalnızca projenin doğru
+    # oluştuğunu simülatörde derleyerek doğrular ve Xcode projesini bir
+    # artifact olarak sunar — gerçek cihaz için kullanıcı kendi Apple
+    # Developer hesabıyla Xcode'da imzalayıp derlemeli.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm install
+
+      - name: Add iOS platform
+        working-directory: mobile
+        run: npx cap add ios
+
+      - name: Generate app icons & splash screen
+        working-directory: mobile
+        run: npx capacitor-assets generate --ios
+
+      - name: Sync Capacitor
+        working-directory: mobile
+        run: npx cap sync ios
+
+      - name: Install CocoaPods dependencies
+        working-directory: mobile/ios/App
+        run: pod install
+
+      - name: Build for iOS Simulator (imzalama gerektirmez, sadece doğrulama)
+        working-directory: mobile/ios/App
+        run: |
+          xcodebuild -workspace App.xcworkspace \
+            -scheme App \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -derivedDataPath build \
+            build
+
+      - name: Zip Xcode project for local use
+        working-directory: mobile
+        run: zip -r ../tezgahci-ios-xcode-project.zip ios -x "ios/App/Pods/**" -x "ios/App/build/**"
+
+      - name: Upload iOS Xcode project
+        uses: actions/upload-artifact@v4
+        with:
+          name: tezgahci-ios-xcode-project
+          path: tezgahci-ios-xcode-project.zip
+          if-no-files-found: error
