@@ -24,6 +24,15 @@ enum Currency {
   EUR
 }
 
+enum AdPlacement {
+  HOME_SEARCH_BANNER
+  HOME_AFTER_VITRIN
+  HOME_SERVICE_CARD
+  LISTING_TOP_BANNER
+  LISTING_INFEED
+  LISTING_SIDEBAR
+}
+
 model User {
   id           String   @id @default(cuid())
   username     String   @unique
@@ -124,4 +133,35 @@ model Message {
   @@index([receiverId])
   @@index([senderId])
   @@map("messages")
+}
+
+// Reklam yönetimi: yönetici panelinden ("Reklamlar") oluşturulan, ana sayfa ve
+// ilan listelerindeki belirli alanlarda gösterilen sponsorlu reklamlar.
+model Ad {
+  id              String      @id @default(cuid())
+  advertiserName  String
+  imageUrlDesktop String
+  // Mobil görsel verilmezse masaüstü görseli mobilde de kullanılır.
+  imageUrlMobile  String?
+  altText         String
+  targetUrl       String
+  placement       AdPlacement
+  // null = tüm kategorilerde gösterilir; bir kategori anahtarı verilirse
+  // yalnızca o kategori bağlamında (ör. ilan listesinde kategori filtresi)
+  // gösterilir.
+  category        String?
+  startDate       DateTime?
+  endDate         DateTime?
+  // Aynı alanda birden fazla aktif reklam varsa ağırlıklı rastgele seçim
+  // (rotasyon) için kullanılır. Yüksek sayı = daha sık gösterim.
+  priority        Int         @default(1)
+  active          Boolean     @default(true)
+  impressions     Int         @default(0)
+  clicks          Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([placement])
+  @@index([category])
+  @@map("ads")
 }

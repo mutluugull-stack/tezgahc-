@@ -118,3 +118,38 @@ ALTER TABLE "listings" ADD COLUMN IF NOT EXISTS "previewConsent" BOOLEAN NOT NUL
 ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "parentDealerId" TEXT REFERENCES "users"("id") ON DELETE CASCADE;
 ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "role" TEXT;
 CREATE INDEX IF NOT EXISTS "users_parentDealerId_idx" ON "users"("parentDealerId");
+
+-- Reklam Yönetimi (Yönetici Paneli > Reklamlar) — ana sayfa ve ilan
+-- listelerindeki reklam alanlarını besleyen tablo. Var olan bir veritabanına
+-- eklemek için bu bölümü bir kere çalıştırmanız yeterlidir.
+DO $$ BEGIN
+  CREATE TYPE "AdPlacement" AS ENUM (
+    'HOME_SEARCH_BANNER',
+    'HOME_AFTER_VITRIN',
+    'HOME_SERVICE_CARD',
+    'LISTING_TOP_BANNER',
+    'LISTING_INFEED',
+    'LISTING_SIDEBAR'
+  );
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+CREATE TABLE IF NOT EXISTS "ads" (
+  "id"              TEXT PRIMARY KEY,
+  "advertiserName"  TEXT NOT NULL,
+  "imageUrlDesktop" TEXT NOT NULL,
+  "imageUrlMobile"  TEXT,
+  "altText"         TEXT NOT NULL,
+  "targetUrl"       TEXT NOT NULL,
+  "placement"       "AdPlacement" NOT NULL,
+  "category"        TEXT,
+  "startDate"       TIMESTAMP(3),
+  "endDate"         TIMESTAMP(3),
+  "priority"        INTEGER NOT NULL DEFAULT 1,
+  "active"          BOOLEAN NOT NULL DEFAULT true,
+  "impressions"     INTEGER NOT NULL DEFAULT 0,
+  "clicks"          INTEGER NOT NULL DEFAULT 0,
+  "createdAt"       TIMESTAMP(3) NOT NULL DEFAULT now(),
+  "updatedAt"       TIMESTAMP(3) NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS "ads_placement_idx" ON "ads"("placement");
+CREATE INDEX IF NOT EXISTS "ads_category_idx" ON "ads"("category");
