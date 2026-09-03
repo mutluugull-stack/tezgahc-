@@ -110,6 +110,11 @@ export async function POST(req: NextRequest) {
   // gönderse bile sunucu tarafında yok sayılır.
   const previewConsent = session.user.accountType === "BAYI" ? Boolean(data.previewConsent) : false;
 
+  // Bir bayi ekip üyesi (Müşteri Temsilcisi vb.) ilan verdiğinde, ilan
+  // kendi hesabına değil, bağlı olduğu asıl bayi hesabına ait olur —
+  // böylece ekip, bayinin ilanlarını ortak yönetebilir.
+  const effectiveSellerId = session.user.parentDealerId || session.user.id;
+
   const listing = await prisma.listing.create({
     data: {
       title: data.title,
@@ -126,7 +131,7 @@ export async function POST(req: NextRequest) {
       city: data.city,
       description: data.description,
       previewConsent,
-      sellerId: session.user.id,
+      sellerId: effectiveSellerId,
       images: data.images?.length
         ? { create: data.images.map((url, i) => ({ url, order: i })) }
         : undefined,
