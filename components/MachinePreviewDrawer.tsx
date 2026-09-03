@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import BrandModelFields from "./BrandModelFields";
 import { CategoryIcon, EyeIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
@@ -30,6 +31,13 @@ export default function MachinePreviewDrawer() {
   const [results, setResults] = useState<PreviewListing[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [lightbox, setLightbox] = useState<Lightbox | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Header, arka plan bulanıklığı (backdrop-blur) için filtre uygular; bu da
+  // "fixed" pozisyonlu iç elemanlar için yeni bir containing block oluşturup
+  // panelin tüm ekranı kaplamasını engelliyordu. document.body'ye portal
+  // ederek bu sorunu tamamen ortadan kaldırıyoruz.
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open || !brand.trim()) {
@@ -95,7 +103,7 @@ export default function MachinePreviewDrawer() {
         <EyeIcon className="h-4 w-4" />
       </button>
 
-      {open && (
+      {mounted && open && createPortal(
         <div className="fixed inset-0 z-50 flex justify-end">
           <div className="absolute inset-0 bg-black/40" onClick={close} />
           <aside className="relative flex h-full w-full max-w-md flex-col bg-surface shadow-2xl sm:border-l sm:border-border">
@@ -198,10 +206,11 @@ export default function MachinePreviewDrawer() {
               )}
             </div>
           </aside>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {lightbox && (
+      {mounted && lightbox && createPortal(
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4"
           onClick={() => setLightbox(null)}
@@ -247,7 +256,8 @@ export default function MachinePreviewDrawer() {
             onClick={(e) => e.stopPropagation()}
             className="max-h-full max-w-full rounded-lg object-contain"
           />
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
