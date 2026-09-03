@@ -6,11 +6,14 @@ import ListingCard from "@/components/ListingCard";
 import ListingRow from "@/components/ListingRow";
 import EmptyState from "@/components/EmptyState";
 import SortSelect from "@/components/SortSelect";
+import BrandModelFilterFields from "@/components/BrandModelFilterFields";
 
 export const dynamic = "force-dynamic";
 
 type SearchParams = {
   q?: string;
+  brand?: string;
+  model?: string;
   category?: string;
   city?: string;
   condition?: string;
@@ -36,6 +39,8 @@ async function getListings(sp: SearchParams) {
   if (sp.category && sp.category !== "all") where.category = sp.category;
   if (sp.city && sp.city !== "all") where.city = sp.city;
   if (sp.condition && sp.condition !== "all") where.condition = sp.condition;
+  if (sp.brand) where.brand = { contains: sp.brand, mode: "insensitive" };
+  if (sp.model) where.model = { contains: sp.model, mode: "insensitive" };
   if (sp.onlyDealer === "1") where.seller = { accountType: "BAYI" };
   if (sp.minPrice || sp.maxPrice) {
     where.price = {};
@@ -95,6 +100,8 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
                 className="input w-full rounded-lg px-3 py-2 text-sm"
               />
             </div>
+
+            <BrandModelFilterFields defaultBrand={searchParams.brand || ""} defaultModel={searchParams.model || ""} />
 
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
