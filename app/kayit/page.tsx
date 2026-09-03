@@ -6,6 +6,13 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { CITIES } from "@/lib/constants";
 
+type DocKey = "activityCertificateUrl" | "signatureCircularUrl";
+
+const DOC_FIELDS: { key: DocKey; docType: string; label: string }[] = [
+  { key: "activityCertificateUrl", docType: "faaliyet-belgesi", label: "Güncel Faaliyet Belgesi" },
+  { key: "signatureCircularUrl", docType: "imza-sirkuleri", label: "İmza Sirküleri" },
+];
+
 export default function RegisterPage() {
   const router = useRouter();
   const [accountType, setAccountType] = useState<"BIREYSEL" | "BAYI">("BIREYSEL");
@@ -17,6 +24,21 @@ export default function RegisterPage() {
     fullName: "",
     companyName: "",
     phone: "",
+    address: "",
+    activityCertificateUrl: "",
+    signatureCircularUrl: "",
+  });
+  const [docFileNames, setDocFileNames] = useState<Record<DocKey, string>>({
+    activityCertificateUrl: "",
+    signatureCircularUrl: "",
+  });
+  const [docUploading, setDocUploading] = useState<Record<DocKey, boolean>>({
+    activityCertificateUrl: false,
+    signatureCircularUrl: false,
+  });
+  const [docError, setDocError] = useState<Record<DocKey, string>>({
+    activityCertificateUrl: "",
+    signatureCircularUrl: "",
   });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -25,8 +47,38 @@ export default function RegisterPage() {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
+  async function handleDocUpload(key: DocKey, docType: string, file: File) {
+    setDocUploading((s) => ({ ...s, [key]: true }));
+    setDocError((s) => ({ ...s, [key]: "" }));
+    set(key, "");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("docType", docType);
+      const res = await fetch("/api/register/belge", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) {
+        setDocError((s) => ({ ...s, [key]: data.error || "Belge yüklenemedi." }));
+        return;
+      }
+      set(key, data.url);
+      setDocFileNames((s) => ({ ...s, [key]: file.name }));
+    } catch {
+      setDocError((s) => ({ ...s, [key]: "Bağlantı hatası. Tekrar deneyin." }));
+    } finally {
+      setDocUploading((s) => ({ ...s, [key]: false }));
+    }
+  }
+
+  const docsReady =
+    accountType !== "BAYI" || (!!form.activityCertificateUrl && !!form.signatureCircularUrl);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (accountType === "BAYI" && !docsReady) {
+      setError("Devam etmeden önce güncel faaliyet belgesi ve imza sirkülerini yükleyin.");
+      return;
+    }
     setBusy(true);
     setError("");
     try {
@@ -135,6 +187,48 @@ export default function RegisterPage() {
                 className="input w-full rounded-lg px-3 py-2.5 text-sm"
               />
             </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                Açık Adres
+              </label>
+              <textarea
+                value={form.address}
+                onChange={(e) => set("address", e.target.value)}
+                rows={2}
+                placeholder="Mahalle, cadde, no, ilçe..."
+                className="input w-full rounded-lg px-3 py-2.5 text-sm"
+              />
+            </div>
+
+            <div className="rounded-lg bg-surface2 p-3">
+              <p className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                Resmi Evraklar
+              </p>
+              <div className="flex flex-col gap-3">
+                {DOC_FIELDS.map(({ key, docType, label }) => (
+                  <div key={key}>
+                    <label className="mb-1 block text-xs font-medium text-ink">{label}</label>
+                    <input
+                      type="file"
+                      accept="application/pdf,image/jpeg,image/png,image/webp"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleDocUpload(key, docType, file);
+                      }}
+                      className="input w-full rounded-lg px-3 py-2 text-xs file:mr-3 file:rounded-md file:border-0 file:bg-blueprint file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
+                    />
+                    {docUploading[key] && <p className="mt-1 text-xs text-ink-muted">Yükleniyor...</p>}
+                    {!docUploading[key] && form[key] && (
+                      <p className="mt-1 text-xs text-emerald-600">✓ {docFileNames[key] || "Yüklendi"}</p>
+                    )}
+                    {docError[key] && <p className="mt-1 text-xs text-red-500">{docError[key]}</p>}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-2.5 text-[11px] text-ink-muted">
+                PDF, JPEG, PNG veya WEBP, en fazla 10MB. Belgeleriniz yönetici onayı sırasında incelenir.
+              </p>
+            </div>
           </>
         )}
 
@@ -196,7 +290,7 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          disabled={busy}
+          disabled={busy || !docsReady}
           className="btn-accent mt-1 rounded-lg px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
         >
           {busy ? "Kaydediliyor..." : "Üye Ol"}
