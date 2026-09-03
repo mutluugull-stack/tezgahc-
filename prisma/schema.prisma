@@ -38,10 +38,21 @@ model User {
   isAdmin      Boolean  @default(false)
   createdAt    DateTime @default(now())
 
+  // Bayi ekip yönetimi: bir bayi hesabı, kendi ekibine (örn. "Müşteri Temsilcisi")
+  // ayrı giriş bilgileriyle alt hesaplar tanımlayabilir. Alt hesabın
+  // parentDealerId'si, sahibi olan bayi hesabına işaret eder; sahip hesapların
+  // parentDealerId'si null'dur. role, alt hesabın unvanını tutar (örn.
+  // "Müşteri Temsilcisi"); sahip hesaplarda null'dur.
+  parentDealerId String?
+  parentDealer   User?   @relation("DealerTeam", fields: [parentDealerId], references: [id], onDelete: Cascade)
+  teamMembers    User[]  @relation("DealerTeam")
+  role           String?
+
   listings         Listing[]
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
 
+  @@index([parentDealerId])
   @@map("users")
 }
 

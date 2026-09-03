@@ -29,8 +29,11 @@ CREATE TABLE IF NOT EXISTS "users" (
   "city"         TEXT,
   "approved"     BOOLEAN NOT NULL DEFAULT true,
   "isAdmin"      BOOLEAN NOT NULL DEFAULT false,
+  "parentDealerId" TEXT REFERENCES "users"("id") ON DELETE CASCADE,
+  "role"         TEXT,
   "createdAt"    TIMESTAMP(3) NOT NULL DEFAULT now()
 );
+CREATE INDEX IF NOT EXISTS "users_parentDealerId_idx" ON "users"("parentDealerId");
 
 CREATE TABLE IF NOT EXISTS "listings" (
   "id"          TEXT PRIMARY KEY,
@@ -108,3 +111,10 @@ ON CONFLICT ("id") DO NOTHING;
 -- vermiş olması gerekir. Var olan bir veritabanında bu sütun yoksa aşağıdaki
 -- komutu bir kere çalıştırmanız yeterlidir (zaten varsa hata vermeden geçer).
 ALTER TABLE "listings" ADD COLUMN IF NOT EXISTS "previewConsent" BOOLEAN NOT NULL DEFAULT false;
+
+-- Yönetici Paneli / Bayi Paneli — bayi ekip yönetimi (Müşteri Temsilcisi vb.
+-- alt hesaplar) için gereken sütunlar. Var olan bir veritabanında bu
+-- sütunlar yoksa aşağıdaki komutları bir kere çalıştırmanız yeterlidir.
+ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "parentDealerId" TEXT REFERENCES "users"("id") ON DELETE CASCADE;
+ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "role" TEXT;
+CREATE INDEX IF NOT EXISTS "users_parentDealerId_idx" ON "users"("parentDealerId");
