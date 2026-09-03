@@ -6,10 +6,20 @@ export const CATEGORIES = [
   { key: "plazma", label: "Plazma Kesim" },
   { key: "edm", label: "Erozyon (EDM)" },
   { key: "abkant", label: "Abkant Pres" },
+  { key: "yag", label: "Yağ ve Yağlama Ürünleri" },
+  { key: "aparat", label: "Aparat ve Bağlama Ekipmanları" },
+  { key: "divizor", label: "Divizör / Döner Tabla" },
+  { key: "yedek-parca", label: "Diğer Yedek Parçalar" },
   { key: "diger", label: "Diğer" },
 ] as const;
 
 export type CategoryKey = (typeof CATEGORIES)[number]["key"];
+
+// Tezgah değil, yedek parça/sarf malzemesi sayılan kategoriler. İlan formunda
+// tezgaha özgü alanları (kontrolör, eksen sayısı, çalışma alanı) gizlemek için
+// kullanılır — filtreleme/listeleme tarafında ayrım gerekmez, çünkü bunlar da
+// aynı ilan sistemini paylaşır.
+export const PART_CATEGORY_KEYS: CategoryKey[] = ["yag", "aparat", "divizor", "yedek-parca"];
 
 export const CITIES = [
   "İstanbul",
