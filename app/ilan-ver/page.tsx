@@ -22,6 +22,7 @@ const emptyForm = {
   currency: "TRY",
   city: "İstanbul",
   description: "",
+  previewConsent: false,
 };
 
 export default function NewListingPage() {
@@ -310,6 +311,22 @@ export default function NewListingPage() {
             </div>
           )}
         </div>
+
+        {session.user.accountType === "BAYI" && (
+          <label className="flex items-start gap-2 rounded-lg border border-line bg-surface-muted p-3 text-sm">
+            <input
+              type="checkbox"
+              checked={form.previewConsent}
+              onChange={(e) => set("previewConsent", e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded"
+            />
+            <span className="text-ink-muted">
+              Fotoğraflarımın <strong className="text-ink">"Makine Önizleme"</strong> panelinde marka/model bazlı
+              olarak müşterilere gösterilmesine izin veriyorum ve bu fotoğrafların telif hakkına sahip olduğumu
+              veya kullanım iznim olduğunu onaylıyorum.
+            </span>
+          </label>
+        )}
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 
