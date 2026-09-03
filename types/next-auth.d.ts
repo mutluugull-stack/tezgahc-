@@ -10,6 +10,8 @@ declare module "next-auth" {
       accountType: AccountType;
       isAdmin: boolean;
       approved: boolean;
+      parentDealerId: string | null;
+      role: string | null;
       name?: string | null;
       email?: string | null;
       image?: string | null;
@@ -22,6 +24,8 @@ declare module "next-auth" {
     accountType: AccountType;
     isAdmin: boolean;
     approved: boolean;
+    parentDealerId: string | null;
+    role: string | null;
   }
 }
 
@@ -32,5 +36,7 @@ declare module "next-auth/jwt" {
     accountType: AccountType;
     isAdmin: boolean;
     approved: boolean;
+    parentDealerId: string | null;
+    role: string | null;
   }
 }
