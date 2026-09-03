@@ -80,6 +80,9 @@ export default function Navbar() {
               </span>
             )}
           {status === "authenticated" &&
+            session.user.accountType === "BAYI" &&
+            navLink("/bayi-panel", "Bayi Panelim")}
+          {status === "authenticated" &&
             session.user.isAdmin &&
             navLink("/admin", "Panel")}
         </nav>
@@ -118,6 +121,7 @@ export default function Navbar() {
         {navLink("/ilanlar", "İlanlar")}
         {navLink("/ilan-ver", "İlan Ver")}
         {status === "authenticated" && navLink("/mesajlarim", "Mesajlar")}
+        {status === "authenticated" && session.user.accountType === "BAYI" && navLink("/bayi-panel", "Bayi Panelim")}
         {status === "authenticated" && session.user.isAdmin && navLink("/admin", "Panel")}
       </nav>
     </header>

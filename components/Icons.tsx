@@ -204,3 +204,83 @@ export function CategoryIcon({ category, ...props }: { category: string } & Icon
   const Cmp = MachineIcons[category] || MachineIcons.diger;
   return <Cmp {...props} />;
 }
+
+export const UsersIcon = (p: IconProps) =>
+  base(
+    <>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M2.8 20c1.2-3.6 3.6-5.6 6.2-5.6s5 2 6.2 5.6" />
+      <path d="M15.5 5.3a3.2 3.2 0 0 1 0 6.2" />
+      <path d="M17.5 14.6c2.2.5 3.8 2.3 4.7 5.4" />
+    </>,
+    p
+  );
+
+export const BuildingIcon = (p: IconProps) =>
+  base(
+    <>
+      <rect x="4" y="3" width="11" height="18" rx="1" />
+      <path d="M15 21h5V9l-5-3" />
+      <path d="M7.5 7h2M7.5 10.5h2M7.5 14h2M7.5 17.5h2" />
+    </>,
+    p
+  );
+
+export const TagIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M12.5 3H5a2 2 0 0 0-2 2v7.5a2 2 0 0 0 .6 1.4l9 9a2 2 0 0 0 2.8 0l6.5-6.5a2 2 0 0 0 0-2.8l-9-9a2 2 0 0 0-1.4-.6Z" />
+      <circle cx="8" cy="8" r="1.3" />
+    </>,
+    p
+  );
+
+export const ChatIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M3.5 5.5h17v10.5h-9.5L6.5 20v-4H3.5Z" />
+    </>,
+    p
+  );
+
+export const ChartIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M4 20V10M11 20V4M18 20v-7" />
+      <path d="M2.5 20h19" />
+    </>,
+    p
+  );
+
+export const GearIcon = (p: IconProps) =>
+  base(
+    <>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 3.5v2.4M12 18.1v2.4M20.5 12h-2.4M5.9 12H3.5M17.6 6.4l-1.7 1.7M8.1 15.9l-1.7 1.7M17.6 17.6l-1.7-1.7M8.1 8.1 6.4 6.4" />
+    </>,
+    p
+  );
+
+export const IdCardIcon = (p: IconProps) =>
+  base(
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="1.5" />
+      <circle cx="8" cy="12" r="2.1" />
+      <path d="M5.3 16.3c.6-1.5 1.6-2.3 2.7-2.3s2.1.8 2.7 2.3" />
+      <path d="M14 9.5h5M14 12.5h5M14 15.5h3" />
+    </>,
+    p
+  );
+
+export const TrashIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M4 7h16" />
+      <path d="M9 7V4.5h6V7" />
+      <path d="M6 7l1 13h10l1-13" />
+      <path d="M10 11v6M14 11v6" />
+    </>,
+    p
+  );
+
+export const CheckIcon = (p: IconProps) => base(<path d="M4.5 12.5l5 5 10-11" />, p);
