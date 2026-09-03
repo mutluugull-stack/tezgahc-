@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES, CONTROLLERS, AXIS_COUNTS } from "@/lib/constants";
+import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES, CONTROLLERS, AXIS_COUNTS, PART_CATEGORY_KEYS } from "@/lib/constants";
 import BrandModelFields from "@/components/BrandModelFields";
 import ComboField from "@/components/ComboField";
 
@@ -38,6 +38,8 @@ export default function NewListingPage() {
   function set<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((f) => ({ ...f, [key]: value }));
   }
+
+  const isPartCategory = (PART_CATEGORY_KEYS as string[]).includes(form.category);
 
   async function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
@@ -149,7 +151,15 @@ export default function NewListingPage() {
             </label>
             <select
               value={form.category}
-              onChange={(e) => set("category", e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                const nowPart = (PART_CATEGORY_KEYS as string[]).includes(next);
+                setForm((f) => ({
+                  ...f,
+                  category: next,
+                  ...(nowPart ? { controller: "", axisCount: "", workArea: "" } : {}),
+                }));
+              }}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             >
               {CATEGORIES.map((c) => (
@@ -184,7 +194,7 @@ export default function NewListingPage() {
           onModelChange={(v) => set("model", v)}
         />
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className={isPartCategory ? "grid grid-cols-1 gap-3" : "grid grid-cols-3 gap-3"}>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
               Üretim Yılı
@@ -197,33 +207,39 @@ export default function NewListingPage() {
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
           </div>
-          <ComboField
-            label="Kontrolör"
-            value={form.controller}
-            onChange={(v) => set("controller", v)}
-            options={CONTROLLERS}
-            placeholder="Fanuc, Siemens..."
-          />
-          <ComboField
-            label="Eksen Sayısı"
-            value={form.axisCount}
-            onChange={(v) => set("axisCount", v)}
-            options={AXIS_COUNTS}
-            placeholder="3 Eksen"
-          />
+          {!isPartCategory && (
+            <>
+              <ComboField
+                label="Kontrolör"
+                value={form.controller}
+                onChange={(v) => set("controller", v)}
+                options={CONTROLLERS}
+                placeholder="Fanuc, Siemens..."
+              />
+              <ComboField
+                label="Eksen Sayısı"
+                value={form.axisCount}
+                onChange={(v) => set("axisCount", v)}
+                options={AXIS_COUNTS}
+                placeholder="3 Eksen"
+              />
+            </>
+          )}
         </div>
 
-        <div>
-          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            Çalışma Alanı
-          </label>
-          <input
-            value={form.workArea}
-            onChange={(e) => set("workArea", e.target.value)}
-            placeholder="762 x 406 x 508 mm"
-            className="input w-full rounded-lg px-3 py-2.5 text-sm"
-          />
-        </div>
+        {!isPartCategory && (
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
+              Çalışma Alanı
+            </label>
+            <input
+              value={form.workArea}
+              onChange={(e) => set("workArea", e.target.value)}
+              placeholder="762 x 406 x 508 mm"
+              className="input w-full rounded-lg px-3 py-2.5 text-sm"
+            />
+          </div>
+        )}
 
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-2">
