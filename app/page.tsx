@@ -50,8 +50,8 @@ export default async function LandingPage() {
               Tezgahınızı bulun, ilanınızı verin
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-              CNC torna, freze, router, lazer, plazma, EDM ve abkant pres tezgahları için alıcı ve
-              satıcıları buluşturan ilan platformu.
+              CNC torna, freze, router, lazer, plazma, EDM ve abkant pres tezgahları; yedek parça, yağ,
+              aparat ve divizör ürünleri için alıcı ve satıcıları buluşturan ilan platformu.
             </p>
           </div>
 
@@ -107,7 +107,7 @@ export default async function LandingPage() {
       </div>
 
       <section className="mx-auto max-w-7xl px-4 py-10">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-8">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6">
           {CATEGORIES.map((c) => (
             <Link
               key={c.key}

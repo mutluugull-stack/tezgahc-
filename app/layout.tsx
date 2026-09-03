@@ -30,7 +30,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Tezgahçı — CNC Makine Pazarı",
   description:
-    "Türkiye'nin CNC tezgah ve makine ilan platformu. CNC torna, freze, router, lazer, plazma, EDM ve abkant pres ilanlarını inceleyin, ilan verin.",
+    "Türkiye'nin CNC tezgah ve makine ilan platformu. CNC torna, freze, router, lazer, plazma, EDM ve abkant pres ilanlarının yanı sıra yedek parça, yağ, aparat ve divizör ilanlarını inceleyin, ilan verin.",
   metadataBase: new URL("https://tezgahci.com.tr"),
   manifest: "/manifest.json",
   icons: {
