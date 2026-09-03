@@ -153,3 +153,8 @@ CREATE TABLE IF NOT EXISTS "ads" (
 );
 CREATE INDEX IF NOT EXISTS "ads_placement_idx" ON "ads"("placement");
 CREATE INDEX IF NOT EXISTS "ads_category_idx" ON "ads"("category");
+
+-- 5) Bayi markalaşma + kayıt evrakları (logo, faaliyet belgesi, imza sirküleri)
+ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "logoUrl" TEXT;
+ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "activityCertificateUrl" TEXT;
+ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "signatureCircularUrl" TEXT;

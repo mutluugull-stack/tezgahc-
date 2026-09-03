@@ -57,6 +57,15 @@ model User {
   teamMembers    User[]  @relation("DealerTeam")
   role           String?
 
+  // Bayi markalaşma + kayıt evrakları: logoUrl bayi panelinden yüklenir ve
+  // ilan detayı/bayi panelinde gösterilir. activityCertificateUrl (güncel
+  // faaliyet belgesi) ve signatureCircularUrl (imza sirküleri) kayıt
+  // formunda BAYI hesapları için zorunludur; yönetici onay vermeden önce
+  // Bayiler panelinden inceler.
+  logoUrl                 String?
+  activityCertificateUrl  String?
+  signatureCircularUrl    String?
+
   listings         Listing[]
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
