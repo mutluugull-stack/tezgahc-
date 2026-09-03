@@ -284,3 +284,23 @@ export const TrashIcon = (p: IconProps) =>
   );
 
 export const CheckIcon = (p: IconProps) => base(<path d="M4.5 12.5l5 5 10-11" />, p);
+
+export const MegaphoneIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M3 10v4a1.5 1.5 0 0 0 1.5 1.5H6l1.4 5" />
+      <path d="M6 10 18 4v16L6 14" />
+      <path d="M18 8.5c1.4.7 2.3 2 2.3 3.5s-.9 2.8-2.3 3.5" />
+    </>,
+    p
+  );
+
+export const LinkIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M9.5 14.5 14.5 9.5" />
+      <path d="M11 6.5 12.8 4.7a3.6 3.6 0 0 1 5.1 5.1L16 11.6" />
+      <path d="M13 17.5 11.2 19.3a3.6 3.6 0 0 1-5.1-5.1L8 12.4" />
+    </>,
+    p
+  );
