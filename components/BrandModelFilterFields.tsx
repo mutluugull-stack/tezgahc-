@@ -16,18 +16,22 @@ function normalize(s: string): string {
 }
 
 const labelClass = "mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted";
-const inputClass = "input w-full rounded-lg px-3 py-2.5 text-sm";
+const inputClass = "input w-full rounded-lg px-3 py-2 text-sm";
 const dropdownClass =
   "absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-border bg-surface shadow-lg";
 
 type Props = {
-  brand: string;
-  model: string;
-  onBrandChange: (value: string) => void;
-  onModelChange: (value: string) => void;
+  defaultBrand?: string;
+  defaultModel?: string;
 };
 
-export default function BrandModelFields({ brand, model, onBrandChange, onModelChange }: Props) {
+// Filtre formu için Marka/Model otomatik tamamlama alanları. Kendi state'ini
+// tutar ve native <form> GET submit akışına name="brand" / name="model"
+// input'ları ile katılır — sayfa bir server component olduğu için burada
+// controlled değil, kendi kendine yeten (self-contained) bir istemci bileşeni.
+export default function BrandModelFilterFields({ defaultBrand = "", defaultModel = "" }: Props) {
+  const [brand, setBrand] = useState(defaultBrand);
+  const [model, setModel] = useState(defaultModel);
   const [brandOpen, setBrandOpen] = useState(false);
   const [modelOpen, setModelOpen] = useState(false);
   const [brandHi, setBrandHi] = useState(0);
@@ -57,26 +61,27 @@ export default function BrandModelFields({ brand, model, onBrandChange, onModelC
   }, [model, selectedBrandEntry]);
 
   function selectBrand(name: string) {
-    onBrandChange(name);
+    setBrand(name);
     setBrandOpen(false);
   }
 
   function selectModel(m: { label: string; brand: string }) {
-    onModelChange(m.label);
-    if (!selectedBrandEntry) onBrandChange(m.brand);
+    setModel(m.label);
+    if (!selectedBrandEntry) setBrand(m.brand);
     setModelOpen(false);
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <>
       <div className="relative">
         <label className={labelClass}>Marka</label>
         <input
+          name="brand"
           value={brand}
           autoComplete="off"
           placeholder="örn. Haas, DMG Mori, Mazak..."
           onChange={(e) => {
-            onBrandChange(e.target.value);
+            setBrand(e.target.value);
             setBrandOpen(true);
             setBrandHi(0);
           }}
@@ -120,11 +125,12 @@ export default function BrandModelFields({ brand, model, onBrandChange, onModelC
       <div className="relative">
         <label className={labelClass}>Model</label>
         <input
+          name="model"
           value={model}
           autoComplete="off"
           placeholder={selectedBrandEntry ? "örn. VF-2, NLX 2500..." : "Model adı yazın"}
           onChange={(e) => {
-            onModelChange(e.target.value);
+            setModel(e.target.value);
             setModelOpen(true);
             setModelHi(0);
           }}
@@ -167,6 +173,6 @@ export default function BrandModelFields({ brand, model, onBrandChange, onModelC
           </ul>
         )}
       </div>
-    </div>
+    </>
   );
 }
