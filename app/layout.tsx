@@ -4,6 +4,7 @@ import "./globals.css";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PwaRegister from "@/components/PwaRegister";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -31,10 +32,31 @@ export const metadata: Metadata = {
   description:
     "Türkiye'nin CNC tezgah ve makine ilan platformu. CNC torna, freze, router, lazer, plazma, EDM ve abkant pres ilanlarını inceleyin, ilan verin.",
   metadataBase: new URL("https://tezgahci.com.tr"),
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  appleWebApp: {
+    // iOS Safari: "Ana Ekrana Ekle" ile kurulduğunda tarayıcı çubuğu olmadan,
+    // native bir uygulama gibi açılmasını sağlar.
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Tezgahçı",
+  },
+  other: {
+    // Android Chrome eski sürümleri için (modern Chrome manifest.json'daki
+    // theme_color'ı zaten kullanır, bu satır ek bir garanti).
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export const viewport = {
   themeColor: "#004aad",
+  viewportFit: "cover" as const,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -47,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `try{var t=localStorage.getItem('tezgahci_theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}`,
           }}
         />
+        <PwaRegister />
         <SessionProviderWrapper>
           <div className="flex min-h-screen flex-col">
             <Navbar />
