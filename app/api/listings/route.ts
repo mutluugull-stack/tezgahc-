@@ -19,6 +19,7 @@ const createSchema = z.object({
   city: z.string().trim().min(2, "Şehir seçin."),
   description: z.string().trim().min(20, "Açıklama en az 20 karakter olmalı."),
   images: z.array(z.string().url()).max(8).optional(),
+  previewConsent: z.boolean().optional(),
 });
 
 export async function GET(req: NextRequest) {
@@ -104,6 +105,11 @@ export async function POST(req: NextRequest) {
   }
   const data = parsed.data;
 
+  // "Makine Önizleme" panelinde fotoğrafların gösterilmesi yalnızca Bayi
+  // hesaplarının açık onayına bağlıdır — başka bir hesap türü bu alanı
+  // gönderse bile sunucu tarafında yok sayılır.
+  const previewConsent = session.user.accountType === "BAYI" ? Boolean(data.previewConsent) : false;
+
   const listing = await prisma.listing.create({
     data: {
       title: data.title,
@@ -119,6 +125,7 @@ export async function POST(req: NextRequest) {
       currency: data.currency,
       city: data.city,
       description: data.description,
+      previewConsent,
       sellerId: session.user.id,
       images: data.images?.length
         ? { create: data.images.map((url, i) => ({ url, order: i })) }
