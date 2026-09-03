@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CATEGORIES } from "@/lib/constants";
-import { CategoryIcon, SearchIcon, TruckIcon, WrenchIcon } from "@/components/Icons";
+import { CategoryIcon, SearchIcon } from "@/components/Icons";
 import ListingCard from "@/components/ListingCard";
 import EmptyState from "@/components/EmptyState";
+import AdSlot from "@/components/AdSlot";
+import HomeServiceCardsSection from "@/components/HomeServiceCardsSection";
 
 export const dynamic = "force-dynamic";
 
@@ -100,6 +102,10 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      <div className="mx-auto max-w-7xl px-4 pt-6">
+        <AdSlot placement="HOME_SEARCH_BANNER" />
+      </div>
+
       <section className="mx-auto max-w-7xl px-4 py-10">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-8">
           {CATEGORIES.map((c) => (
@@ -139,48 +145,11 @@ export default async function LandingPage() {
         )}
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10">
-        <h2 className="mb-1 font-display text-2xl font-bold">Hizmet İlanları</h2>
-        <p className="mb-4 text-sm text-ink-muted">Tezgah taşıma ve teknik servis için güvenilir çözüm ortakları.</p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="card relative flex items-start gap-4 p-5">
-            <span className="absolute right-3 top-3 rounded-full bg-surface2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
-              Reklam
-            </span>
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-blueprint/10 text-blueprint">
-              <TruckIcon className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-display text-lg font-semibold">Ağır Tezgah Nakliyesi</h3>
-              <p className="mt-1 text-sm text-ink-muted">
-                CNC tezgahlarınızı sigortalı, vinçli ve uzman ekiple güvenle taşıyoruz. Türkiye
-                geneli hizmet.
-              </p>
-              <a href="tel:+902120000000" className="mt-3 inline-block text-sm font-semibold text-blueprint hover:underline">
-                Teklif alın →
-              </a>
-            </div>
-          </div>
-          <div className="card relative flex items-start gap-4 p-5">
-            <span className="absolute right-3 top-3 rounded-full bg-surface2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
-              Reklam
-            </span>
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
-              <WrenchIcon className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-display text-lg font-semibold">CNC Teknik Servis</h3>
-              <p className="mt-1 text-sm text-ink-muted">
-                Kalibrasyon, kontrolör arızaları ve periyodik bakım için yetkili teknik servis
-                desteği.
-              </p>
-              <a href="tel:+902120000001" className="mt-3 inline-block text-sm font-semibold text-accent hover:underline">
-                Teklif alın →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="mx-auto max-w-7xl px-4">
+        <AdSlot placement="HOME_AFTER_VITRIN" />
+      </div>
+
+      <HomeServiceCardsSection />
     </div>
   );
 }
