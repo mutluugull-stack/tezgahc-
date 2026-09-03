@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { CATEGORIES, CITIES, CONDITIONS } from "@/lib/constants";
+import { CATEGORIES, CITIES, CONDITIONS, CONTROLLERS, AXIS_COUNTS } from "@/lib/constants";
 import { ListViewIcon, GridViewIcon } from "@/components/Icons";
 import ListingCard from "@/components/ListingCard";
 import ListingRow from "@/components/ListingRow";
 import EmptyState from "@/components/EmptyState";
 import SortSelect from "@/components/SortSelect";
 import BrandModelFilterFields from "@/components/BrandModelFilterFields";
+import ComboFilterField from "@/components/ComboFilterField";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,8 @@ type SearchParams = {
   q?: string;
   brand?: string;
   model?: string;
+  controller?: string;
+  axisCount?: string;
   category?: string;
   city?: string;
   condition?: string;
@@ -41,6 +44,8 @@ async function getListings(sp: SearchParams) {
   if (sp.condition && sp.condition !== "all") where.condition = sp.condition;
   if (sp.brand) where.brand = { contains: sp.brand, mode: "insensitive" };
   if (sp.model) where.model = { contains: sp.model, mode: "insensitive" };
+  if (sp.controller) where.controller = { contains: sp.controller, mode: "insensitive" };
+  if (sp.axisCount) where.axisCount = { contains: sp.axisCount, mode: "insensitive" };
   if (sp.onlyDealer === "1") where.seller = { accountType: "BAYI" };
   if (sp.minPrice || sp.maxPrice) {
     where.price = {};
@@ -156,6 +161,22 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
                 ))}
               </select>
             </div>
+
+            <ComboFilterField
+              name="controller"
+              label="Kontrolör"
+              defaultValue={searchParams.controller || ""}
+              options={CONTROLLERS}
+              placeholder="Fanuc, Siemens..."
+            />
+
+            <ComboFilterField
+              name="axisCount"
+              label="Eksen Sayısı"
+              defaultValue={searchParams.axisCount || ""}
+              options={AXIS_COUNTS}
+              placeholder="3 Eksen"
+            />
 
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
