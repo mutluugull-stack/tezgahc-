@@ -62,6 +62,13 @@ export const CNC_BRANDS: CncBrandEntry[] = [
   { name: "Doosan Machine Tools", models: ["Puma 240", "DNM 4500", "Lynx 220"] },
   { name: "Kia (Kia Machine Tool)", models: ["KIT-25", "SKT-21"] },
   { name: "Samsung Machine Tools", models: ["SL20", "PL20"] },
+  { name: "Haitian Precision", models: ["V856", "V1270", "V1580", "H63", "H80", "T-Serisi CNC Torna", "VMP Serisi Portal"] },
+  { name: "Haitian CNC", models: ["V856", "V1270", "T Serisi", "H Serisi"] },
+  { name: "DMTG (Dalian)", models: ["CKD6136i", "CH6250", "VMC855"] },
+  { name: "Shenyang Machine Tool", models: ["VMC0540", "CAK6136", "HTC63"] },
+  { name: "SMTCL", models: ["CKE6136i", "VMC850"] },
+  { name: "Baoji Machine Tool", models: ["CK6140", "CK6150"] },
+  { name: "JYTEC (Jiangsu Yawei)", models: ["JYVMC850", "JYT200"] },
 
   // --- Lazer kesim ---
   { name: "Trumpf", models: ["TruLaser 3030", "TruLaser 5030", "TruLaser Tube 7000", "TruLaser 1030", "TruLaser Cell 3000"] },
