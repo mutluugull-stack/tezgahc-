@@ -22,6 +22,7 @@ async function getListing(id: string) {
           fullName: true,
           city: true,
           phone: true,
+          logoUrl: true,
           createdAt: true,
         },
       },
@@ -122,9 +123,15 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
             </p>
 
             <div className="mt-4 flex items-center gap-2 rounded-lg border border-border p-3">
-              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-blueprint text-sm font-bold text-white">
-                {sellerName.slice(0, 1).toUpperCase()}
-              </div>
+              {listing.seller.logoUrl ? (
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white">
+                  <Image src={listing.seller.logoUrl} alt={sellerName} width={36} height={36} className="h-full w-full object-contain" />
+                </div>
+              ) : (
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-blueprint text-sm font-bold text-white">
+                  {sellerName.slice(0, 1).toUpperCase()}
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{sellerName}</p>
                 <p className="text-xs text-ink-muted">
