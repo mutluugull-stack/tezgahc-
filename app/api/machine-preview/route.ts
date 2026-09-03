@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 // Marka/model seçilerek makine önizleme paneli için kullanılır.
-// Şu an yayında olan, seçilen marka/modele uyan ilanları (ve onların
-// fotoğraflarını) döner. Ayrı bir "üretici kataloğu" görsel kütüphanesi
-// yoktur — gösterilen fotoğraflar gerçek satıcı ilanlarına aittir.
+// Şu an yayında olan, seçilen marka/modele uyan VE satıcısı (yalnızca Bayi
+// hesapları) fotoğraflarının bu panelde gösterilmesine açıkça izin vermiş
+// (previewConsent=true) ilanları döner. Ayrı bir "üretici kataloğu" görsel
+// kütüphanesi yoktur — gösterilen fotoğraflar gerçek satıcı ilanlarına aittir.
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const brand = searchParams.get("brand")?.trim();
@@ -16,6 +17,7 @@ export async function GET(req: NextRequest) {
 
   const where: any = {
     isSold: false,
+    previewConsent: true,
     brand: { contains: brand, mode: "insensitive" },
   };
   if (model) {
