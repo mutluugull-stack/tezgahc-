@@ -59,6 +59,8 @@ export const authOptions: NextAuthOptions = {
           accountType: user.accountType,
           isAdmin: user.isAdmin,
           approved: user.approved,
+          parentDealerId: user.parentDealerId,
+          role: user.role,
         };
       },
     }),
@@ -71,6 +73,8 @@ export const authOptions: NextAuthOptions = {
         token.accountType = (user as any).accountType;
         token.isAdmin = (user as any).isAdmin;
         token.approved = (user as any).approved;
+        token.parentDealerId = (user as any).parentDealerId ?? null;
+        token.role = (user as any).role ?? null;
       }
       return token;
     },
@@ -81,6 +85,8 @@ export const authOptions: NextAuthOptions = {
         (session.user as any).accountType = token.accountType;
         (session.user as any).isAdmin = token.isAdmin;
         (session.user as any).approved = token.approved;
+        (session.user as any).parentDealerId = token.parentDealerId ?? null;
+        (session.user as any).role = token.role ?? null;
       }
       return session;
     },
