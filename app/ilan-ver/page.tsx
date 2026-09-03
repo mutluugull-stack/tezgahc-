@@ -313,7 +313,7 @@ export default function NewListingPage() {
         </div>
 
         {session.user.accountType === "BAYI" && (
-          <label className="flex items-start gap-2 rounded-lg border border-line bg-surface-muted p-3 text-sm">
+          <label className="flex items-start gap-2 rounded-lg border border-border bg-surface2 p-3 text-sm">
             <input
               type="checkbox"
               checked={form.previewConsent}
