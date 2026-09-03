@@ -11,6 +11,7 @@ import {
   StarIcon,
   ChartIcon,
   GearIcon,
+  MegaphoneIcon,
 } from "@/components/Icons";
 
 type Stats = {
@@ -30,6 +31,7 @@ const TILES: AppTile[] = [
   { href: "/admin/kategoriler", label: "Kategoriler", icon: <TagIcon {...iconProps} />, color: "#8e44ad" },
   { href: "/admin/mesajlar", label: "Mesajlar", icon: <ChatIcon {...iconProps} />, color: "#00b8d9" },
   { href: "/admin/vitrin", label: "Vitrin Yönetimi", icon: <StarIcon {...iconProps} />, color: "#f5a623" },
+  { href: "/admin/reklamlar", label: "Reklamlar", icon: <MegaphoneIcon {...iconProps} />, color: "#d63384" },
   { href: "/admin/raporlar", label: "Raporlar", icon: <ChartIcon {...iconProps} />, color: "#004aad" },
   { href: "/admin/ayarlar", label: "Ayarlar", icon: <GearIcon {...iconProps} />, color: "#64748b" },
 ];
