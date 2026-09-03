@@ -190,6 +190,41 @@ export const MachineIcons: Record<string, (p: IconProps) => JSX.Element> = {
       </>,
       p
     ),
+  yag: (p) =>
+    base(
+      <>
+        <path d="M12 3.5c-3.2 4-6 7.6-6 10.8a6 6 0 0 0 12 0c0-3.2-2.8-6.8-6-10.8Z" />
+        <path d="M9 14.3c0 1.5 1.2 2.7 3 2.7" />
+      </>,
+      p
+    ),
+  aparat: (p) =>
+    base(
+      <>
+        <path d="M7 4v16" />
+        <path d="M7 6h6M7 18h6" />
+        <path d="M13 6v3M13 18v-3" />
+        <path d="M17 9.5v5" />
+      </>,
+      p
+    ),
+  divizor: (p) =>
+    base(
+      <>
+        <circle cx="10" cy="12" r="7" />
+        <path d="M10 5v2M10 17v2M3 12h2M15 12h2M5.4 6.4l1.4 1.4M13.2 16.2l1.4 1.4M5.4 17.6l1.4-1.4M13.2 7.8l1.4-1.4" />
+        <path d="M17 12h4M19 10.5v3" />
+      </>,
+      p
+    ),
+  "yedek-parca": (p) =>
+    base(
+      <>
+        <path d="M12 3.5 19 8v8l-7 4.5-7-4.5V8Z" />
+        <circle cx="12" cy="12" r="3" />
+      </>,
+      p
+    ),
   diger: (p) =>
     base(
       <>
