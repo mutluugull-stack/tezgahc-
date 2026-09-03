@@ -7,6 +7,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { HandshakeIcon, PlusIcon, HomeIcon, UserIcon } from "./Icons";
 import ThemeToggle from "./ThemeToggle";
+import MachinePreviewDrawer from "./MachinePreviewDrawer";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -84,6 +85,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <MachinePreviewDrawer />
           <ThemeToggle />
           {status === "authenticated" ? (
             <div className="flex items-center gap-2">

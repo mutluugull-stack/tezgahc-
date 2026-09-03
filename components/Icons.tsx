@@ -113,6 +113,18 @@ export const GridViewIcon = (p: IconProps) =>
     p
   );
 
+export const EyeIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M2.3 12S6 5.2 12 5.2 21.7 12 21.7 12 18 18.8 12 18.8 2.3 12 2.3 12Z" />
+      <circle cx="12" cy="12" r="3.1" />
+    </>,
+    p
+  );
+
+export const ChevronLeftIcon = (p: IconProps) => base(<path d="M15 5l-7 7 7 7" />, p);
+export const ChevronRightIcon = (p: IconProps) => base(<path d="M9 5l7 7-7 7" />, p);
+
 export const HandshakeIcon = ({ className }: { className?: string }) => (
   <span className={className} role="img" aria-hidden="true" style={{ fontSize: "1em" }}>
     🤝
