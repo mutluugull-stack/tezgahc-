@@ -49,7 +49,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!listing) {
     return NextResponse.json({ error: "İlan bulunamadı." }, { status: 404 });
   }
-  if (listing.sellerId !== session.user.id && !session.user.isAdmin) {
+  // Bayi ekip üyeleri, bağlı oldukları bayi hesabına ait ilanları da
+  // yönetebilir (ilan sahipliği zaten o bayi hesabına kayıtlıdır).
+  const effectiveSellerId = session.user.parentDealerId || session.user.id;
+  if (listing.sellerId !== effectiveSellerId && !session.user.isAdmin) {
     return NextResponse.json({ error: "Bu ilan üzerinde yetkiniz yok." }, { status: 403 });
   }
 
@@ -87,7 +90,8 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
   if (!listing) {
     return NextResponse.json({ error: "İlan bulunamadı." }, { status: 404 });
   }
-  if (listing.sellerId !== session.user.id && !session.user.isAdmin) {
+  const effectiveSellerId = session.user.parentDealerId || session.user.id;
+  if (listing.sellerId !== effectiveSellerId && !session.user.isAdmin) {
     return NextResponse.json({ error: "Bu ilan üzerinde yetkiniz yok." }, { status: 403 });
   }
 
