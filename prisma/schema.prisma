@@ -43,6 +43,7 @@ model User {
   companyName  String?
   phone        String?
   city         String?
+  address      String?
   approved     Boolean  @default(true)
   isAdmin      Boolean  @default(false)
   createdAt    DateTime @default(now())
