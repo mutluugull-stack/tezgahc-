@@ -22,8 +22,10 @@ type PreviewListing = {
 type Lightbox = { images: string[]; index: number };
 
 // Header'daki "Makine Önizleme" tetikleyici ikonu ve sağdan açılan panel.
-// Kullanıcı marka/model seçer; panel, o marka/modele uyan ve şu anda
-// yayında olan ilanların gerçek fotoğraflarını galeri halinde gösterir.
+// Kullanıcı marka/model seçer; panel, o marka/modele uyan, şu anda yayında
+// olan VE satıcısı (yalnızca Bayi hesapları) fotoğraflarının burada
+// gösterilmesine açıkça izin vermiş ilanların gerçek fotoğraflarını galeri
+// halinde gösterir.
 export default function MachinePreviewDrawer() {
   const [open, setOpen] = useState(false);
   const [brand, setBrand] = useState("");
@@ -111,7 +113,7 @@ export default function MachinePreviewDrawer() {
               <div>
                 <h2 className="font-display text-lg font-bold">Makine Önizleme</h2>
                 <p className="mt-0.5 text-xs text-ink-muted">
-                  Marka/model seçin, yayındaki ilanların fotoğraflarını görün.
+                  Marka/model seçin, satıcısının paylaşıma onay verdiği yayındaki ilanların fotoğraflarını görün.
                 </p>
               </div>
               <button
@@ -144,7 +146,7 @@ export default function MachinePreviewDrawer() {
                   <CategoryIcon category="diger" className="h-10 w-10 text-ink-muted" />
                   <p className="text-sm text-ink-muted">
                     {model.trim() ? `${brand.trim()} ${model.trim()}` : brand.trim()} için şu anda
-                    fotoğraflı yayında ilan bulunamadı.
+                    önizlemeye açık (satıcısı fotoğraf paylaşımına onay vermiş) yayında ilan bulunamadı.
                   </p>
                   <Link
                     href={`/ilanlar?brand=${encodeURIComponent(brand.trim())}${
