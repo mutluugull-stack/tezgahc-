@@ -20,10 +20,16 @@ export async function GET() {
       companyName: true,
       phone: true,
       city: true,
+      address: true,
       approved: true,
       isAdmin: true,
       createdAt: true,
-      _count: { select: { listings: true } },
+      logoUrl: true,
+      activityCertificateUrl: true,
+      signatureCircularUrl: true,
+      parentDealerId: true,
+      role: true,
+      _count: { select: { listings: true, teamMembers: true } },
     },
   });
 
