@@ -11,6 +11,7 @@ const patchSchema = z.object({
   city: z.string().trim().max(60).optional(),
   address: z.string().trim().max(500).optional(),
   logoUrl: z.string().trim().url().max(1000).optional(),
+  bio: z.string().trim().max(500).optional(),
 });
 
 // GET /api/account/profile -> giriş yapan kullanıcının kendi profil bilgileri
@@ -35,6 +36,7 @@ export async function GET() {
       role: true,
       parentDealerId: true,
       logoUrl: true,
+      bio: true,
       createdAt: true,
     },
   });
@@ -79,6 +81,11 @@ export async function PATCH(req: NextRequest) {
       !session.user.parentDealerId
         ? { logoUrl: data.logoUrl || null }
         : {}),
+      ...(data.bio !== undefined &&
+      session.user.accountType === "BAYI" &&
+     !session.user.parentDealerId
+        ? { bio: data.bio || null }
+        : {}),
     },
   });
 
@@ -91,6 +98,7 @@ export async function PATCH(req: NextRequest) {
       city: user.city,
       address: user.address,
       logoUrl: user.logoUrl,
+      bio: user.bio,
     },
   });
 }
