@@ -87,6 +87,10 @@ function LoginForm() {
             className="input w-full rounded-lg px-3 py-2.5 text-sm"
             autoComplete="current-password"
           />
+          <p className="mt-1.5 text-xs text-ink-muted">
+            Şifrenizi mi unuttunuz? Şu an için otomatik sıfırlama yok — yönetici ile iletişime geçin, sizin için yeni
+            bir şifre oluştursun.
+          </p>
         </div>
         {error && <p className="text-sm text-red-500">{error}</p>}
         <button
