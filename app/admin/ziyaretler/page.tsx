@@ -9,6 +9,9 @@ type Visits = {
   visitsByDay: { label: string; count: number }[];
   topPages: { path: string; count: number }[];
   topReferrers: { source: string; count: number }[];
+  topProvinces: { province: string; count: number }[];
+  deviceTypes: { type: string; count: number }[];
+  topDeviceModels: { model: string; count: number }[];
 };
 
 function BarRow({ label, count, max }: { label: string; count: number; max: number }) {
@@ -102,6 +105,51 @@ export default function AdminVisitsPage() {
             <div className="flex flex-col gap-2.5">
               {data.topReferrers.map((r) => (
                 <RankRow key={r.source} label={r.source} count={r.count} max={Math.max(1, ...data.topReferrers.map((x) => x.count))} />
+              ))}
+            </div>
+          </div>
+
+          <div className="card p-5">
+            <h2 className="mb-1 font-display text-lg font-semibold">İllere Göre Ziyaret (Son 30 Gün)</h2>
+            <p className="mb-4 text-xs text-ink-muted">Konum, ziyaretçinin IP adresinden yaklaşık olarak tahmin edilir; kesin olmayabilir.</p>
+            {data.topProvinces.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <div className="flex flex-col gap-2.5">
+              {data.topProvinces.map((p) => (
+                <RankRow
+                  key={p.province}
+                  label={p.province}
+                  count={p.count}
+                  max={Math.max(1, ...data.topProvinces.map((x) => x.count))}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="card p-5">
+            <h2 className="mb-4 font-display text-lg font-semibold">Cihaz Türü (Son 30 Gün)</h2>
+            {data.deviceTypes.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <div className="flex flex-col gap-2.5">
+              {data.deviceTypes.map((d) => (
+                <RankRow key={d.type} label={d.type} count={d.count} max={Math.max(1, ...data.deviceTypes.map((x) => x.count))} />
+              ))}
+            </div>
+          </div>
+
+          <div className="card p-5">
+            <h2 className="mb-1 font-display text-lg font-semibold">Cihaz Modelleri (Son 30 Gün)</h2>
+            <p className="mb-4 text-xs text-ink-muted">
+              iPhone modelleri Apple'ın tarayıcı bilgisinde yer almadığından yalnızca &quot;iPhone&quot; olarak görünür; Android
+              modelleri genellikle tam olarak görünür.
+            </p>
+            {data.topDeviceModels.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <div className="flex flex-col gap-2.5">
+              {data.topDeviceModels.map((m) => (
+                <RankRow
+                  key={m.model}
+                  label={m.model}
+                  count={m.count}
+                  max={Math.max(1, ...data.topDeviceModels.map((x) => x.count))}
+                />
               ))}
             </div>
           </div>
