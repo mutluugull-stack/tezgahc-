@@ -12,6 +12,7 @@ import {
   ChartIcon,
   GearIcon,
   MegaphoneIcon,
+  FlagIcon,
 } from "@/components/Icons";
 
 type Stats = {
@@ -20,6 +21,7 @@ type Stats = {
   individualUsers: number;
   dealerUsers: number;
   pendingDealers: number;
+  pendingReports?: number;
 };
 
 const iconProps = { className: "h-6 w-6" };
@@ -32,6 +34,7 @@ const TILES: AppTile[] = [
   { href: "/admin/mesajlar", label: "Mesajlar", icon: <ChatIcon {...iconProps} />, color: "#00b8d9" },
   { href: "/admin/vitrin", label: "Vitrin Yönetimi", icon: <StarIcon {...iconProps} />, color: "#f5a623" },
   { href: "/admin/reklamlar", label: "Reklamlar", icon: <MegaphoneIcon {...iconProps} />, color: "#d63384" },
+  { href: "/admin/sikayetler", label: "Şikayetler", icon: <FlagIcon {...iconProps} />, color: "#c92a2a" },
   { href: "/admin/raporlar", label: "Raporlar", icon: <ChartIcon {...iconProps} />, color: "#004aad" },
   { href: "/admin/ayarlar", label: "Ayarlar", icon: <GearIcon {...iconProps} />, color: "#64748b" },
 ];
@@ -42,7 +45,21 @@ export default function AdminPage() {
   useEffect(() => {
     fetch("/api/admin/users")
       .then((r) => (r.ok ? r.json() : null))
-      .then((data) => data && setStats(data.stats))
+      .then((data) => data && setStats((prev) => ({ ...(prev || {}), ...data.stats }) as Stats))
+      .catch(() => {});
+    fetch("/api/admin/sikayetler")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (data) =>
+          data &&
+          setStats(
+            (prev) =>
+              ({
+                ...(prev || {}),
+                pendingReports: data.reports.filter((r: { status: string }) => r.status === "BEKLEMEDE").length,
+              }) as Stats
+          )
+      )
       .catch(() => {});
   }, []);
 
@@ -70,11 +87,15 @@ export default function AdminPage() {
 
       <div className="card p-4">
         <AppGrid
-          tiles={TILES.map((t) =>
-            t.href === "/admin/bayiler" && stats?.pendingDealers
-              ? { ...t, badge: stats.pendingDealers }
-              : t
-          )}
+          tiles={TILES.map((t) => {
+            if (t.href === "/admin/bayiler" && stats?.pendingDealers) {
+              return { ...t, badge: stats.pendingDealers };
+            }
+            if (t.href === "/admin/sikayetler" && stats?.pendingReports) {
+              return { ...t, badge: stats.pendingReports };
+            }
+            return t;
+          })}
         />
       </div>
     </div>
