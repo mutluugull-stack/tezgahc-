@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Oswald, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CookieConsent />
           </FavoritesProvider>
         </SessionProviderWrapper>
+        <Analytics />
       </body>
     </html>
   );
