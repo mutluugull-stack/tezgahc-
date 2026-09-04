@@ -217,3 +217,17 @@ model Ad {
   @@index([category])
   @@map("ads")
 }
+
+// Site ziyaretlerinin hafif kaydı: yönetici panelindeki "Ziyaretler"
+// sayfasında gösterilen trafik istatistikleri için. Her sayfa yüklemesinde
+// bir kayıt oluşturulur; kişisel veri tutulmaz (IP/kullanıcı kimliği yok).
+model PageVisit {
+id        String   @id @default(cuid())
+path      String
+referrer  String?
+createdAt DateTime @default(now())
+
+@@index([createdAt])
+@@index([path])
+@@map("page_visits")
+}
