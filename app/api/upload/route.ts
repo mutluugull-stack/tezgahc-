@@ -18,11 +18,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Giriş yapmalısınız." }, { status: 401 });
   }
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  // Blob Storage bağlantısı Vercel projesine OIDC üzerinden (BLOB_STORE_ID ile)
+  // ya da klasik BLOB_READ_WRITE_TOKEN ile yapılmış olabilir; hangisi
+  // tanımlıysa @vercel/blob otomatik onu kullanır. İkisi de yoksa aşağıdaki
+  // put() çağrısı hata fırlatır ve bunu kullanıcıya anlamlı bir mesajla döneriz.
+  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) {
     return NextResponse.json(
       {
         error:
-          "Fotoğraf yükleme şu anda yapılandırılmamış. Vercel projenizde Blob Storage kurup BLOB_READ_WRITE_TOKEN değişkenini tanımlayın.",
+          "Fotoğraf yükleme şu anda yapılandırılmamış. Vercel projenizde Storage > Blob kurulumunu tamamlayın.",
       },
       { status: 501 }
     );
@@ -56,10 +60,17 @@ export async function POST(req: NextRequest) {
   const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
   const key = `${folder}/${session.user.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-  const blob = await put(key, file, {
-    access: "public",
-    contentType: file.type,
-  });
-
-  return NextResponse.json({ ok: true, url: blob.url });
+  try {
+    const blob = await put(key, file, {
+      access: "public",
+      contentType: file.type,
+    });
+    return NextResponse.json({ ok: true, url: blob.url });
+  } catch (err) {
+    console.error("Blob upload error:", err);
+    return NextResponse.json(
+      { error: "Fotoğraf yüklenirken bir sorun oluştu. Lütfen tekrar deneyin." },
+      { status: 502 }
+    );
+  }
 }
