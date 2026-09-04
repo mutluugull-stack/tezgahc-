@@ -14,6 +14,7 @@ type Profile = {
   address: string | null;
   role: string | null;
   logoUrl: string | null;
+  bio: string | null;
 };
 
 // Yönetici Paneli > Ayarlar ve Bayi Paneli > Ayarlar sayfalarında ortak
@@ -23,6 +24,10 @@ export default function AccountSettingsForm() {
   const [form, setForm] = useState({ fullName: "", companyName: "", phone: "", city: "", address: "" });
   const [profileBusy, setProfileBusy] = useState(false);
   const [profileMsg, setProfileMsg] = useState("");
+
+  const [bio, setBio] = useState("");
+  const [bioBusy, setBioBusy] = useState(false);
+  const [bioMsg, setBioMsg] = useState("");
 
   const [pwForm, setPwForm] = useState({ currentPassword: "", newPassword: "", newPassword2: "" });
   const [pwBusy, setPwBusy] = useState(false);
@@ -45,6 +50,7 @@ export default function AccountSettingsForm() {
           city: data.user.city || "",
           address: data.user.address || "",
         });
+        setBio(data.user.bio || "");
       });
   }, []);
 
@@ -106,6 +112,22 @@ export default function AccountSettingsForm() {
       if (res.ok) setProfile((p) => (p ? { ...p, logoUrl: null } : p));
     } finally {
       setLogoUploading(false);
+    }
+  }
+
+  async function saveBio(e: React.FormEvent) {
+    e.preventDefault();
+    setBioBusy(true);
+    setBioMsg("");
+    try {
+      const res = await fetch("/api/account/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bio }),
+      });
+      setBioMsg(res.ok ? "Tanıtım yazınız güncellendi." : "Güncellenemedi, tekrar deneyin.");
+    } finally {
+      setBioBusy(false);
     }
   }
 
@@ -185,6 +207,40 @@ export default function AccountSettingsForm() {
             </div>
           </div>
         </div>
+      )}
+
+      {profile.accountType === "BAYI" && !profile.role && (
+        <form onSubmit={saveBio} className="card flex flex-col gap-3 p-5">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-display text-lg font-semibold">Bayi Profil Sayfası</h2>
+            <a
+              href={`/bayi/${profile.username}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-shrink-0 text-xs font-semibold text-blueprint hover:underline"
+            >
+              Profilinizi Görüntüle →
+            </a>
+          </div>
+          <p className="text-xs text-ink-muted">
+            Bu tanıtım metni, herkese açık bayi profil sayfanızda (tezgahci.com.tr/bayi/{profile.username}) görünür.
+          </p>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value.slice(0, 500))}
+            rows={4}
+            maxLength={500}
+            placeholder="Firmanızı, uzmanlık alanlarınızı ve sunduğunuz hizmetleri kısaca tanıtın..."
+            className="input w-full rounded-lg px-3 py-2.5 text-sm"
+          />
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs text-ink-muted">{bio.length}/500</p>
+            {bioMsg && <p className="text-xs text-ink-muted">{bioMsg}</p>}
+          </div>
+          <button disabled={bioBusy} type="submit" className="btn-accent self-start rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60">
+            {bioBusy ? "Kaydediliyor..." : "Tanıtım Yazısını Kaydet"}
+          </button>
+        </form>
       )}
 
       <form onSubmit={saveProfile} className="card flex flex-col gap-4 p-5">
