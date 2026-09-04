@@ -17,8 +17,7 @@ export default function GizlilikPage() {
           <h2 className="mb-2 font-display text-lg font-semibold">1. Veri Sorumlusu</h2>
           <p className="text-ink-muted">
             6698 sayılı Kişisel Verilerin Korunması Kanunu (&quot;KVKK&quot;) uyarınca, Tezgahçı platformunu
-            (&quot;Tezgahçı&quot;, &quot;Platform&quot;, www.tezgahci.com.tr) işleten <strong className="text-ink">[Şirket unvanı buraya
-            eklenecek]</strong> veri sorumlusu sıfatıyla hareket etmektedir. Bu metin, Platform üzerinden
+            (&quot;Tezgahçı&quot;, &quot;Platform&quot;, www.tezgahci.com.tr) işleten <strong className="text-ink">MELİS DİJİTAL</strong> veri sorumlusu sıfatıyla hareket etmektedir. Bu metin, Platform üzerinden
             topladığımız kişisel verilerin hangi amaçlarla işlendiğini, kimlerle paylaşılabileceğini ve
             haklarınızı ne şekilde kullanabileceğinizi açıklamak amacıyla hazırlanmıştır.
           </p>
