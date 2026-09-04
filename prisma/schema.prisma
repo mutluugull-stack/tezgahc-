@@ -73,6 +73,11 @@ model User {
   activityCertificateUrl  String?
   signatureCircularUrl    String?
 
+  // Herkese açık bayi profil sayfasında ("/bayi/[username]") gösterilen kısa
+  // tanıtım metni. Yalnızca bayi hesap sahipleri (parentDealerId'si olmayan
+  // BAYI hesapları) düzenleyebilir; ekip üyeleri için anlamsızdır.
+  bio String? @db.Text
+
   listings         Listing[]
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
