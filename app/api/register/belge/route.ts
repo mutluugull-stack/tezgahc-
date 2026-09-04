@@ -13,7 +13,9 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf
 const ALLOWED_DOC_TYPES = ["faaliyet-belgesi", "imza-sirkuleri"];
 
 export async function POST(req: NextRequest) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  // Blob Storage bağlantısı Vercel projesine OIDC üzerinden (BLOB_STORE_ID ile)
+  // ya da klasik BLOB_READ_WRITE_TOKEN ile yapılmış olabilir.
+  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) {
     return NextResponse.json(
       { error: "Evrak yükleme şu anda yapılandırılmamış." },
       { status: 501 }
@@ -48,10 +50,17 @@ export async function POST(req: NextRequest) {
       : "jpg";
   const key = `kayit-belgeleri/${docType}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-  const blob = await put(key, file, {
-    access: "public",
-    contentType: file.type,
-  });
-
-  return NextResponse.json({ ok: true, url: blob.url });
+  try {
+    const blob = await put(key, file, {
+      access: "public",
+      contentType: file.type,
+    });
+    return NextResponse.json({ ok: true, url: blob.url });
+  } catch (err) {
+    console.error("Blob upload error:", err);
+    return NextResponse.json(
+      { error: "Evrak yüklenirken bir sorun oluştu. Lütfen tekrar deneyin." },
+      { status: 502 }
+    );
+  }
 }
