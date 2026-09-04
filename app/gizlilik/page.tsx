@@ -31,32 +31,64 @@ export default function GizlilikPage() {
             adres, şehir); bayi hesapları için güncel faaliyet belgesi ve imza sirküleri gibi resmi
             belgeler; ilan içerikleri ve fotoğraflar; alıcı-satıcı arasındaki mesajlaşma içerikleri; hesap
             güvenliği için şifrenin şifrelenmiş (hash&apos;lenmiş) hâli; site kullanımına dair teknik veriler
-            (IP adresi, tarayıcı bilgisi, görüntülenme istatistikleri).
+            (yaklaşık konum, cihaz ve tarayıcı bilgisi, görüntülenme istatistikleri — ayrıntılar için bkz.
+            Madde 3).
           </p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">3. İşleme Amaçları</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">3. Site Trafiği, Yaklaşık Konum ve Cihaz Bilgileri</h2>
+          <p className="mb-2 text-ink-muted">
+            Platform&apos;u ziyaret ettiğinizde, trafik istatistiklerini ölçmek ve hizmet kalitesini
+            artırmak amacıyla, üyelik gerektirmeden ve sizi bireysel olarak hedeflemeden, otomatik olarak
+            aşağıdaki teknik veriler toplanır:
+          </p>
+          <p className="mb-2 text-ink-muted">
+            <strong className="text-ink">Yaklaşık konum bilgisi:</strong> Ziyaretinizin geldiği ülke, il/bölge
+            ve şehir bilgisi, barındırma altyapımızın (Vercel) sunucu düzeyinde sağladığı IP tabanlı konum
+            tahmininden elde edilir. Ham IP adresiniz veritabanımızda saklanmaz; yalnızca bu bilgiden
+            türetilen yaklaşık il/bölge kaydedilir. Bu bilgi kesin olmayabilir; özellikle VPN veya mobil
+            operatör ağları kullanan ziyaretçilerde farklı bir il/bölge görünebilir.
+          </p>
+          <p className="mb-2 text-ink-muted">
+            <strong className="text-ink">Cihaz bilgisi:</strong> Tarayıcınızın gönderdiği teknik bilgilerden
+            (User-Agent) cihaz türü (mobil telefon/tablet/bilgisayar), işletim sistemi, tarayıcı ve mümkün
+            olduğunda cihaz modeli (ör. &quot;Samsung SM-G991B&quot;) tespit edilir. Apple&apos;ın güvenlik
+            politikası gereği iPhone cihazlarda model bilgisi paylaşılmaz; bu cihazlar yalnızca
+            &quot;iPhone&quot; olarak görünür.
+          </p>
+          <p className="text-ink-muted">
+            Bu veriler kullanıcı hesabınızla veya kimliğinizle eşleştirilmez; yalnızca toplu istatistik
+            olarak (hangi bölgelerden ve hangi cihazlardan erişildiğini anlamak, Platform&apos;u bu
+            doğrultuda iyileştirmek ve kötüye kullanımı önlemek amacıyla) yönetici panelimizde
+            görüntülenir.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-2 font-display text-lg font-semibold">4. İşleme Amaçları</h2>
           <p className="text-ink-muted">
             Kişisel verileriniz; üyelik oluşturma ve kimlik doğrulama, ilan yayınlama ve yönetme,
             alıcı-satıcı arasında iletişim kurulmasını sağlama, bayi başvurularının incelenip
-            onaylanması, dolandırıcılık ve kötüye kullanımın önlenmesi, yasal yükümlülüklerin yerine
-            getirilmesi ve Platform&apos;un güvenliğinin sağlanması amaçlarıyla işlenir.
+            onaylanması, dolandırıcılık ve kötüye kullanımın önlenmesi, site trafiğinin ve ziyaretçi
+            istatistiklerinin (yaklaşık konum ve cihaz dağılımı dâhil) analiz edilmesi, yasal
+            yükümlülüklerin yerine getirilmesi ve Platform&apos;un güvenliğinin sağlanması amaçlarıyla
+            işlenir.
           </p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">4. Aktarım</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">5. Aktarım</h2>
           <p className="text-ink-muted">
             Kişisel verileriniz, yalnızca hizmetin sunulması için gerekli olduğu ölçüde barındırma
-            (hosting), bulut depolama ve altyapı hizmeti aldığımız tedarikçilerimizle ve yasal
-            zorunluluk hâlinde yetkili kamu kurum ve kuruluşlarıyla paylaşılabilir. Verileriniz
+            (hosting), bulut depolama ve altyapı hizmeti aldığımız tedarikçilerimizle (ör. Vercel) ve
+            yasal zorunluluk hâlinde yetkili kamu kurum ve kuruluşlarıyla paylaşılabilir. Verileriniz
             pazarlama amacıyla üçüncü taraflara satılmaz veya kiralanmaz.
           </p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">5. Saklama Süresi</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">6. Saklama Süresi</h2>
           <p className="text-ink-muted">
             Kişisel veriler, ilgili işleme amacının gerektirdiği süre boyunca ve mevzuatta öngörülen
             yasal saklama süreleri boyunca muhafaza edilir; bu sürelerin sonunda silinir, yok edilir
@@ -65,7 +97,7 @@ export default function GizlilikPage() {
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">6. Çerezler</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">7. Çerezler</h2>
           <p className="text-ink-muted">
             Platform, oturumunuzu yönetmek ve tercihlerinizi hatırlamak amacıyla zorunlu çerezler
             kullanır. Sitede gezinmeye devam ederek çerez kullanımını kabul etmiş olursunuz; tarayıcı
@@ -74,7 +106,7 @@ export default function GizlilikPage() {
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">7. KVKK Kapsamındaki Haklarınız</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">8. KVKK Kapsamındaki Haklarınız</h2>
           <p className="mb-2 text-ink-muted">KVKK&apos;nın 11. maddesi uyarınca her veri sahibi;</p>
           <p className="text-ink-muted">
             kişisel verisinin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme,
@@ -88,7 +120,7 @@ export default function GizlilikPage() {
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">8. Başvuru ve İletişim</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">9. Başvuru ve İletişim</h2>
           <p className="text-ink-muted">
             Yukarıdaki haklarınızı kullanmak için taleplerinizi, kayıtlı e-posta adresinizden{" "}
             <strong className="text-ink">[iletişim e-postası buraya eklenecek]</strong> adresine
