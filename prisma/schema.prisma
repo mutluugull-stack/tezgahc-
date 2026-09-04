@@ -221,13 +221,26 @@ model Ad {
 // Site ziyaretlerinin hafif kaydı: yönetici panelindeki "Ziyaretler"
 // sayfasında gösterilen trafik istatistikleri için. Her sayfa yüklemesinde
 // bir kayıt oluşturulur; kişisel veri tutulmaz (IP/kullanıcı kimliği yok).
+// Konum (country/region/city) Vercel'in edge ağının otomatik sağladığı
+// IP tabanlı yaklaşık konum bilgisinden gelir — ham IP adresi saklanmaz.
+// Cihaz bilgileri (deviceType/os/browser/deviceModel) tarayıcının
+// User-Agent başlığından ayrıştırılır; iPhone modelleri Apple'ın Safari
+// User-Agent'ında yer almadığından yalnızca "iPhone" olarak görünür.
 model PageVisit {
-id        String   @id @default(cuid())
-path      String
-referrer  String?
-createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  path        String
+  referrer    String?
+  country     String?
+  region      String?
+  city        String?
+  deviceType  String?
+  os          String?
+  browser     String?
+  deviceModel String?
+  createdAt   DateTime @default(now())
 
-@@index([createdAt])
-@@index([path])
-@@map("page_visits")
+  @@index([createdAt])
+  @@index([path])
+  @@index([region])
+  @@map("page_visits")
 }
