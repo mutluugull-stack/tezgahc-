@@ -21,6 +21,12 @@ export default function Footer() {
           <Link href="/admin" className="hover:text-ink">
             Yönetici Girişi
           </Link>
+          <Link href="/gizlilik" className="hover:text-ink">
+            Gizlilik ve KVKK
+          </Link>
+          <Link href="/kullanim-sartlari" className="hover:text-ink">
+            Kullanım Şartları
+          </Link>
         </div>
         <p>© {new Date().getFullYear()} Tezgahçı · tezgahci.com.tr</p>
       </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import MachineArt from "./MachineArt";
+import FavoriteButton from "./FavoriteButton";
 import { catLabel, fmtDate, fmtPrice } from "@/lib/constants";
 
 type ListingCardData = {
@@ -50,6 +51,9 @@ export default function ListingCard({ listing }: { listing: ListingCardData }) {
             </span>
           </div>
         )}
+        <div className="absolute right-2 top-2">
+          <FavoriteButton listingId={listing.id} size="sm" />
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-3.5">
         <span className="text-[11px] font-medium uppercase tracking-wide text-ink-muted">

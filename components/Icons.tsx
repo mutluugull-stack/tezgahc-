@@ -330,6 +330,24 @@ export const MegaphoneIcon = (p: IconProps) =>
     p
   );
 
+export const HeartIcon = ({ filled, ...p }: IconProps & { filled?: boolean }) =>
+  base(
+    <path
+      d="M12 20.5s-7.5-4.6-9.9-9.3C.6 7.9 2 4.8 5.1 4.1c2-.5 4 .4 5 2.1 1-1.7 3-2.6 5-2.1 3.1.7 4.5 3.8 3 7.1-2.4 4.7-9.9 9.3-9.9 9.3Z"
+      fill={filled ? "currentColor" : "none"}
+    />,
+    p
+  );
+
+export const FlagIcon = (p: IconProps) =>
+  base(
+    <>
+      <path d="M5 3v18" />
+      <path d="M5 4.5h13l-3 4 3 4H5" />
+    </>,
+    p
+  );
+
 export const LinkIcon = (p: IconProps) =>
   base(
     <>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { HandshakeIcon, PlusIcon, HomeIcon, UserIcon } from "./Icons";
+import { HandshakeIcon, PlusIcon, HomeIcon, UserIcon, HeartIcon } from "./Icons";
 import ThemeToggle from "./ThemeToggle";
 import MachinePreviewDrawer from "./MachinePreviewDrawer";
 
@@ -80,6 +80,8 @@ export default function Navbar() {
               </span>
             )}
           {status === "authenticated" &&
+            navLink("/favorilerim", "Favorilerim", <HeartIcon className="h-4 w-4" />)}
+          {status === "authenticated" &&
             session.user.accountType === "BAYI" &&
             navLink("/bayi-panel", "Bayi Panelim")}
           {status === "authenticated" &&
@@ -121,6 +123,7 @@ export default function Navbar() {
         {navLink("/ilanlar", "İlanlar")}
         {navLink("/ilan-ver", "İlan Ver")}
         {status === "authenticated" && navLink("/mesajlarim", "Mesajlar")}
+        {status === "authenticated" && navLink("/favorilerim", "Favorilerim")}
         {status === "authenticated" && session.user.accountType === "BAYI" && navLink("/bayi-panel", "Bayi Panelim")}
         {status === "authenticated" && session.user.isAdmin && navLink("/admin", "Panel")}
       </nav>
