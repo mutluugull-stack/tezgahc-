@@ -6,6 +6,7 @@ import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PwaRegister from "@/components/PwaRegister";
+import VisitTracker from "@/components/VisitTracker";
 import CookieConsent from "@/components/CookieConsent";
 import { FavoritesProvider } from "@/components/FavoritesProvider";
 
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <PwaRegister />
+        <VisitTracker />
         <SessionProviderWrapper>
           <FavoritesProvider>
             <div className="flex min-h-screen flex-col">
