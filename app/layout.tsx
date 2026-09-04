@@ -5,6 +5,8 @@ import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PwaRegister from "@/components/PwaRegister";
+import CookieConsent from "@/components/CookieConsent";
+import { FavoritesProvider } from "@/components/FavoritesProvider";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -71,11 +73,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <PwaRegister />
         <SessionProviderWrapper>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          <FavoritesProvider>
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <CookieConsent />
+          </FavoritesProvider>
         </SessionProviderWrapper>
       </body>
     </html>
