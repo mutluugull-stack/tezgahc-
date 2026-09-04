@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import MachineArt from "@/components/MachineArt";
 import { catLabel, conditionLabel, currencySymbol, fmtDate, fmtPrice } from "@/lib/constants";
 import ListingActions from "@/components/ListingActions";
+import FavoriteButton from "@/components/FavoriteButton";
+import ReportListingButton from "@/components/ReportListingButton";
 
 export const dynamic = "force-dynamic";
 
@@ -43,14 +45,50 @@ const SPEC_ROWS: { key: string; label: string }[] = [
   { key: "workArea", label: "Çalışma Alanı" },
 ];
 
+const SCHEMA_CONDITION: Record<string, string> = {
+  SIFIR: "https://schema.org/NewCondition",
+  IKINCI_EL: "https://schema.org/UsedCondition",
+  YENILENMIS: "https://schema.org/RefurbishedCondition",
+};
+
+function buildJsonLd(listing: NonNullable<Awaited<ReturnType<typeof getListing>>>, sellerName: string) {
+  const url = `https://www.tezgahci.com.tr/ilan/${listing.id}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: listing.title,
+    description: listing.description,
+    ...(listing.images.length > 0 ? { image: listing.images.map((img) => img.url) } : {}),
+    ...(listing.brand ? { brand: { "@type": "Brand", name: listing.brand } } : {}),
+    ...(listing.model ? { model: listing.model } : {}),
+    offers: {
+      "@type": "Offer",
+      url,
+      priceCurrency: listing.currency,
+      price: listing.price,
+      availability: listing.isSold ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+      itemCondition: SCHEMA_CONDITION[listing.condition] || "https://schema.org/UsedCondition",
+      seller: {
+        "@type": listing.seller.accountType === "BAYI" ? "Organization" : "Person",
+        name: sellerName,
+      },
+    },
+  };
+}
+
 export default async function ListingDetailPage({ params }: { params: { id: string } }) {
   const listing = await getListing(params.id);
   if (!listing) notFound();
 
   const sellerName = listing.seller.companyName || listing.seller.fullName || listing.seller.username;
+  const jsonLd = buildJsonLd(listing, sellerName);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Link href="/ilanlar" className="mb-4 inline-flex items-center gap-1 text-sm text-ink-muted hover:text-ink">
         ← Tüm ilanlara dön
       </Link>
@@ -111,9 +149,12 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
 
         <div>
           <div className="card p-5">
-            <span className="text-xs font-semibold uppercase tracking-wide text-blueprint">
-              {catLabel(listing.category)}
-            </span>
+            <div className="flex items-start justify-between gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wide text-blueprint">
+                {catLabel(listing.category)}
+              </span>
+              <FavoriteButton listingId={listing.id} />
+            </div>
             <h1 className="mt-1 font-display text-2xl font-bold leading-tight">{listing.title}</h1>
             <p className="font-mono-data mt-3 text-3xl font-bold text-blueprint">
               {fmtPrice(listing.price, listing.currency)}
@@ -147,6 +188,10 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
               isSold={listing.isSold}
               isVitrin={listing.isVitrin}
             />
+
+            <div className="mt-4 text-center">
+              <ReportListingButton listingId={listing.id} />
+            </div>
           </div>
         </div>
       </div>
