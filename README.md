@@ -76,9 +76,11 @@ buraya iletin, birlikte düzeltelim.
 1. Vercel hesabınızda projeyi oluşturun (aşağıdaki dağıtım adımına bakın).
 2. Vercel proje panelinde **Storage → Create Database → Blob** ile bir Blob deposu
    oluşturun ve projeye bağlayın.
-3. Vercel otomatik olarak `BLOB_READ_WRITE_TOKEN` değişkenini projenize ekler.
-   Yerel geliştirme için aynı token'ı Vercel panelinden kopyalayıp `.env` dosyanıza
-   yapıştırabilirsiniz.
+3. Vercel projeyi depoya otomatik bağlar (OIDC ile `BLOB_STORE_ID` değişkenini
+   ekler); eski hesaplarda bunun yerine klasik `BLOB_READ_WRITE_TOKEN` de
+   çalışır. Yerel geliştirme için Vercel panelinden `vercel env pull` ile
+   güncel değişkenleri çekebilir ya da klasik token'ı kopyalayıp `.env`
+   dosyanıza yapıştırabilirsiniz.
 
 Bu adım atlanırsa ilan verme formu çalışmaya devam eder, sadece fotoğraf alanı
 devre dışı kalır (kullanıcıya bilgilendirme mesajı gösterilir).
