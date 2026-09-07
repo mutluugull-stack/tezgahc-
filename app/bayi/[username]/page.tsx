@@ -161,7 +161,7 @@ export default async function DealerProfilePage({ params }: { params: { username
           { label: "Satılan İlan", value: soldListings.length },
           { label: "Görüntülenme", value: totalViews },
                     ].map((s) => (
-                                  <div key={s.hlabel} className="text-center">
+                                  <div key={s.label} className="text-center">
                                                 <p className="font-mono-data text-xl font-bold text-blueprint sm:text-2xl">{s.value}</p>
                                                 <p className="text-[11px] text-ink-muted sm:text-xs">{s.label}</p>
                                   </div>
