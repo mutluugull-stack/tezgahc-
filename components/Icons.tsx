@@ -124,7 +124,7 @@ export const EyeIcon = (p: IconProps) =>
 
 export const ChevronLeftIcon = (p: IconProps) => base(<path d="M15 5l-7 7 7 7" />, p);
 export const ChevronRightIcon = (p: IconProps) => base(<path d="M9 5l7 7-7 7" />, p);
-
+export const ChevronDownIcon = (p: IconProps) => base(<path d="M6 9l6 6 6-6" />, p);
 export const HandshakeIcon = ({ className }: { className?: string }) => (
   <span className={className} role="img" aria-hidden="true" style={{ fontSize: "1em" }}>
     🤝
