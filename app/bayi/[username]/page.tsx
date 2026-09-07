@@ -203,4 +203,3 @@ export default async function DealerProfilePage({ params }: { params: { username
         </div>
       );
 }
-</div>
