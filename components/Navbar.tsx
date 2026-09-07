@@ -3,11 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { HandshakeIcon, PlusIcon, HomeIcon, UserIcon, HeartIcon } from "./Icons";
+import { HandshakeIcon, PlusIcon, HomeIcon, HeartIcon } from "./Icons";
 import ThemeToggle from "./ThemeToggle";
 import MachinePreviewDrawer from "./MachinePreviewDrawer";
+import UserMenu from "./UserMenu";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -93,19 +94,7 @@ export default function Navbar() {
           <MachinePreviewDrawer />
           <ThemeToggle />
           {status === "authenticated" ? (
-            <div className="flex items-center gap-2">
-              <span className="hidden items-center gap-1.5 text-sm text-ink-muted sm:flex">
-                <UserIcon className="h-4 w-4" />
-                {session.user.name}
-              </span>
-              <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="input rounded-lg px-3 py-1.5 text-sm font-medium"
-                type="button"
-              >
-                Çıkış
-              </button>
-            </div>
+            <UserMenu session={session} />
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/giris" className="input rounded-lg px-3 py-1.5 text-sm font-medium">
