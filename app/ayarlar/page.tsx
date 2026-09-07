@@ -36,4 +36,4 @@ if (status === "loading") {
   <AccountSettingsForm />
   </div>
   );
-    }</div>
+    }
