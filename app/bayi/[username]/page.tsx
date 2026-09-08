@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { fmtDate } from "@/lib/constants";
 import { CheckIcon, PhoneIcon, UsersIcon } from "@/components/Icons";
 import DealerProfileGrid, { type DealerGridListing } from "@/components/DealerProfileGrid";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t } from "@/lib/i18n/translations";
 
 export const dynamic = "force-dynamic";
 
@@ -79,16 +81,18 @@ async function getListings(sellerId: string) {
 }
 
 export async function generateMetadata({ params }: { params: { username: string } }): Promise<Metadata> {
+    const locale = getLocale();
     const dealer = await getDealer(params.username);
-    if (!dealer) return { title: "Bayi Bulunamadı | Tezgahçı" };
+    if (!dealer) return { title: t("dealerProfile.notFoundTitle", locale) };
     const name = dealer.companyName || dealer.fullName || dealer.username;
     return {
-          title: `${name} | Tezgahçı Bayi Profili`,
-          description: dealer.bio || `${name} firmasının CNC tezgah ve makine ilanlarını Tezgahçı'da inceleyin.`,
+          title: t("dealerProfile.metaTitleTemplate", locale).replace("{name}", name),
+          description: dealer.bio || t("dealerProfile.metaDescriptionTemplate", locale).replace("{name}", name),
     };
 }
 
 export default async function DealerProfilePage({ params }: { params: { username: string } }) {
+    const locale = getLocale();
     const dealer = await getDealer(params.username);
     if (!dealer) notFound();
 
@@ -132,11 +136,11 @@ export default async function DealerProfilePage({ params }: { params: { username
                                                           <h1 className="font-display text-xl font-bold sm:text-2xl">{displayName}</h1>
                                                           <span className="flex items-center gap-1 rounded-full bg-blueprint/10 px-2 py-0.5 text-[11px] font-semibold text-blueprint">
                                                                           <CheckIcon className="h-3 w-3" strokeWidth={2.4} />
-                                                                          Onaylı Bayi
+                                                                          {t("dealerProfile.verifiedBadge", locale)}
                                                           </span>
                                             </div>
                                             <p className="mt-1 text-sm text-ink-muted">
-                                              {dealer.city || "Konum belirtilmemiş"} · {fmtDate(dealer.createdAt)} tarihinden beri Tezgahçı&apos;da
+                                              {dealer.city || t("dealerProfile.noLocation", locale)} · {t("dealerProfile.memberSince", locale).replace("{date}", fmtDate(dealer.createdAt))}
                                             </p>
                                 
                                   {dealer.bio && (
@@ -157,9 +161,9 @@ export default async function DealerProfilePage({ params }: { params: { username
               
                       <div className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-5">
                         {[
-          { label: "Aktif İlan", value: activeListings.length },
-          { label: "Satılan İlan", value: soldListings.length },
-          { label: "Görüntülenme", value: totalViews },
+          { label: t("dealerProfile.statActiveListings", locale), value: activeListings.length },
+          { label: t("dealerProfile.statSoldListings", locale), value: soldListings.length },
+          { label: t("dealerProfile.statViews", locale), value: totalViews },
                     ].map((s) => (
                                   <div key={s.label} className="text-center">
                                                 <p className="font-mono-data text-xl font-bold text-blueprint sm:text-2xl">{s.value}</p>
@@ -173,7 +177,7 @@ export default async function DealerProfilePage({ params }: { params: { username
                   <div className="card mt-6 p-5 sm:p-6">
                             <h2 className="mb-4 flex items-center gap-1.5 font-display text-base font-semibold">
                                         <UsersIcon className="h-4 w-4 text-blueprint" />
-                                        Temsilciler
+                                        {t("dealerProfile.teamTitle", locale)}
                             </h2>
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
                               {teamMembers.map((m) => {
@@ -185,10 +189,10 @@ export default async function DealerProfilePage({ params }: { params: { username
                                                                       </div>
                                                                       <div className="min-w-0">
                                                                                           <p className="truncate text-sm font-semibold">{name}</p>
-                                                                                          <p className="truncate text-[11px] text-ink-muted">{m.role || "Ekip Üyesi"}</p>
+                                                                                          <p className="truncate text-[11px] text-ink-muted">{m.role || t("dealerProfile.teamMemberRole", locale)}</p>
                                                                       </div>
                                                                       <span className="font-mono-data text-[11px] text-ink-muted">
-                                                                        {m._count.listings} ilan
+                                                                        {t("dealerProfile.listingCount", locale).replace("{n}", String(m._count.listings))}
                                                                       </span>
                                                     </div>
                                                   );
@@ -198,7 +202,7 @@ export default async function DealerProfilePage({ params }: { params: { username
               )}
         
               <div className="mt-6">
-                      <DealerProfileGrid activeListings={activeListings} soldListings={soldListings} />
+                      <DealerProfileGrid activeListings={activeListings} soldListings={soldListings} locale={locale} />
               </div>
         </div>
       );
