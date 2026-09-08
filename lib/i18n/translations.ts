@@ -299,6 +299,151 @@ export const dict = {
     prevPhoto: e("Önceki fotoğraf", "Previous photo", "Vorheriges Foto"),
     nextPhoto: e("Sonraki fotoğraf", "Next photo", "Nächstes Foto"),
   },
+  currencies: {
+    TRY: e("TL", "TRY", "TRY"),
+    USD: e("Dolar", "Dollar", "Dollar"),
+    EUR: e("Euro", "Euro", "Euro"),
+  },
+  auth: {
+    loginTitle: e("Giriş Yap", "Log In", "Anmelden"),
+    loginSubtitle: e(
+      "Hesabınıza giriş yaparak devam edin.",
+      "Log in to your account to continue.",
+      "Melden Sie sich an, um fortzufahren."
+    ),
+    loginSubtitleAdmin: e(
+      "Bu sayfaya erişmek için yönetici hesabıyla giriş yapın.",
+      "Log in with an administrator account to access this page.",
+      "Melden Sie sich mit einem Administratorkonto an, um auf diese Seite zuzugreifen."
+    ),
+    userLoginTab: e("Kullanıcı Girişi", "User Login", "Benutzeranmeldung"),
+    dealerLoginTab: e("Bayi Girişi", "Dealer Login", "Händleranmeldung"),
+    username: e("Kullanıcı Adı", "Username", "Benutzername"),
+    usernameHint: e(
+      "3-24 karakter, küçük harf ve rakam",
+      "3-24 characters, lowercase letters and digits",
+      "3-24 Zeichen, Kleinbuchstaben und Ziffern"
+    ),
+    password: e("Şifre", "Password", "Passwort"),
+    forgotPasswordNote: e(
+      "Şifrenizi mi unuttunuz? Şu an için otomatik sıfırlama yok — yönetici ile iletişime geçin, sizin için yeni bir şifre oluştursun.",
+      "Forgot your password? There's no automatic reset yet — contact an administrator to have a new one set for you.",
+      "Passwort vergessen? Es gibt noch kein automatisches Zurücksetzen — wenden Sie sich an einen Administrator, um ein neues Passwort zu erhalten."
+    ),
+    loggingIn: e("Giriş yapılıyor...", "Logging in...", "Anmeldung läuft..."),
+    noAccount: e("Hesabınız yok mu?", "Don't have an account?", "Noch kein Konto?"),
+    signUpLink: e("Üye olun", "Sign up", "Registrieren"),
+    registerTitle: e("Üye Ol", "Sign Up", "Registrieren"),
+    registerSubtitle: e(
+      "Ücretsiz üye olun, hemen ilan verin veya satıcılarla iletişime geçin.",
+      "Sign up for free, post a listing right away or get in touch with sellers.",
+      "Registrieren Sie sich kostenlos, schalten Sie sofort eine Anzeige auf oder kontaktieren Sie Verkäufer."
+    ),
+    individualTab: e("Bireysel Üyelik", "Individual Membership", "Einzelmitgliedschaft"),
+    dealerTab: e("Bayi Üyeliği", "Dealer Membership", "Händlermitgliedschaft"),
+    dealerApprovalNote: e(
+      "Bayi hesapları, sahte ilanları önlemek için yönetici onayından sonra aktif olur.",
+      "Dealer accounts become active after administrator approval, to prevent fake listings.",
+      "Händlerkonten werden nach Genehmigung durch den Administrator aktiv, um gefälschte Anzeigen zu verhindern."
+    ),
+    fullName: e("Ad Soyad", "Full Name", "Vollständiger Name"),
+    companyName: e("Firma Adı", "Company Name", "Firmenname"),
+    phone: e("Telefon", "Phone", "Telefon"),
+    address: e("Açık Adres", "Full Address", "Vollständige Adresse"),
+    addressPlaceholder: e(
+      "Mahalle, cadde, no, ilçe...",
+      "Neighborhood, street, no., district...",
+      "Stadtteil, Straße, Nr., Bezirk..."
+    ),
+    officialDocuments: e("Resmi Evraklar", "Official Documents", "Offizielle Dokumente"),
+    activityCertificate: e(
+      "Güncel Faaliyet Belgesi",
+      "Current Certificate of Activity",
+      "Aktuelle Tätigkeitsbescheinigung"
+    ),
+    signatureCircular: e("İmza Sirküleri", "Signature Circular", "Unterschriftenzirkular"),
+    uploading: e("Yükleniyor...", "Uploading...", "Wird hochgeladen..."),
+    uploaded: e("Yüklendi", "Uploaded", "Hochgeladen"),
+    docsNote: e(
+      "PDF, JPEG, PNG veya WEBP, en fazla 10MB. Belgeleriniz yönetici onayı sırasında incelenir.",
+      "PDF, JPEG, PNG or WEBP, up to 10MB. Your documents are reviewed during administrator approval.",
+      "PDF, JPEG, PNG oder WEBP, bis zu 10 MB. Ihre Dokumente werden bei der Genehmigung durch den Administrator geprüft."
+    ),
+    email: e("E-posta", "Email", "E-Mail"),
+    city: e("Şehir", "City", "Stadt"),
+    registering: e("Kaydediliyor...", "Signing up...", "Registrierung läuft..."),
+    registerButton: e("Üye Ol", "Sign Up", "Registrieren"),
+    alreadyMember: e("Zaten üye misiniz?", "Already a member?", "Bereits Mitglied?"),
+    loginLink: e("Giriş yapın", "Log in", "Anmelden"),
+    docUploadFailed: e("Belge yüklenemedi.", "Document could not be uploaded.", "Dokument konnte nicht hochgeladen werden."),
+    connectionError: e("Bağlantı hatası. Tekrar deneyin.", "Connection error. Please try again.", "Verbindungsfehler. Bitte versuchen Sie es erneut."),
+    registrationFailed: e("Kayıt oluşturulamadı.", "Registration could not be created.", "Registrierung konnte nicht erstellt werden."),
+    docsRequiredError: e(
+      "Devam etmeden önce güncel faaliyet belgesi ve imza sirkülerini yükleyin.",
+      "Upload the current certificate of activity and signature circular before continuing.",
+      "Laden Sie vor dem Fortfahren die aktuelle Tätigkeitsbescheinigung und das Unterschriftenzirkular hoch."
+    ),
+  },
+  postListing: {
+    title: e("Yeni İlan Ver", "Post New Listing", "Neue Anzeige aufgeben"),
+    subtitle: e(
+      "Tezgahınızın bilgilerini eksiksiz girin, hızla alıcı bulun.",
+      "Enter your machine's details completely to find a buyer quickly.",
+      "Geben Sie die Daten Ihrer Maschine vollständig ein, um schnell einen Käufer zu finden."
+    ),
+    loginRequiredTitle: e("İlan vermek için giriş yapın", "Log in to post a listing", "Melden Sie sich an, um eine Anzeige aufzugeben"),
+    loginRequiredDesc: e(
+      "Ücretsiz üye olun ve tezgahınızı hemen ilana çıkarın.",
+      "Sign up for free and list your machine right away.",
+      "Registrieren Sie sich kostenlos und listen Sie Ihre Maschine sofort."
+    ),
+    dealerPendingTitle: e("Bayi hesabınız onay bekliyor", "Your dealer account is pending approval", "Ihr Händlerkonto wartet auf Genehmigung"),
+    dealerPendingDesc: e(
+      "Hesabınız yönetici onayından geçtikten sonra ilan verebilirsiniz. Onay genellikle kısa sürede tamamlanır.",
+      "You can post listings once your account passes administrator approval. Approval is usually completed quickly.",
+      "Sie können Anzeigen aufgeben, sobald Ihr Konto vom Administrator genehmigt wurde. Die Genehmigung erfolgt in der Regel schnell."
+    ),
+    listingTitle: e("İlan Başlığı *", "Listing Title *", "Anzeigentitel *"),
+    listingTitlePlaceholder: e(
+      "örn. Haas VF-2 Dikey İşleme Merkezi",
+      "e.g. Haas VF-2 Vertical Machining Center",
+      "z. B. Haas VF-2 Vertikales Bearbeitungszentrum"
+    ),
+    category: e("Kategori *", "Category *", "Kategorie *"),
+    condition: e("Durum *", "Condition *", "Zustand *"),
+    controller: e("Kontrolör", "Controller", "Steuerung"),
+    axisCount: e("Eksen Sayısı", "Number of Axes", "Achsenzahl"),
+    axisCountPlaceholder: e("3 Eksen", "e.g. 3", "z. B. 3"),
+    year: e("Üretim Yılı", "Manufacture Year", "Baujahr"),
+    yearPlaceholder: e("2018", "2018", "2018"),
+    workArea: e("Çalışma Alanı", "Work Area", "Arbeitsbereich"),
+    workAreaPlaceholder: e("762 x 406 x 508 mm", "762 x 406 x 508 mm", "762 x 406 x 508 mm"),
+    price: e("Fiyat *", "Price *", "Preis *"),
+    currency: e("Para Birimi", "Currency", "Währung"),
+    city: e("Şehir *", "City *", "Stadt *"),
+    description: e("Açıklama *", "Description *", "Beschreibung *"),
+    descriptionPlaceholder: e(
+      "Tezgahın bakım durumu, kullanım geçmişi, dahil aksesuarlar...",
+      "The machine's maintenance condition, usage history, included accessories...",
+      "Wartungszustand der Maschine, Nutzungsverlauf, enthaltenes Zubehör..."
+    ),
+    photos: e("Fotoğraflar (opsiyonel, en fazla 8)", "Photos (optional, up to 8)", "Fotos (optional, bis zu 8)"),
+    uploading: e("Yükleniyor...", "Uploading...", "Wird hochgeladen..."),
+    photoAlt: e("Fotoğraf", "Photo", "Foto"),
+    previewConsentPrefix: e('Fotoğraflarımın "', 'I consent to my photos being shown to customers in the "', 'Ich stimme zu, dass meine Fotos Kunden im Panel "'),
+    previewConsentBold: e("Makine Önizleme", "Machine Preview", "Maschinenvorschau"),
+    previewConsentSuffix: e(
+      '" panelinde marka/model bazlı olarak müşterilere gösterilmesine izin veriyorum ve bu fotoğrafların telif hakkına sahip olduğumu veya kullanım iznim olduğunu onaylıyorum.',
+      '" panel by brand/model, and I confirm that I own the copyright to these photos or have permission to use them.',
+      '" nach Marke/Modell angezeigt werden, und ich bestätige, dass ich die Urheberrechte an diesen Fotos besitze oder zur Nutzung berechtigt bin.'
+    ),
+    publishing: e("Yayınlanıyor...", "Publishing...", "Wird veröffentlicht..."),
+    publishButton: e("İlanı Yayınla", "Publish Listing", "Anzeige veröffentlichen"),
+    uploadFailed: e("Fotoğraf yüklenemedi.", "Photo could not be uploaded.", "Foto konnte nicht hochgeladen werden."),
+    publishFailed: e("İlan yayınlanamadı.", "Listing could not be published.", "Anzeige konnte nicht veröffentlicht werden."),
+    connectionError: e("Bağlantı hatası. Tekrar deneyin.", "Connection error. Please try again.", "Verbindungsfehler. Bitte versuchen Sie es erneut."),
+    loading: e("Yükleniyor...", "Loading...", "Wird geladen..."),
+  },
 } as const;
 
 type DeepDict = typeof dict;
