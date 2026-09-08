@@ -6,6 +6,7 @@ import Link from "next/link";
 import ListingCard from "@/components/ListingCard";
 import EmptyState from "@/components/EmptyState";
 import { HeartIcon } from "@/components/Icons";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 type FavListing = {
   id: string;
@@ -24,6 +25,7 @@ type FavListing = {
 
 export default function FavorilerimPage() {
   const { status } = useSession();
+  const { locale } = useLanguage();
   const [listings, setListings] = useState<FavListing[] | null>(null);
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function FavorilerimPage() {
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {listings.map((l) => (
-            <ListingCard key={l.id} listing={l} />
+            <ListingCard key={l.id} listing={l} locale={locale} />
           ))}
         </div>
       )}
