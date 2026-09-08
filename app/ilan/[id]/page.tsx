@@ -7,6 +7,8 @@ import { catLabel, conditionLabel, currencySymbol, fmtDate, fmtPrice } from "@/l
 import ListingActions from "@/components/ListingActions";
 import FavoriteButton from "@/components/FavoriteButton";
 import ReportListingButton from "@/components/ReportListingButton";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t } from "@/lib/i18n/translations";
 
 export const dynamic = "force-dynamic";
 
@@ -36,13 +38,13 @@ async function getListing(id: string) {
   return listing;
 }
 
-const SPEC_ROWS: { key: string; label: string }[] = [
-  { key: "brand", label: "Marka" },
-  { key: "model", label: "Model" },
-  { key: "year", label: "Üretim Yılı" },
-  { key: "controller", label: "Kontrolör" },
-  { key: "axisCount", label: "Eksen Sayısı" },
-  { key: "workArea", label: "Çalışma Alanı" },
+const SPEC_ROWS: { key: string; labelKey: Parameters<typeof t>[0] }[] = [
+  { key: "brand", labelKey: "listings.brand" },
+  { key: "model", labelKey: "listings.model" },
+  { key: "year", labelKey: "listingDetail.year" },
+  { key: "controller", labelKey: "listings.controller" },
+  { key: "axisCount", labelKey: "listings.axisCount" },
+  { key: "workArea", labelKey: "listingDetail.workArea" },
 ];
 
 const SCHEMA_CONDITION: Record<string, string> = {
@@ -82,6 +84,8 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
 
   const sellerName = listing.seller.companyName || listing.seller.fullName || listing.seller.username;
   const jsonLd = buildJsonLd(listing, sellerName);
+  const locale = getLocale();
+  const tt = (key: Parameters<typeof t>[0]) => t(key, locale);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
@@ -90,7 +94,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Link href="/ilanlar" className="mb-4 inline-flex items-center gap-1 text-sm text-ink-muted hover:text-ink">
-        ← Tüm ilanlara dön
+        {tt("listingDetail.backToListings")}
       </Link>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.6fr_1fr]">
@@ -104,7 +108,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
             {listing.isSold && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/55">
                 <span className="rounded-full border-2 border-white px-4 py-1.5 text-base font-bold uppercase tracking-wider text-white">
-                  Satıldı
+                  {tt("listings.soldBadge")}
                 </span>
               </div>
             )}
@@ -120,12 +124,12 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
           )}
 
           <div className="card mt-5 p-5">
-            <h2 className="mb-3 font-display text-lg font-semibold">Açıklama</h2>
+            <h2 className="mb-3 font-display text-lg font-semibold">{tt("listingDetail.description")}</h2>
             <p className="whitespace-pre-line text-sm leading-relaxed text-ink-muted">{listing.description}</p>
           </div>
 
           <div className="card mt-5 overflow-hidden">
-            <h2 className="border-b border-border p-4 font-display text-lg font-semibold">Teknik Özellikler</h2>
+            <h2 className="border-b border-border p-4 font-display text-lg font-semibold">{tt("listingDetail.specs")}</h2>
             <table className="w-full text-sm">
               <tbody>
                 {SPEC_ROWS.map((row) => {
@@ -133,14 +137,14 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
                   if (!value) return null;
                   return (
                     <tr key={row.key} className="border-b border-border last:border-0">
-                      <td className="w-1/3 bg-surface2 px-4 py-2.5 font-medium text-ink-muted">{row.label}</td>
+                      <td className="w-1/3 bg-surface2 px-4 py-2.5 font-medium text-ink-muted">{tt(row.labelKey)}</td>
                       <td className="px-4 py-2.5 font-mono-data">{value}</td>
                     </tr>
                   );
                 })}
                 <tr className="border-b border-border last:border-0">
-                  <td className="w-1/3 bg-surface2 px-4 py-2.5 font-medium text-ink-muted">Durum</td>
-                  <td className="px-4 py-2.5">{conditionLabel(listing.condition)}</td>
+                  <td className="w-1/3 bg-surface2 px-4 py-2.5 font-medium text-ink-muted">{tt("listingDetail.condition")}</td>
+                  <td className="px-4 py-2.5">{conditionLabel(listing.condition, locale)}</td>
                 </tr>
               </tbody>
             </table>
@@ -151,7 +155,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
           <div className="card p-5">
             <div className="flex items-start justify-between gap-2">
               <span className="text-xs font-semibold uppercase tracking-wide text-blueprint">
-                {catLabel(listing.category)}
+                {catLabel(listing.category, locale)}
               </span>
               <FavoriteButton listingId={listing.id} />
             </div>
@@ -160,7 +164,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
               {fmtPrice(listing.price, listing.currency)}
             </p>
             <p className="mt-1 text-xs text-ink-muted">
-              {listing.city} · {fmtDate(listing.createdAt)} · {listing.viewCount} görüntülenme
+              {listing.city} · {fmtDate(listing.createdAt)} · {listing.viewCount} {tt("listingDetail.views")}
             </p>
 
             {(() => {
@@ -178,7 +182,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{sellerName}</p>
                     <p className="text-xs text-ink-muted">
-                      {listing.seller.accountType === "BAYI" ? "Yetkili Bayi" : "Bireysel Satıcı"} ·{" "}
+                      {listing.seller.accountType === "BAYI" ? tt("listingDetail.verifiedDealer") : tt("listingDetail.individualSeller")} ·{" "}
                       {listing.seller.city || "—"}
                     </p>
                   </div>
