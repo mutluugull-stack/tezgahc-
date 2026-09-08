@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES, CONTROLLERS, AXIS_COUNTS, PART_CATEGORY_KEYS } from "@/lib/constants";
+import { CATEGORIES, CITIES, CONDITIONS, CURRENCIES, CONTROLLERS, AXIS_COUNTS, PART_CATEGORY_KEYS, catLabel, conditionLabel, currencyLabel } from "@/lib/constants";
 import BrandModelFields from "@/components/BrandModelFields";
 import ComboField from "@/components/ComboField";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const emptyForm = {
   title: "",
@@ -27,6 +28,7 @@ const emptyForm = {
 
 export default function NewListingPage() {
   const { data: session, status } = useSession();
+  const { t, locale } = useLanguage();
   const router = useRouter();
   const [form, setForm] = useState(emptyForm);
   const [images, setImages] = useState<string[]>([]);
@@ -53,7 +55,7 @@ export default function NewListingPage() {
         const res = await fetch("/api/upload", { method: "POST", body: fd });
         const data = await res.json();
         if (!res.ok) {
-          setUploadError(data.error || "Fotoğraf yüklenemedi.");
+          setUploadError(data.error || t("postListing.uploadFailed"));
           break;
         }
         setImages((prev) => [...prev, data.url]);
@@ -81,32 +83,32 @@ export default function NewListingPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "İlan yayınlanamadı.");
+        setError(data.error || t("postListing.publishFailed"));
         return;
       }
       router.push(`/ilan/${data.id}`);
     } catch {
-      setError("Bağlantı hatası. Tekrar deneyin.");
+      setError(t("postListing.connectionError"));
     } finally {
       setBusy(false);
     }
   }
 
   if (status === "loading") {
-    return <div className="mx-auto max-w-2xl px-4 py-16 text-center text-ink-muted">Yükleniyor...</div>;
+    return <div className="mx-auto max-w-2xl px-4 py-16 text-center text-ink-muted">{t("postListing.loading")}</div>;
   }
 
   if (status !== "authenticated") {
     return (
       <div className="mx-auto max-w-md px-4 py-16 text-center">
-        <h1 className="mb-2 font-display text-2xl font-bold">İlan vermek için giriş yapın</h1>
-        <p className="mb-5 text-sm text-ink-muted">Ücretsiz üye olun ve tezgahınızı hemen ilana çıkarın.</p>
+        <h1 className="mb-2 font-display text-2xl font-bold">{t("postListing.loginRequiredTitle")}</h1>
+        <p className="mb-5 text-sm text-ink-muted">{t("postListing.loginRequiredDesc")}</p>
         <div className="flex justify-center gap-2">
           <Link href="/giris?callbackUrl=/ilan-ver" className="input rounded-lg px-4 py-2 text-sm font-semibold">
-            Giriş Yap
+            {t("auth.loginTitle")}
           </Link>
           <Link href="/kayit" className="btn-accent rounded-lg px-4 py-2 text-sm font-semibold">
-            Üye Ol
+            {t("auth.registerButton")}
           </Link>
         </div>
       </div>
@@ -116,10 +118,9 @@ export default function NewListingPage() {
   if (session.user.accountType === "BAYI" && !session.user.approved) {
     return (
       <div className="mx-auto max-w-md px-4 py-16 text-center">
-        <h1 className="mb-2 font-display text-2xl font-bold">Bayi hesabınız onay bekliyor</h1>
+        <h1 className="mb-2 font-display text-2xl font-bold">{t("postListing.dealerPendingTitle")}</h1>
         <p className="text-sm text-ink-muted">
-          Hesabınız yönetici onayından geçtikten sonra ilan verebilirsiniz. Onay genellikle kısa sürede
-          tamamlanır.
+          {t("postListing.dealerPendingDesc")}
         </p>
       </div>
     );
@@ -127,19 +128,19 @@ export default function NewListingPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-1 font-display text-2xl font-bold">Yeni İlan Ver</h1>
-      <p className="mb-6 text-sm text-ink-muted">Tezgahınızın bilgilerini eksiksiz girin, hızla alıcı bulun.</p>
+      <h1 className="mb-1 font-display text-2xl font-bold">{t("postListing.title")}</h1>
+      <p className="mb-6 text-sm text-ink-muted">{t("postListing.subtitle")}</p>
 
       <form onSubmit={handleSubmit} className="card flex flex-col gap-4 p-5">
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            İlan Başlığı *
+            {t("postListing.listingTitle")}
           </label>
           <input
             required
             value={form.title}
             onChange={(e) => set("title", e.target.value)}
-            placeholder="örn. Haas VF-2 Dikey İşleme Merkezi"
+            placeholder={t("postListing.listingTitlePlaceholder")}
             className="input w-full rounded-lg px-3 py-2.5 text-sm"
           />
         </div>
@@ -147,7 +148,7 @@ export default function NewListingPage() {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Kategori *
+              {t("postListing.category")}
             </label>
             <select
               value={form.category}
@@ -164,14 +165,14 @@ export default function NewListingPage() {
             >
               {CATEGORIES.map((c) => (
                 <option key={c.key} value={c.key}>
-                  {c.label}
+                  {catLabel(c.key, locale)}
                 </option>
               ))}
             </select>
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Durum *
+              {t("postListing.condition")}
             </label>
             <select
               value={form.condition}
@@ -180,7 +181,7 @@ export default function NewListingPage() {
             >
               {CONDITIONS.map((c) => (
                 <option key={c.key} value={c.key}>
-                  {c.label}
+                  {conditionLabel(c.key, locale)}
                 </option>
               ))}
             </select>
@@ -197,31 +198,31 @@ export default function NewListingPage() {
         <div className={isPartCategory ? "grid grid-cols-1 gap-3" : "grid grid-cols-3 gap-3"}>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Üretim Yılı
+              {t("postListing.year")}
             </label>
             <input
               type="number"
               value={form.year}
               onChange={(e) => set("year", e.target.value)}
-              placeholder="2018"
+              placeholder={t("postListing.yearPlaceholder")}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
           </div>
           {!isPartCategory && (
             <>
               <ComboField
-                label="Kontrolör"
+                label={t("postListing.controller")}
                 value={form.controller}
                 onChange={(v) => set("controller", v)}
                 options={CONTROLLERS}
                 placeholder="Fanuc, Siemens..."
               />
               <ComboField
-                label="Eksen Sayısı"
+                label={t("postListing.axisCount")}
                 value={form.axisCount}
                 onChange={(v) => set("axisCount", v)}
                 options={AXIS_COUNTS}
-                placeholder="3 Eksen"
+                placeholder={t("postListing.axisCountPlaceholder")}
               />
             </>
           )}
@@ -230,12 +231,12 @@ export default function NewListingPage() {
         {!isPartCategory && (
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Çalışma Alanı
+              {t("postListing.workArea")}
             </label>
             <input
               value={form.workArea}
               onChange={(e) => set("workArea", e.target.value)}
-              placeholder="762 x 406 x 508 mm"
+              placeholder={t("postListing.workAreaPlaceholder")}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
           </div>
@@ -244,7 +245,7 @@ export default function NewListingPage() {
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-2">
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Fiyat *
+              {t("postListing.price")}
             </label>
             <input
               required
@@ -257,7 +258,7 @@ export default function NewListingPage() {
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Para Birimi
+              {t("postListing.currency")}
             </label>
             <select
               value={form.currency}
@@ -266,7 +267,7 @@ export default function NewListingPage() {
             >
               {CURRENCIES.map((c) => (
                 <option key={c.key} value={c.key}>
-                  {c.label}
+                  {currencyLabel(c.key, locale)}
                 </option>
               ))}
             </select>
@@ -275,7 +276,7 @@ export default function NewListingPage() {
 
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            Şehir *
+            {t("postListing.city")}
           </label>
           <select
             value={form.city}
@@ -292,21 +293,21 @@ export default function NewListingPage() {
 
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            Açıklama *
+            {t("postListing.description")}
           </label>
           <textarea
             required
             rows={5}
             value={form.description}
             onChange={(e) => set("description", e.target.value)}
-            placeholder="Tezgahın bakım durumu, kullanım geçmişi, dahil aksesuarlar..."
+            placeholder={t("postListing.descriptionPlaceholder")}
             className="input w-full resize-none rounded-lg px-3 py-2.5 text-sm"
           />
         </div>
 
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            Fotoğraflar (opsiyonel, en fazla 8)
+            {t("postListing.photos")}
           </label>
           <input
             type="file"
@@ -316,13 +317,13 @@ export default function NewListingPage() {
             onChange={handleFiles}
             className="input w-full rounded-lg px-3 py-2 text-sm"
           />
-          {uploading && <p className="mt-1 text-xs text-ink-muted">Yükleniyor...</p>}
+          {uploading && <p className="mt-1 text-xs text-ink-muted">{t("postListing.uploading")}</p>}
           {uploadError && <p className="mt-1 text-xs text-red-500">{uploadError}</p>}
           {images.length > 0 && (
             <div className="mt-2 grid grid-cols-4 gap-2">
               {images.map((url, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={url} src={url} alt={`Fotoğraf ${i + 1}`} className="aspect-square rounded-lg object-cover" />
+                <img key={url} src={url} alt={`${t("postListing.photoAlt")} ${i + 1}`} className="aspect-square rounded-lg object-cover" />
               ))}
             </div>
           )}
@@ -337,9 +338,7 @@ export default function NewListingPage() {
               className="mt-0.5 h-4 w-4 shrink-0 rounded"
             />
             <span className="text-ink-muted">
-              Fotoğraflarımın <strong className="text-ink">"Makine Önizleme"</strong> panelinde marka/model bazlı
-              olarak müşterilere gösterilmesine izin veriyorum ve bu fotoğrafların telif hakkına sahip olduğumu
-              veya kullanım iznim olduğunu onaylıyorum.
+              {t("postListing.previewConsentPrefix")}<strong className="text-ink">{t("postListing.previewConsentBold")}</strong>{t("postListing.previewConsentSuffix")}
             </span>
           </label>
         )}
@@ -351,7 +350,7 @@ export default function NewListingPage() {
           disabled={busy}
           className="btn-accent rounded-lg px-4 py-3 text-sm font-semibold disabled:opacity-60"
         >
-          {busy ? "Yayınlanıyor..." : "İlanı Yayınla"}
+          {busy ? t("postListing.publishing") : t("postListing.publishButton")}
         </button>
       </form>
     </div>
