@@ -184,7 +184,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
               label={tt("listings.axisCount")}
               defaultValue={searchParams.axisCount || ""}
               options={AXIS_COUNTS}
-              placeholder="3 Eksen"
+              placeholder={tt("listings.axisCountPlaceholder")}
             />
 
             <div>
