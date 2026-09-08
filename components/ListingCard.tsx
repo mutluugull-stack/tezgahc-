@@ -3,8 +3,7 @@ import Image from "next/image";
 import MachineArt from "./MachineArt";
 import FavoriteButton from "./FavoriteButton";
 import { catLabel, fmtDate, fmtPrice } from "@/lib/constants";
-import { getLocale } from "@/lib/i18n/locale-server";
-import { t } from "@/lib/i18n/translations";
+import { DEFAULT_LOCALE, t, type Locale } from "@/lib/i18n/translations";
 
 type ListingCardData = {
   id: string;
@@ -21,9 +20,14 @@ type ListingCardData = {
   seller?: { accountType: string } | null;
 };
 
-export default function ListingCard({ listing }: { listing: ListingCardData }) {
+export default function ListingCard({
+  listing,
+  locale = DEFAULT_LOCALE,
+}: {
+  listing: ListingCardData;
+  locale?: Locale;
+}) {
   const cover = listing.images?.[0]?.url;
-  const locale = getLocale();
   return (
     <Link
       href={`/ilan/${listing.id}`}

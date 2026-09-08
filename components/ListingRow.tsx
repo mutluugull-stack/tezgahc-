@@ -2,8 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import MachineArt from "./MachineArt";
 import { catLabel, fmtDate, fmtPrice, conditionLabel } from "@/lib/constants";
-import { getLocale } from "@/lib/i18n/locale-server";
-import { t } from "@/lib/i18n/translations";
+import { DEFAULT_LOCALE, t, type Locale } from "@/lib/i18n/translations";
 
 type ListingRowData = {
   id: string;
@@ -22,9 +21,14 @@ type ListingRowData = {
   seller?: { accountType: string } | null;
 };
 
-export default function ListingRow({ listing }: { listing: ListingRowData }) {
+export default function ListingRow({
+  listing,
+  locale = DEFAULT_LOCALE,
+}: {
+  listing: ListingRowData;
+  locale?: Locale;
+}) {
   const cover = listing.images?.[0]?.url;
-  const locale = getLocale();
   const specs = [listing.brand, listing.year, conditionLabel(listing.condition, locale)].filter(Boolean).join(" · ");
   return (
     <Link
