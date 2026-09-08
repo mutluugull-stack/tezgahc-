@@ -175,6 +175,7 @@ export const dict = {
     condition: e("Durum", "Condition", "Zustand"),
     controller: e("Kontrolör", "Controller", "Steuerung"),
     axisCount: e("Eksen Sayısı", "Number of Axes", "Achsenzahl"),
+    axisCountPlaceholder: e("3 Eksen", "e.g. 3", "z. B. 3"),
     priceRange: e("Fiyat Aralığı (₺)", "Price Range (₺)", "Preisspanne (₺)"),
     min: e("Min", "Min", "Min"),
     max: e("Max", "Max", "Max"),
