@@ -444,6 +444,281 @@ export const dict = {
     connectionError: e("Bağlantı hatası. Tekrar deneyin.", "Connection error. Please try again.", "Verbindungsfehler. Bitte versuchen Sie es erneut."),
     loading: e("Yükleniyor...", "Loading...", "Wird geladen..."),
   },
+  settings: {
+    loginRequiredTitle: e("Ayarlara erişmek için giriş yapın", "Log in to access settings", "Melden Sie sich an, um auf die Einstellungen zuzugreifen"),
+    title: e("Ayarlar", "Settings", "Einstellungen"),
+    subtitle: e("Hesap bilgilerinizi güncelleyin.", "Update your account information.", "Aktualisieren Sie Ihre Kontoinformationen."),
+    subtitleAdmin: e("Yönetici hesap bilgilerinizi güncelleyin.", "Update your administrator account information.", "Aktualisieren Sie Ihre Administratorkontoinformationen."),
+    backHome: e("Ana Sayfa", "Home", "Startseite"),
+    backAdmin: e("Yönetici Paneli", "Admin Panel", "Admin-Bereich"),
+    backDealerPanel: e("Bayi Panelim", "My Dealer Panel", "Mein Händlerbereich"),
+    logoSectionTitle: e("Firma Logosu", "Company Logo", "Firmenlogo"),
+    logoSectionDesc: e(
+      "Logonuz ilan detay sayfanızda ve bayi panelinizde görünür. JPEG, PNG veya WEBP, en fazla 8MB.",
+      "Your logo appears on your listing detail pages and in your dealer panel. JPEG, PNG or WEBP, up to 8MB.",
+      "Ihr Logo erscheint auf Ihren Anzeigendetailseiten und in Ihrem Händlerbereich. JPEG, PNG oder WEBP, bis zu 8MB."
+    ),
+    logoAlt: e("Firma logosu", "Company logo", "Firmenlogo"),
+    noLogo: e("Logo yok", "No logo", "Kein Logo"),
+    uploadLogo: e("Logo Yükle", "Upload Logo", "Logo hochladen"),
+    removeLogo: e("Logoyu Kaldır", "Remove Logo", "Logo entfernen"),
+    logoUploadFailed: e("Logo yüklenemedi.", "Logo could not be uploaded.", "Logo konnte nicht hochgeladen werden."),
+    logoSaveFailed: e("Logo kaydedilemedi.", "Logo could not be saved.", "Logo konnte nicht gespeichert werden."),
+    bioSectionTitle: e("Bayi Profil Sayfası", "Dealer Profile Page", "Händlerprofilseite"),
+    viewProfileLink: e("Profilinizi Görüntüle →", "View Your Profile →", "Ihr Profil ansehen →"),
+    bioSectionDescPrefix: e(
+      "Bu tanıtım metni, herkese açık bayi profil sayfanızda (tezgahci.com.tr/bayi/",
+      "This description appears on your public dealer profile page (tezgahci.com.tr/bayi/",
+      "Dieser Beschreibungstext erscheint auf Ihrer öffentlichen Händlerprofilseite (tezgahci.com.tr/bayi/"
+    ),
+    bioSectionDescSuffix: e(") görünür.", ").", ")."),
+    bioPlaceholder: e(
+      "Firmanızı, uzmanlık alanlarınızı ve sunduğunuz hizmetleri kısaca tanıtın...",
+      "Briefly introduce your company, areas of expertise, and the services you offer...",
+      "Stellen Sie kurz Ihr Unternehmen, Ihre Fachgebiete und Ihre Dienstleistungen vor..."
+    ),
+    bioSaveButton: e("Tanıtım Yazısını Kaydet", "Save Description", "Beschreibung speichern"),
+    saving: e("Kaydediliyor...", "Saving...", "Wird gespeichert..."),
+    bioUpdated: e("Tanıtım yazınız güncellendi.", "Your description has been updated.", "Ihre Beschreibung wurde aktualisiert."),
+    updateFailed: e("Güncellenemedi, tekrar deneyin.", "Could not be updated, please try again.", "Aktualisierung fehlgeschlagen, bitte erneut versuchen."),
+    profileInfoTitle: e("Profil Bilgileri", "Profile Information", "Profilinformationen"),
+    username: e("Kullanıcı Adı", "Username", "Benutzername"),
+    email: e("E-posta", "Email", "E-Mail"),
+    fullName: e("Ad Soyad", "Full Name", "Vollständiger Name"),
+    companyName: e("Firma Adı", "Company Name", "Firmenname"),
+    phone: e("Telefon", "Phone", "Telefon"),
+    city: e("Şehir", "City", "Stadt"),
+    citySelectOption: e("Seçin", "Select", "Auswählen"),
+    address: e("Açık Adres", "Address", "Adresse"),
+    addressPlaceholder: e("Mahalle, cadde, no, ilçe...", "Neighborhood, street, number, district...", "Stadtteil, Straße, Hausnummer, Bezirk..."),
+    profileUpdated: e("Bilgileriniz güncellendi.", "Your information has been updated.", "Ihre Informationen wurden aktualisiert."),
+    saveInfoButton: e("Bilgileri Kaydet", "Save Information", "Informationen speichern"),
+    changePasswordTitle: e("Şifre Değiştir", "Change Password", "Passwort ändern"),
+    currentPassword: e("Mevcut Şifre", "Current Password", "Aktuelles Passwort"),
+    newPassword: e("Yeni Şifre", "New Password", "Neues Passwort"),
+    newPasswordConfirm: e("Yeni Şifre (Tekrar)", "New Password (Confirm)", "Neues Passwort (Bestätigen)"),
+    passwordMismatch: e("Yeni şifreler eşleşmiyor.", "New passwords do not match.", "Die neuen Passwörter stimmen nicht überein."),
+    passwordChangeFailed: e("Şifre değiştirilemedi.", "Password could not be changed.", "Passwort konnte nicht geändert werden."),
+    passwordChanged: e("Şifreniz değiştirildi.", "Your password has been changed.", "Ihr Passwort wurde geändert."),
+    changingPassword: e("Değiştiriliyor...", "Changing...", "Wird geändert..."),
+    changePasswordButton: e("Şifreyi Değiştir", "Change Password", "Passwort ändern"),
+  },
+  messages: {
+    loginRequiredTitle: e("Mesajlarınızı görmek için giriş yapın", "Log in to view your messages", "Melden Sie sich an, um Ihre Nachrichten zu sehen"),
+    title: e("Mesajlarım", "My Messages", "Meine Nachrichten"),
+    emptyTitle: e("Henüz mesajınız yok", "You have no messages yet", "Sie haben noch keine Nachrichten"),
+    emptyDesc: e(
+      "Bir ilana mesaj gönderdiğinizde ya da size mesaj geldiğinde burada görünecek.",
+      "Messages you send about a listing, or receive, will appear here.",
+      "Nachrichten, die Sie zu einer Anzeige senden oder erhalten, werden hier angezeigt."
+    ),
+    replyPlaceholder: e("Yanıt yazın...", "Write a reply...", "Antwort schreiben..."),
+  },
+  dealerProfile: {
+    notFoundTitle: e("Bayi Bulunamadı | Tezgahçı", "Dealer Not Found | Tezgahçı", "Händler nicht gefunden | Tezgahçı"),
+    metaTitleTemplate: e("{name} | Tezgahçı Bayi Profili", "{name} | Tezgahçı Dealer Profile", "{name} | Tezgahçı Händlerprofil"),
+    metaDescriptionTemplate: e(
+      "{name} firmasının CNC tezgah ve makine ilanlarını Tezgahçı'da inceleyin.",
+      "Browse {name}'s CNC machine tool listings on Tezgahçı.",
+      "Entdecken Sie die CNC-Maschinenanzeigen von {name} auf Tezgahçı."
+    ),
+    verifiedBadge: e("Onaylı Bayi", "Verified Dealer", "Verifizierter Händler"),
+    noLocation: e("Konum belirtilmemiş", "Location not specified", "Standort nicht angegeben"),
+    memberSince: e("{date} tarihinden beri Tezgahçı'da", "On Tezgahçı since {date}", "Seit {date} bei Tezgahçı"),
+    statActiveListings: e("Aktif İlan", "Active Listing", "Aktive Anzeige"),
+    statSoldListings: e("Satılan İlan", "Sold Listing", "Verkaufte Anzeige"),
+    statViews: e("Görüntülenme", "Views", "Aufrufe"),
+    teamTitle: e("Temsilciler", "Representatives", "Vertreter"),
+    teamMemberRole: e("Ekip Üyesi", "Team Member", "Teammitglied"),
+    listingCount: e("{n} ilan", "{n} listings", "{n} Anzeigen"),
+    tabActive: e("Aktif İlanlar ({n})", "Active Listings ({n})", "Aktive Anzeigen ({n})"),
+    tabSold: e("Satılanlar ({n})", "Sold ({n})", "Verkauft ({n})"),
+    soldBadge: e("Satıldı", "Sold", "Verkauft"),
+    emptyActive: e("Şu anda yayında ilan bulunmuyor.", "No listings are currently live.", "Derzeit sind keine Anzeigen aktiv."),
+    emptySold: e("Henüz satılan ilan bulunmuyor.", "No listings sold yet.", "Bisher wurden keine Anzeigen verkauft."),
+  },
+  legal: {
+    privacy: {
+      pageTitle: e(
+        "Gizlilik Politikası ve KVKK Aydınlatma Metni",
+        "Privacy Policy and KVKK Disclosure Text",
+        "Datenschutzerklärung und KVKK-Informationstext"
+      ),
+      metaDescription: e(
+        "Tezgahçı'nın kişisel verilerinizi nasıl işlediğine dair KVKK aydınlatma metni ve gizlilik politikası.",
+        "The KVKK disclosure text and privacy policy on how Tezgahçı processes your personal data.",
+        "Der KVKK-Informationstext und die Datenschutzerklärung darüber, wie Tezgahçı Ihre personenbezogenen Daten verarbeitet."
+      ),
+      lastUpdated: e("Son güncelleme: 4 Eylül 2026", "Last updated: September 4, 2026", "Zuletzt aktualisiert: 4. September 2026"),
+      section1Title: e("1. Veri Sorumlusu", "1. Data Controller", "1. Verantwortlicher für die Datenverarbeitung"),
+      section1Body: e(
+        '6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, Tezgahçı platformunu ("Tezgahçı", "Platform", www.tezgahci.com.tr) işleten <strong class="text-ink">MELİS DİJİTAL</strong> veri sorumlusu sıfatıyla hareket etmektedir. Bu metin, Platform üzerinden topladığımız kişisel verilerin hangi amaçlarla işlendiğini, kimlerle paylaşılabileceğini ve haklarınızı ne şekilde kullanabileceğinizi açıklamak amacıyla hazırlanmıştır.',
+        'Under Law No. 6698 on the Protection of Personal Data ("KVKK"), <strong class="text-ink">MELİS DİJİTAL</strong>, which operates the Tezgahçı platform ("Tezgahçı", "Platform", www.tezgahci.com.tr), acts as the data controller. This text has been prepared to explain the purposes for which we process personal data collected through the Platform, with whom it may be shared, and how you can exercise your rights.',
+        'Gemäß dem türkischen Gesetz Nr. 6698 zum Schutz personenbezogener Daten ("KVKK") handelt <strong class="text-ink">MELİS DİJİTAL</strong>, der Betreiber der Plattform Tezgahçı ("Tezgahçı", "Plattform", www.tezgahci.com.tr), als Verantwortlicher für die Datenverarbeitung. Dieser Text erläutert, zu welchen Zwecken wir die über die Plattform erhobenen personenbezogenen Daten verarbeiten, mit wem sie geteilt werden können und wie Sie Ihre Rechte ausüben können.'
+      ),
+      section2Title: e("2. İşlenen Kişisel Veriler", "2. Personal Data Processed", "2. Verarbeitete personenbezogene Daten"),
+      section2Intro: e(
+        "Üyelik ve ilan işlemleri sırasında aşağıdaki veriler işlenebilir:",
+        "The following data may be processed during membership and listing transactions:",
+        "Bei Mitgliedschafts- und Anzeigenvorgängen können folgende Daten verarbeitet werden:"
+      ),
+      section2Body: e(
+        "Kimlik ve iletişim bilgileri (ad soyad veya firma unvanı, kullanıcı adı, e-posta, telefon, adres, şehir); bayi hesapları için güncel faaliyet belgesi ve imza sirküleri gibi resmi belgeler; ilan içerikleri ve fotoğraflar; alıcı-satıcı arasındaki mesajlaşma içerikleri; hesap güvenliği için şifrenin şifrelenmiş (hash'lenmiş) hâli; site kullanımına dair teknik veriler (yaklaşık konum, cihaz ve tarayıcı bilgisi, görüntülenme istatistikleri — ayrıntılar için bkz. Madde 3).",
+        "Identity and contact information (full name or company title, username, email, phone, address, city); for dealer accounts, official documents such as an up-to-date certificate of activity and signature circular; listing content and photos; messages exchanged between buyers and sellers; the encrypted (hashed) form of your password for account security; technical data related to site usage (approximate location, device and browser information, view statistics — see Section 3 for details).",
+        "Identitäts- und Kontaktdaten (Name oder Firmenbezeichnung, Benutzername, E-Mail, Telefon, Adresse, Stadt); für Händlerkonten offizielle Dokumente wie eine aktuelle Tätigkeitsbescheinigung und ein Unterschriftszirkular; Anzeigeninhalte und Fotos; Nachrichten zwischen Käufern und Verkäufern; die verschlüsselte (gehashte) Form Ihres Passworts zur Kontosicherheit; technische Daten zur Nutzung der Website (ungefährer Standort, Geräte- und Browserinformationen, Aufrufstatistiken — Einzelheiten siehe Abschnitt 3)."
+      ),
+      section3Title: e(
+        "3. Site Trafiği, Yaklaşık Konum ve Cihaz Bilgileri",
+        "3. Site Traffic, Approximate Location, and Device Information",
+        "3. Website-Verkehr, ungefährer Standort und Geräteinformationen"
+      ),
+      section3Intro: e(
+        "Platform'u ziyaret ettiğinizde, trafik istatistiklerini ölçmek ve hizmet kalitesini artırmak amacıyla, üyelik gerektirmeden ve sizi bireysel olarak hedeflemeden, otomatik olarak aşağıdaki teknik veriler toplanır:",
+        "When you visit the Platform, the following technical data is automatically collected to measure traffic statistics and improve service quality, without requiring membership and without targeting you individually:",
+        "Beim Besuch der Plattform werden automatisch, ohne Mitgliedschaft und ohne individuelle Zielausrichtung, folgende technische Daten erhoben, um Verkehrsstatistiken zu messen und die Servicequalität zu verbessern:"
+      ),
+      section3Location: e(
+        '<strong class="text-ink">Yaklaşık konum bilgisi:</strong> Ziyaretinizin geldiği ülke, il/bölge ve şehir bilgisi, barındırma altyapımızın (Vercel) sunucu düzeyinde sağladığı IP tabanlı konum tahmininden elde edilir. Ham IP adresiniz veritabanımızda saklanmaz; yalnızca bu bilgiden türetilen yaklaşık il/bölge kaydedilir. Bu bilgi kesin olmayabilir; özellikle VPN veya mobil operatör ağları kullanan ziyaretçilerde farklı bir il/bölge görünebilir.',
+        '<strong class="text-ink">Approximate location information:</strong> The country, region, and city your visit originates from is derived from the IP-based location estimate provided at the server level by our hosting infrastructure (Vercel). Your raw IP address is not stored in our database; only the approximate region/city derived from it is recorded. This information may not be exact; visitors using VPNs or mobile carrier networks in particular may show a different region.',
+        '<strong class="text-ink">Ungefähre Standortinformationen:</strong> Das Land, die Region und die Stadt, aus der Ihr Besuch stammt, werden aus der IP-basierten Standortschätzung abgeleitet, die unsere Hosting-Infrastruktur (Vercel) auf Serverebene bereitstellt. Ihre rohe IP-Adresse wird nicht in unserer Datenbank gespeichert; es wird nur die daraus abgeleitete ungefähre Region/Stadt erfasst. Diese Angabe kann ungenau sein; insbesondere bei Besuchern, die VPNs oder mobile Netzwerke nutzen, kann eine andere Region angezeigt werden.'
+      ),
+      section3Device: e(
+        '<strong class="text-ink">Cihaz bilgisi:</strong> Tarayıcınızın gönderdiği teknik bilgilerden (User-Agent) cihaz türü (mobil telefon/tablet/bilgisayar), işletim sistemi, tarayıcı ve mümkün olduğunda cihaz modeli (ör. "Samsung SM-G991B") tespit edilir. Apple\'ın güvenlik politikası gereği iPhone cihazlarda model bilgisi paylaşılmaz; bu cihazlar yalnızca "iPhone" olarak görünür.',
+        '<strong class="text-ink">Device information:</strong> From the technical information sent by your browser (User-Agent), the device type (mobile phone/tablet/computer), operating system, browser, and, where possible, device model (e.g. "Samsung SM-G991B") are detected. Due to Apple\'s security policy, model information is not shared for iPhone devices; these devices appear only as "iPhone".',
+        '<strong class="text-ink">Geräteinformationen:</strong> Aus den von Ihrem Browser übermittelten technischen Informationen (User-Agent) werden der Gerätetyp (Mobiltelefon/Tablet/Computer), das Betriebssystem, der Browser und, sofern möglich, das Gerätemodell (z. B. "Samsung SM-G991B") ermittelt. Aufgrund der Sicherheitsrichtlinie von Apple wird bei iPhone-Geräten keine Modellinformation weitergegeben; diese Geräte werden nur als "iPhone" angezeigt.'
+      ),
+      section3Note: e(
+        "Bu veriler kullanıcı hesabınızla veya kimliğinizle eşleştirilmez; yalnızca toplu istatistik olarak (hangi bölgelerden ve hangi cihazlardan erişildiğini anlamak, Platform'u bu doğrultuda iyileştirmek ve kötüye kullanımı önlemek amacıyla) yönetici panelimizde görüntülenir.",
+        "This data is not matched to your user account or identity; it is displayed in our admin panel only as aggregate statistics (to understand which regions and devices are used to access the Platform, to improve the Platform accordingly, and to prevent misuse).",
+        "Diese Daten werden nicht mit Ihrem Benutzerkonto oder Ihrer Identität verknüpft; sie werden in unserem Admin-Panel ausschließlich als aggregierte Statistiken angezeigt (um zu verstehen, aus welchen Regionen und mit welchen Geräten auf die Plattform zugegriffen wird, um die Plattform entsprechend zu verbessern und Missbrauch vorzubeugen)."
+      ),
+      section4Title: e("4. İşleme Amaçları", "4. Purposes of Processing", "4. Verarbeitungszwecke"),
+      section4Body: e(
+        "Kişisel verileriniz; üyelik oluşturma ve kimlik doğrulama, ilan yayınlama ve yönetme, alıcı-satıcı arasında iletişim kurulmasını sağlama, bayi başvurularının incelenip onaylanması, dolandırıcılık ve kötüye kullanımın önlenmesi, site trafiğinin ve ziyaretçi istatistiklerinin (yaklaşık konum ve cihaz dağılımı dâhil) analiz edilmesi, yasal yükümlülüklerin yerine getirilmesi ve Platform'un güvenliğinin sağlanması amaçlarıyla işlenir.",
+        "Your personal data is processed for the purposes of creating membership and identity verification, publishing and managing listings, enabling communication between buyers and sellers, reviewing and approving dealer applications, preventing fraud and misuse, analyzing site traffic and visitor statistics (including approximate location and device distribution), fulfilling legal obligations, and ensuring the security of the Platform.",
+        "Ihre personenbezogenen Daten werden zu folgenden Zwecken verarbeitet: Erstellung der Mitgliedschaft und Identitätsprüfung, Veröffentlichung und Verwaltung von Anzeigen, Ermöglichung der Kommunikation zwischen Käufern und Verkäufern, Prüfung und Genehmigung von Händleranträgen, Verhinderung von Betrug und Missbrauch, Analyse des Website-Verkehrs und der Besucherstatistiken (einschließlich ungefährem Standort und Geräteverteilung), Erfüllung gesetzlicher Verpflichtungen und Gewährleistung der Sicherheit der Plattform."
+      ),
+      section5Title: e("5. Aktarım", "5. Data Transfer", "5. Datenweitergabe"),
+      section5Body: e(
+        "Kişisel verileriniz, yalnızca hizmetin sunulması için gerekli olduğu ölçüde barındırma (hosting), bulut depolama ve altyapı hizmeti aldığımız tedarikçilerimizle (ör. Vercel) ve yasal zorunluluk hâlinde yetkili kamu kurum ve kuruluşlarıyla paylaşılabilir. Verileriniz pazarlama amacıyla üçüncü taraflara satılmaz veya kiralanmaz.",
+        "Your personal data may be shared, only to the extent necessary for providing the service, with our hosting, cloud storage, and infrastructure providers (e.g. Vercel), and, where legally required, with authorized public institutions and organizations. Your data is not sold or rented to third parties for marketing purposes.",
+        "Ihre personenbezogenen Daten können, nur soweit dies für die Erbringung der Dienstleistung erforderlich ist, mit unseren Hosting-, Cloud-Speicher- und Infrastrukturanbietern (z. B. Vercel) sowie, sofern gesetzlich vorgeschrieben, mit zuständigen Behörden geteilt werden. Ihre Daten werden nicht zu Marketingzwecken an Dritte verkauft oder vermietet."
+      ),
+      section6Title: e("6. Saklama Süresi", "6. Retention Period", "6. Aufbewahrungsdauer"),
+      section6Body: e(
+        "Kişisel veriler, ilgili işleme amacının gerektirdiği süre boyunca ve mevzuatta öngörülen yasal saklama süreleri boyunca muhafaza edilir; bu sürelerin sonunda silinir, yok edilir veya anonim hâle getirilir.",
+        "Personal data is retained for as long as required by the relevant processing purpose and the legal retention periods stipulated by legislation; at the end of these periods, it is deleted, destroyed, or anonymized.",
+        "Personenbezogene Daten werden so lange aufbewahrt, wie es der jeweilige Verarbeitungszweck und die gesetzlich vorgeschriebenen Aufbewahrungsfristen erfordern; nach Ablauf dieser Fristen werden sie gelöscht, vernichtet oder anonymisiert."
+      ),
+      section7Title: e("7. Çerezler", "7. Cookies", "7. Cookies"),
+      section7Body: e(
+        "Platform, oturumunuzu yönetmek ve tercihlerinizi hatırlamak amacıyla zorunlu çerezler kullanır. Sitede gezinmeye devam ederek çerez kullanımını kabul etmiş olursunuz; tarayıcı ayarlarınızdan çerezleri yönetebilir veya silebilirsiniz.",
+        "The Platform uses essential cookies to manage your session and remember your preferences. By continuing to browse the site, you accept the use of cookies; you can manage or delete cookies through your browser settings.",
+        "Die Plattform verwendet notwendige Cookies, um Ihre Sitzung zu verwalten und Ihre Einstellungen zu speichern. Durch die weitere Nutzung der Website akzeptieren Sie die Verwendung von Cookies; Sie können Cookies über Ihre Browser-Einstellungen verwalten oder löschen."
+      ),
+      section8Title: e("8. KVKK Kapsamındaki Haklarınız", "8. Your Rights under the KVKK", "8. Ihre Rechte im Rahmen des KVKK"),
+      section8Intro: e(
+        "KVKK'nın 11. maddesi uyarınca her veri sahibi;",
+        "Under Article 11 of the KVKK, every data subject has the right to:",
+        "Gemäß Artikel 11 des KVKK hat jede betroffene Person das Recht,"
+      ),
+      section8Body: e(
+        "kişisel verisinin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmişse düzeltilmesini isteme, silinmesini veya yok edilmesini isteme, bu işlemlerin aktarıldığı üçüncü kişilere bildirilmesini isteme, işlenen verilerin münhasıran otomatik sistemler ile analiz edilmesi nedeniyle aleyhine bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı işlenmesi sebebiyle zarara uğraması hâlinde zararın giderilmesini talep etme haklarına sahiptir.",
+        "learn whether their personal data is being processed, request information about it if processed, learn the purpose of processing and whether the data is used in accordance with that purpose, know the third parties to whom it is transferred domestically or abroad, request correction if it has been processed incompletely or incorrectly, request its deletion or destruction, request that these operations be notified to the third parties to whom the data has been transferred, object to a result that arises to their detriment through the exclusive analysis of processed data by automated systems, and request compensation for damages suffered due to unlawful processing.",
+        "zu erfahren, ob ihre personenbezogenen Daten verarbeitet werden, bei Verarbeitung entsprechende Informationen zu verlangen, den Verarbeitungszweck zu erfahren und ob die Daten zweckgemäß verwendet werden, die Dritten zu kennen, an die sie im In- oder Ausland übermittelt werden, bei unvollständiger oder fehlerhafter Verarbeitung eine Berichtigung zu verlangen, deren Löschung oder Vernichtung zu verlangen, die Benachrichtigung dieser Vorgänge an Dritte zu verlangen, denen die Daten übermittelt wurden, einem Ergebnis zu widersprechen, das ausschließlich durch automatisierte Analyse der verarbeiteten Daten zu ihrem Nachteil entsteht, und bei rechtswidriger Verarbeitung Schadensersatz zu verlangen."
+      ),
+      section9Title: e("9. Başvuru ve İletişim", "9. Application and Contact", "9. Antragstellung und Kontakt"),
+      section9BodyPrefix: e(
+        "Yukarıdaki haklarınızı kullanmak için taleplerinizi, kayıtlı e-posta adresinizden",
+        "To exercise your rights above, you can send your requests from your registered email address to",
+        "Um Ihre oben genannten Rechte auszuüben, können Sie Ihre Anfragen von Ihrer registrierten E-Mail-Adresse an"
+      ),
+      contactEmailPlaceholder: e(
+        "[iletişim e-postası buraya eklenecek]",
+        "[contact email to be added here]",
+        "[Kontakt-E-Mail wird hier ergänzt]"
+      ),
+      section9BodySuffix: e(
+        "adresine iletebilirsiniz. Talepleriniz, mevzuatta öngörülen süreler içinde değerlendirilip sonuçlandırılır.",
+        ". Your requests will be evaluated and concluded within the periods stipulated by legislation.",
+        " senden. Ihre Anfragen werden innerhalb der gesetzlich vorgeschriebenen Fristen geprüft und bearbeitet."
+      ),
+      footerLink: e("Kullanım Şartları →", "Terms of Use →", "Nutzungsbedingungen →"),
+    },
+    terms: {
+      pageTitle: e("Kullanım Şartları", "Terms of Use", "Nutzungsbedingungen"),
+      metaDescription: e(
+        "Tezgahçı platformunu kullanırken geçerli olan kullanım şartları ve kurallar.",
+        "The terms of use and rules that apply when using the Tezgahçı platform.",
+        "Die Nutzungsbedingungen und Regeln, die bei der Nutzung der Plattform Tezgahçı gelten."
+      ),
+      lastUpdated: e("Son güncelleme: 4 Eylül 2026", "Last updated: September 4, 2026", "Zuletzt aktualisiert: 4. September 2026"),
+      section1Title: e("1. Kabul", "1. Acceptance", "1. Annahme"),
+      section1Body: e(
+        'www.tezgahci.com.tr ("Tezgahçı", "Platform") üzerinden üye olarak veya siteyi kullanarak bu Kullanım Şartları\'nı kabul etmiş sayılırsınız. Bu şartları kabul etmiyorsanız Platform\'u kullanmamalısınız.',
+        'By becoming a member of or using www.tezgahci.com.tr ("Tezgahçı", "Platform"), you are deemed to have accepted these Terms of Use. If you do not accept these terms, you should not use the Platform.',
+        'Durch die Anmeldung als Mitglied oder die Nutzung von www.tezgahci.com.tr ("Tezgahçı", "Plattform") gelten diese Nutzungsbedingungen als von Ihnen akzeptiert. Wenn Sie diese Bedingungen nicht akzeptieren, dürfen Sie die Plattform nicht nutzen.'
+      ),
+      section2Title: e("2. Platformun Niteliği", "2. Nature of the Platform", "2. Wesen der Plattform"),
+      section2Body: e(
+        "Tezgahçı, CNC tezgahları, makineleri ve bunlara ait yedek parça, yağ, aparat ve divizör gibi ürünlerin alıcı ve satıcılarını buluşturan bir ilan/pazar yeri platformudur. Tezgahçı, ilan veren kullanıcılar ile alıcılar arasındaki alım-satım işlemlerine taraf değildir; ödeme, teslimat ve garanti gibi konular tamamen taraflar arasındadır. Tezgahçı bu işlemlerin sonucundan sorumlu tutulamaz.",
+        "Tezgahçı is a listings/marketplace platform that connects buyers and sellers of CNC machine tools, machinery, and related products such as spare parts, oils, fixtures, and rotary tables. Tezgahçı is not a party to the buying and selling transactions between listing users and buyers; matters such as payment, delivery, and warranty are entirely between the parties. Tezgahçı cannot be held responsible for the outcome of these transactions.",
+        "Tezgahçı ist eine Anzeigen-/Marktplattform, die Käufer und Verkäufer von CNC-Werkzeugmaschinen, Maschinen und zugehörigen Produkten wie Ersatzteilen, Ölen, Vorrichtungen und Teiltischen zusammenbringt. Tezgahçı ist nicht Partei der Kauf- und Verkaufsgeschäfte zwischen anzeigenden Nutzern und Käufern; Angelegenheiten wie Zahlung, Lieferung und Garantie liegen ausschließlich zwischen den Parteien. Tezgahçı kann für das Ergebnis dieser Geschäfte nicht verantwortlich gemacht werden."
+      ),
+      section3Title: e("3. Üyelik", "3. Membership", "3. Mitgliedschaft"),
+      section3Body: e(
+        "Üyelik için verdiğiniz bilgilerin doğru, güncel ve eksiksiz olması gerekir. Hesabınızın güvenliğinden (şifrenizin gizliliği dâhil) siz sorumlusunuz. Bayi hesapları, yönetici onayı ile aktif hâle gelir; onay sürecinde talep edilen faaliyet belgesi ve imza sirküleri gibi belgelerin gerçek ve güncel olması zorunludur.",
+        "The information you provide for membership must be accurate, current, and complete. You are responsible for the security of your account, including the confidentiality of your password. Dealer accounts become active upon administrator approval; documents requested during the approval process, such as the certificate of activity and signature circular, must be genuine and up to date.",
+        "Die für die Mitgliedschaft angegebenen Informationen müssen korrekt, aktuell und vollständig sein. Sie sind für die Sicherheit Ihres Kontos verantwortlich, einschließlich der Vertraulichkeit Ihres Passworts. Händlerkonten werden nach Genehmigung durch den Administrator aktiv; im Genehmigungsverfahren angeforderte Dokumente wie Tätigkeitsbescheinigung und Unterschriftszirkular müssen echt und aktuell sein."
+      ),
+      section4Title: e("4. İlan Verme Kuralları", "4. Listing Rules", "4. Regeln für Anzeigen"),
+      section4Body: e(
+        "İlana konu ürünün mülkiyetinize ait olması veya satışa yetkili olmanız gerekir. Yanıltıcı, gerçek dışı, hukuka aykırı veya üçüncü kişilerin haklarını ihlal eden içerik (izinsiz fotoğraf/marka kullanımı dâhil) paylaşılamaz. Tezgahçı, bu kurallara aykırı ilanları veya hesapları önceden bildirimde bulunmaksızın kaldırma/askıya alma hakkını saklı tutar.",
+        "You must own the product subject to the listing or be authorized to sell it. Misleading, false, unlawful content, or content that infringes the rights of third parties (including unauthorized use of photos/trademarks) may not be shared. Tezgahçı reserves the right to remove or suspend listings or accounts that violate these rules without prior notice.",
+        "Sie müssen Eigentümer des in der Anzeige beworbenen Produkts sein oder zu dessen Verkauf berechtigt sein. Irreführende, falsche, rechtswidrige Inhalte oder Inhalte, die Rechte Dritter verletzen (einschließlich unbefugter Nutzung von Fotos/Marken), dürfen nicht veröffentlicht werden. Tezgahçı behält sich das Recht vor, Anzeigen oder Konten, die gegen diese Regeln verstoßen, ohne vorherige Ankündigung zu entfernen oder zu sperren."
+      ),
+      section5Title: e("5. İçerik ve Sorumluluk", "5. Content and Responsibility", "5. Inhalt und Verantwortung"),
+      section5Body: e(
+        "İlan başlığı, açıklama, fiyat ve fotoğraflar dâhil tüm ilan içeriğinden ilanı veren kullanıcı sorumludur. Tezgahçı, ilanların doğruluğunu garanti etmez ve ilan içeriğinden doğabilecek zararlardan sorumlu tutulamaz. Alıcıların, satın alma kararı öncesinde satıcı ve ürünle ilgili makul özeni göstermesi beklenir.",
+        "The user who posts the listing is responsible for all listing content, including the title, description, price, and photos. Tezgahçı does not guarantee the accuracy of listings and cannot be held responsible for damages arising from listing content. Buyers are expected to exercise reasonable care regarding the seller and the product before making a purchase decision.",
+        "Der Nutzer, der die Anzeige einstellt, ist für alle Anzeigeninhalte verantwortlich, einschließlich Titel, Beschreibung, Preis und Fotos. Tezgahçı garantiert nicht die Richtigkeit der Anzeigen und kann nicht für Schäden verantwortlich gemacht werden, die aus dem Anzeigeninhalt entstehen. Von Käufern wird erwartet, dass sie vor einer Kaufentscheidung angemessene Sorgfalt hinsichtlich des Verkäufers und des Produkts walten lassen."
+      ),
+      section6Title: e("6. Yasaklı Davranışlar", "6. Prohibited Behavior", "6. Verbotenes Verhalten"),
+      section6Body: e(
+        "Platform'u kötüye kullanma, sahte ilan/hesap oluşturma, diğer kullanıcıları taciz etme, spam gönderme, Platform'un teknik altyapısına zarar verecek girişimlerde bulunma ve hukuka aykırı içerik paylaşma yasaktır. Bu kurallara aykırı davranan hesaplar askıya alınabilir veya kalıcı olarak kapatılabilir.",
+        "Misusing the Platform, creating fake listings/accounts, harassing other users, sending spam, attempting to damage the Platform's technical infrastructure, and sharing unlawful content are prohibited. Accounts that violate these rules may be suspended or permanently closed.",
+        "Der Missbrauch der Plattform, das Erstellen gefälschter Anzeigen/Konten, die Belästigung anderer Nutzer, das Versenden von Spam, Versuche, die technische Infrastruktur der Plattform zu schädigen, sowie das Teilen rechtswidriger Inhalte sind untersagt. Konten, die gegen diese Regeln verstoßen, können gesperrt oder dauerhaft geschlossen werden."
+      ),
+      section7Title: e("7. Fikri Mülkiyet", "7. Intellectual Property", "7. Geistiges Eigentum"),
+      section7Body: e(
+        "Platform'un tasarımı, yazılımı ve markası Tezgahçı'ya aittir. Kullanıcılar tarafından yüklenen ilan fotoğrafları ve metinlerinin telif hakları kullanıcılara ait olup, bu içeriklerin Platform üzerinde görüntülenmesi için Tezgahçı'ya gerekli kullanım izni verilmiş sayılır.",
+        "The design, software, and brand of the Platform belong to Tezgahçı. The copyrights of listing photos and texts uploaded by users belong to the users; by uploading them, the necessary usage permission is deemed to have been granted to Tezgahçı for displaying this content on the Platform.",
+        "Design, Software und Marke der Plattform gehören Tezgahçı. Die Urheberrechte an von Nutzern hochgeladenen Anzeigenfotos und -texten liegen bei den Nutzern; durch das Hochladen gilt die erforderliche Nutzungserlaubnis für die Anzeige dieser Inhalte auf der Plattform als Tezgahçı erteilt."
+      ),
+      section8Title: e("8. Değişiklikler", "8. Changes", "8. Änderungen"),
+      section8Body: e(
+        "Tezgahçı, bu Kullanım Şartları'nı zaman zaman güncelleyebilir. Güncel metin her zaman bu sayfada yayınlanır ve yayınlandığı andan itibaren geçerli olur.",
+        "Tezgahçı may update these Terms of Use from time to time. The current text is always published on this page and takes effect from the moment it is published.",
+        "Tezgahçı kann diese Nutzungsbedingungen von Zeit zu Zeit aktualisieren. Der aktuelle Text wird stets auf dieser Seite veröffentlicht und gilt ab dem Zeitpunkt der Veröffentlichung."
+      ),
+      section9Title: e("9. İletişim", "9. Contact", "9. Kontakt"),
+      section9BodyPrefix: e(
+        "Kullanım Şartları hakkındaki sorularınız için",
+        "For questions about these Terms of Use, you can reach us at",
+        "Bei Fragen zu diesen Nutzungsbedingungen erreichen Sie uns unter"
+      ),
+      section9BodySuffix: e(
+        "adresinden bize ulaşabilirsiniz.",
+        ".",
+        "."
+      ),
+      footerLink: e(
+        "← Gizlilik Politikası ve KVKK Aydınlatma Metni",
+        "← Privacy Policy and KVKK Disclosure Text",
+        "← Datenschutzerklärung und KVKK-Informationstext"
+      ),
+    },
+  },
 } as const;
 
 type DeepDict = typeof dict;
