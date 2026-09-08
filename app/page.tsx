@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { CATEGORIES } from "@/lib/constants";
 import { CategoryIcon, SearchIcon } from "@/components/Icons";
@@ -6,6 +7,8 @@ import ListingCard from "@/components/ListingCard";
 import EmptyState from "@/components/EmptyState";
 import AdSlot from "@/components/AdSlot";
 import HomeServiceCardsSection from "@/components/HomeServiceCardsSection";
+import MarketRatesStrip from "@/components/MarketRatesStrip";
+import IndustryNewsSection from "@/components/IndustryNewsSection";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +24,7 @@ async function getLandingData() {
     prisma.user.count({ where: { accountType: "BAYI", approved: true } }),
   ]);
 
-  let showcase = vitrinListings;
+  let showcase = vitrinListings
   if (showcase.length < 4) {
     const fallback = await prisma.listing.findMany({
       where: { isSold: false },
@@ -33,6 +36,16 @@ async function getLandingData() {
   }
 
   return { showcase, activeCount, dealerCount };
+}
+
+function NewsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="card h-24 animate-pulse bg-surface2" />
+      <div className="card h-24 animate-pulse bg-surface2" />
+      <div className="card h-24 animate-pulse bg-surface2" />
+    </div>
+  );
 }
 
 export default async function LandingPage() {
@@ -102,6 +115,15 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-7xl px-4 py-8">
+        <MarketRatesStrip />
+        <div className="mt-8">
+          <Suspense fallback={<NewsSkeleton />}>
+            <IndustryNewsSection />
+          </Suspense>
+        </div>
+      </section>
+
       <div className="mx-auto max-w-7xl px-4 pt-6">
         <AdSlot placement="HOME_SEARCH_BANNER" />
       </div>
@@ -123,7 +145,7 @@ export default async function LandingPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-2xl font-bold">Vitrin İlanlar</h2>
+          <h2 className="font-display text-2xl font-bold">Vitrin Članlar</h2>
           <Link href="/ilanlar" className="text-sm font-medium text-blueprint hover:underline">
             Tüm ilanları gör →
           </Link>
