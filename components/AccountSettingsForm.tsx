@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CITIES } from "@/lib/constants";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type Profile = {
   username: string;
@@ -20,6 +21,7 @@ type Profile = {
 // Yönetici Paneli > Ayarlar ve Bayi Paneli > Ayarlar sayfalarında ortak
 // kullanılan hesap ayarları formu: profil bilgileri + şifre değiştirme.
 export default function AccountSettingsForm() {
+  const t = useT();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [form, setForm] = useState({ fullName: "", companyName: "", phone: "", city: "", address: "" });
   const [profileBusy, setProfileBusy] = useState(false);
@@ -64,7 +66,7 @@ export default function AccountSettingsForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      setProfileMsg(res.ok ? "Bilgileriniz güncellendi." : "Güncellenemedi, tekrar deneyin.");
+      setProfileMsg(res.ok ? t("settings.profileUpdated") : t("settings.updateFailed"));
     } finally {
       setProfileBusy(false);
     }
@@ -80,7 +82,7 @@ export default function AccountSettingsForm() {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) {
-        setLogoError(data.error || "Logo yüklenemedi.");
+        setLogoError(data.error || t("settings.logoUploadFailed"));
         return;
       }
       const patchRes = await fetch("/api/account/profile", {
@@ -89,12 +91,12 @@ export default function AccountSettingsForm() {
         body: JSON.stringify({ logoUrl: data.url }),
       });
       if (!patchRes.ok) {
-        setLogoError("Logo kaydedilemedi.");
+        setLogoError(t("settings.logoSaveFailed"));
         return;
       }
       setProfile((p) => (p ? { ...p, logoUrl: data.url } : p));
     } catch {
-      setLogoError("Bağlantı hatası. Tekrar deneyin.");
+      setLogoError(t("auth.connectionError"));
     } finally {
       setLogoUploading(false);
     }
@@ -125,7 +127,7 @@ export default function AccountSettingsForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bio }),
       });
-      setBioMsg(res.ok ? "Tanıtım yazınız güncellendi." : "Güncellenemedi, tekrar deneyin.");
+      setBioMsg(res.ok ? t("settings.bioUpdated") : t("settings.updateFailed"));
     } finally {
       setBioBusy(false);
     }
@@ -136,7 +138,7 @@ export default function AccountSettingsForm() {
     setPwError("");
     setPwMsg("");
     if (pwForm.newPassword !== pwForm.newPassword2) {
-      setPwError("Yeni şifreler eşleşmiyor.");
+      setPwError(t("settings.passwordMismatch"));
       return;
     }
     setPwBusy(true);
@@ -148,10 +150,10 @@ export default function AccountSettingsForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setPwError(data.error || "Şifre değiştirilemedi.");
+        setPwError(data.error || t("settings.passwordChangeFailed"));
         return;
       }
-      setPwMsg("Şifreniz değiştirildi.");
+      setPwMsg(t("settings.passwordChanged"));
       setPwForm({ currentPassword: "", newPassword: "", newPassword2: "" });
     } finally {
       setPwBusy(false);
@@ -159,29 +161,29 @@ export default function AccountSettingsForm() {
   }
 
   if (!profile) {
-    return <p className="text-sm text-ink-muted">Yükleniyor...</p>;
+    return <p className="text-sm text-ink-muted">{t("common.loading")}</p>;
   }
 
   return (
     <div className="flex flex-col gap-5">
       {profile.accountType === "BAYI" && !profile.role && (
         <div className="card flex flex-col gap-3 p-5">
-          <h2 className="font-display text-lg font-semibold">Firma Logosu</h2>
+          <h2 className="font-display text-lg font-semibold">{t("settings.logoSectionTitle")}</h2>
           <p className="text-xs text-ink-muted">
-            Logonuz ilan detay sayfanızda ve bayi panelinizde görünür. JPEG, PNG veya WEBP, en fazla 8MB.
+            {t("settings.logoSectionDesc")}
           </p>
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-surface2">
               {profile.logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={profile.logoUrl} alt="Firma logosu" className="h-full w-full object-contain" />
+                <img src={profile.logoUrl} alt={t("settings.logoAlt")} className="h-full w-full object-contain" />
               ) : (
-                <span className="text-[10px] text-ink-muted">Logo yok</span>
+                <span className="text-[10px] text-ink-muted">{t("settings.noLogo")}</span>
               )}
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="input inline-flex w-fit cursor-pointer items-center rounded-lg px-3 py-1.5 text-xs font-semibold">
-                {logoUploading ? "Yükleniyor..." : "Logo Yükle"}
+                {logoUploading ? t("common.loading") : t("settings.uploadLogo")}
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
@@ -200,7 +202,7 @@ export default function AccountSettingsForm() {
                   disabled={logoUploading}
                   className="w-fit text-xs font-medium text-ink-muted hover:text-red-500 disabled:opacity-60"
                 >
-                  Logoyu Kaldır
+                  {t("settings.removeLogo")}
                 </button>
               )}
               {logoError && <p className="text-xs text-red-500">{logoError}</p>}
@@ -212,25 +214,25 @@ export default function AccountSettingsForm() {
       {profile.accountType === "BAYI" && !profile.role && (
         <form onSubmit={saveBio} className="card flex flex-col gap-3 p-5">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="font-display text-lg font-semibold">Bayi Profil Sayfası</h2>
+            <h2 className="font-display text-lg font-semibold">{t("settings.bioSectionTitle")}</h2>
             <a
               href={`/bayi/${profile.username}`}
               target="_blank"
               rel="noreferrer"
               className="flex-shrink-0 text-xs font-semibold text-blueprint hover:underline"
             >
-              Profilinizi Görüntüle →
+              {t("settings.viewProfileLink")}
             </a>
           </div>
           <p className="text-xs text-ink-muted">
-            Bu tanıtım metni, herkese açık bayi profil sayfanızda (tezgahci.com.tr/bayi/{profile.username}) görünür.
+            {t("settings.bioSectionDescPrefix")}{profile.username}{t("settings.bioSectionDescSuffix")}
           </p>
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value.slice(0, 500))}
             rows={4}
             maxLength={500}
-            placeholder="Firmanızı, uzmanlık alanlarınızı ve sunduğunuz hizmetleri kısaca tanıtın..."
+            placeholder={t("settings.bioPlaceholder")}
             className="input w-full rounded-lg px-3 py-2.5 text-sm"
           />
           <div className="flex items-center justify-between gap-2">
@@ -238,30 +240,30 @@ export default function AccountSettingsForm() {
             {bioMsg && <p className="text-xs text-ink-muted">{bioMsg}</p>}
           </div>
           <button disabled={bioBusy} type="submit" className="btn-accent self-start rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60">
-            {bioBusy ? "Kaydediliyor..." : "Tanıtım Yazısını Kaydet"}
+            {bioBusy ? t("settings.saving") : t("settings.bioSaveButton")}
           </button>
         </form>
       )}
 
       <form onSubmit={saveProfile} className="card flex flex-col gap-4 p-5">
-        <h2 className="font-display text-lg font-semibold">Profil Bilgileri</h2>
+        <h2 className="font-display text-lg font-semibold">{t("settings.profileInfoTitle")}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Kullanıcı Adı
+              {t("settings.username")}
             </label>
             <input value={profile.username} disabled className="input w-full rounded-lg px-3 py-2.5 text-sm opacity-60" />
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              E-posta
+              {t("settings.email")}
             </label>
             <input value={profile.email} disabled className="input w-full rounded-lg px-3 py-2.5 text-sm opacity-60" />
           </div>
           {profile.accountType === "BIREYSEL" ? (
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Ad Soyad
+                {t("settings.fullName")}
               </label>
               <input
                 value={form.fullName}
@@ -272,7 +274,7 @@ export default function AccountSettingsForm() {
           ) : (
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                {profile.role ? "Ad Soyad" : "Firma Adı"}
+                {profile.role ? t("settings.fullName") : t("settings.companyName")}
               </label>
               <input
                 value={profile.role ? form.fullName : form.companyName}
@@ -285,7 +287,7 @@ export default function AccountSettingsForm() {
           )}
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Telefon
+              {t("settings.phone")}
             </label>
             <input
               value={form.phone}
@@ -295,14 +297,14 @@ export default function AccountSettingsForm() {
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Şehir
+              {t("settings.city")}
             </label>
             <select
               value={form.city}
               onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             >
-              <option value="">Seçin</option>
+              <option value="">{t("settings.citySelectOption")}</option>
               {CITIES.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -312,29 +314,29 @@ export default function AccountSettingsForm() {
           </div>
           <div className="sm:col-span-2">
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Açık Adres
+              {t("settings.address")}
             </label>
             <textarea
               value={form.address}
               onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
               rows={2}
-              placeholder="Mahalle, cadde, no, ilçe..."
+              placeholder={t("settings.addressPlaceholder")}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
           </div>
         </div>
         {profileMsg && <p className="text-sm text-ink-muted">{profileMsg}</p>}
         <button disabled={profileBusy} type="submit" className="btn-accent self-start rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60">
-          {profileBusy ? "Kaydediliyor..." : "Bilgileri Kaydet"}
+          {profileBusy ? t("settings.saving") : t("settings.saveInfoButton")}
         </button>
       </form>
 
       <form onSubmit={changePassword} className="card flex flex-col gap-4 p-5">
-        <h2 className="font-display text-lg font-semibold">Şifre Değiştir</h2>
+        <h2 className="font-display text-lg font-semibold">{t("settings.changePasswordTitle")}</h2>
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Mevcut Şifre
+              {t("settings.currentPassword")}
             </label>
             <input
               type="password"
@@ -345,7 +347,7 @@ export default function AccountSettingsForm() {
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Yeni Şifre
+              {t("settings.newPassword")}
             </label>
             <input
               type="password"
@@ -356,7 +358,7 @@ export default function AccountSettingsForm() {
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Yeni Şifre (Tekrar)
+              {t("settings.newPasswordConfirm")}
             </label>
             <input
               type="password"
@@ -369,7 +371,7 @@ export default function AccountSettingsForm() {
         {pwError && <p className="text-sm text-red-500">{pwError}</p>}
         {pwMsg && <p className="text-sm text-emerald-600">{pwMsg}</p>}
         <button disabled={pwBusy} type="submit" className="input self-start rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60">
-          {pwBusy ? "Değiştiriliyor..." : "Şifreyi Değiştir"}
+          {pwBusy ? t("settings.changingPassword") : t("settings.changePasswordButton")}
         </button>
       </form>
     </div>
