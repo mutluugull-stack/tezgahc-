@@ -162,6 +162,7 @@ export default async function LandingPage() {
                   ...l,
                   createdAt: l.createdAt.toISOString(),
                 }}
+                locale={locale}
               />
             ))}
           </div>
