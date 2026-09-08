@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { CITIES } from "@/lib/constants";
+import { useT } from "@/components/i18n/LanguageProvider";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 type DocKey = "activityCertificateUrl" | "signatureCircularUrl";
 
-const DOC_FIELDS: { key: DocKey; docType: string; label: string }[] = [
-  { key: "activityCertificateUrl", docType: "faaliyet-belgesi", label: "Güncel Faaliyet Belgesi" },
-  { key: "signatureCircularUrl", docType: "imza-sirkuleri", label: "İmza Sirküleri" },
+const DOC_FIELDS: { key: DocKey; docType: string; labelKey: TranslationKey }[] = [
+  { key: "activityCertificateUrl", docType: "faaliyet-belgesi", labelKey: "auth.activityCertificate" },
+  { key: "signatureCircularUrl", docType: "imza-sirkuleri", labelKey: "auth.signatureCircular" },
 ];
 
 export default function RegisterPage() {
+  const t = useT();
   const router = useRouter();
   const [accountType, setAccountType] = useState<"BIREYSEL" | "BAYI">("BIREYSEL");
   const [form, setForm] = useState({
@@ -58,13 +61,13 @@ export default function RegisterPage() {
       const res = await fetch("/api/register/belge", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) {
-        setDocError((s) => ({ ...s, [key]: data.error || "Belge yüklenemedi." }));
+        setDocError((s) => ({ ...s, [key]: data.error || t("auth.docUploadFailed") }));
         return;
       }
       set(key, data.url);
       setDocFileNames((s) => ({ ...s, [key]: file.name }));
     } catch {
-      setDocError((s) => ({ ...s, [key]: "Bağlantı hatası. Tekrar deneyin." }));
+      setDocError((s) => ({ ...s, [key]: t("auth.connectionError") }));
     } finally {
       setDocUploading((s) => ({ ...s, [key]: false }));
     }
@@ -76,7 +79,7 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (accountType === "BAYI" && !docsReady) {
-      setError("Devam etmeden önce güncel faaliyet belgesi ve imza sirkülerini yükleyin.");
+      setError(t("auth.docsRequiredError"));
       return;
     }
     setBusy(true);
@@ -89,7 +92,7 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Kayıt oluşturulamadı.");
+        setError(data.error || t("auth.registrationFailed"));
         return;
       }
 
@@ -111,7 +114,7 @@ export default function RegisterPage() {
       router.push("/");
       router.refresh();
     } catch {
-      setError("Bağlantı hatası. Tekrar deneyin.");
+      setError(t("auth.connectionError"));
     } finally {
       setBusy(false);
     }
@@ -119,8 +122,8 @@ export default function RegisterPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">
-      <h1 className="mb-1 text-center font-display text-2xl font-bold">Üye Ol</h1>
-      <p className="mb-6 text-center text-sm text-ink-muted">Ücretsiz üye olun, hemen ilan verin veya satıcılarla iletişime geçin.</p>
+      <h1 className="mb-1 text-center font-display text-2xl font-bold">{t("auth.registerTitle")}</h1>
+      <p className="mb-6 text-center text-sm text-ink-muted">{t("auth.registerSubtitle")}</p>
 
       <div className="mb-5 flex overflow-hidden rounded-lg border border-border">
         <button
@@ -130,7 +133,7 @@ export default function RegisterPage() {
             accountType === "BIREYSEL" ? "bg-blueprint text-white" : "bg-surface text-ink-muted"
           }`}
         >
-          Bireysel Üyelik
+          {t("auth.individualTab")}
         </button>
         <button
           type="button"
@@ -139,13 +142,13 @@ export default function RegisterPage() {
             accountType === "BAYI" ? "bg-blueprint text-white" : "bg-surface text-ink-muted"
           }`}
         >
-          Bayi Üyeliği
+          {t("auth.dealerTab")}
         </button>
       </div>
 
       {accountType === "BAYI" && (
         <p className="mb-4 rounded-lg bg-surface2 px-3 py-2 text-xs text-ink-muted">
-          Bayi hesapları, sahte ilanları önlemek için yönetici onayından sonra aktif olur.
+          {t("auth.dealerApprovalNote")}
         </p>
       )}
 
@@ -153,7 +156,7 @@ export default function RegisterPage() {
         {accountType === "BIREYSEL" ? (
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Ad Soyad
+              {t("auth.fullName")}
             </label>
             <input
               required
@@ -166,7 +169,7 @@ export default function RegisterPage() {
           <>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Firma Adı
+                {t("auth.companyName")}
               </label>
               <input
                 required
@@ -177,7 +180,7 @@ export default function RegisterPage() {
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Telefon
+                {t("auth.phone")}
               </label>
               <input
                 required
@@ -189,25 +192,25 @@ export default function RegisterPage() {
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Açık Adres
+                {t("auth.address")}
               </label>
               <textarea
                 value={form.address}
                 onChange={(e) => set("address", e.target.value)}
                 rows={2}
-                placeholder="Mahalle, cadde, no, ilçe..."
+                placeholder={t("auth.addressPlaceholder")}
                 className="input w-full rounded-lg px-3 py-2.5 text-sm"
               />
             </div>
 
             <div className="rounded-lg bg-surface2 p-3">
               <p className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Resmi Evraklar
+                {t("auth.officialDocuments")}
               </p>
               <div className="flex flex-col gap-3">
-                {DOC_FIELDS.map(({ key, docType, label }) => (
+                {DOC_FIELDS.map(({ key, docType, labelKey }) => (
                   <div key={key}>
-                    <label className="mb-1 block text-xs font-medium text-ink">{label}</label>
+                    <label className="mb-1 block text-xs font-medium text-ink">{t(labelKey)}</label>
                     <input
                       type="file"
                       accept="application/pdf,image/jpeg,image/png,image/webp"
@@ -217,16 +220,16 @@ export default function RegisterPage() {
                       }}
                       className="input w-full rounded-lg px-3 py-2 text-xs file:mr-3 file:rounded-md file:border-0 file:bg-blueprint file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
                     />
-                    {docUploading[key] && <p className="mt-1 text-xs text-ink-muted">Yükleniyor...</p>}
+                    {docUploading[key] && <p className="mt-1 text-xs text-ink-muted">{t("auth.uploading")}</p>}
                     {!docUploading[key] && form[key] && (
-                      <p className="mt-1 text-xs text-emerald-600">✓ {docFileNames[key] || "Yüklendi"}</p>
+                      <p className="mt-1 text-xs text-emerald-600">✓ {docFileNames[key] || t("auth.uploaded")}</p>
                     )}
                     {docError[key] && <p className="mt-1 text-xs text-red-500">{docError[key]}</p>}
                   </div>
                 ))}
               </div>
               <p className="mt-2.5 text-[11px] text-ink-muted">
-                PDF, JPEG, PNG veya WEBP, en fazla 10MB. Belgeleriniz yönetici onayı sırasında incelenir.
+                {t("auth.docsNote")}
               </p>
             </div>
           </>
@@ -234,21 +237,21 @@ export default function RegisterPage() {
 
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            Kullanıcı Adı
+            {t("auth.username")}
           </label>
           <input
             required
             value={form.username}
             onChange={(e) => set("username", e.target.value.toLowerCase())}
             pattern="[a-z0-9][a-z0-9._-]{2,23}"
-            title="3-24 karakter, küçük harf ve rakam"
+            title={t("auth.usernameHint")}
             className="input w-full rounded-lg px-3 py-2.5 text-sm"
             autoComplete="username"
           />
         </div>
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            E-posta
+            {t("auth.email")}
           </label>
           <input
             required
@@ -260,7 +263,7 @@ export default function RegisterPage() {
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">Şifre</label>
+          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">{t("auth.password")}</label>
           <input
             required
             type="password"
@@ -272,7 +275,7 @@ export default function RegisterPage() {
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">Şehir</label>
+          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">{t("auth.city")}</label>
           <select
             value={form.city}
             onChange={(e) => set("city", e.target.value)}
@@ -293,14 +296,14 @@ export default function RegisterPage() {
           disabled={busy || !docsReady}
           className="btn-accent mt-1 rounded-lg px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
         >
-          {busy ? "Kaydediliyor..." : "Üye Ol"}
+          {busy ? t("auth.registering") : t("auth.registerButton")}
         </button>
       </form>
 
       <p className="mt-4 text-center text-sm text-ink-muted">
-        Zaten üye misiniz?{" "}
+        {t("auth.alreadyMember")}{" "}
         <Link href="/giris" className="font-semibold text-blueprint hover:underline">
-          Giriş yapın
+          {t("auth.loginLink")}
         </Link>
       </p>
     </div>
