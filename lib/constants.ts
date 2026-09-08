@@ -112,6 +112,14 @@ export function currencySymbol(key: string): string {
   return CURRENCIES.find((c) => c.key === key)?.symbol || key;
 }
 
+export function currencyLabel(key: string, locale?: string): string {
+  if (locale && locale !== "tr") {
+    const translated = t(`currencies.${key}`, locale as Locale);
+    if (translated !== `currencies.${key}`) return translated;
+  }
+  return CURRENCIES.find((c) => c.key === key)?.label || key;
+}
+
 export function fmtPrice(n: number, currency: string = "TRY"): string {
   const symbol = currencySymbol(currency);
   const formatted = new Intl.NumberFormat("tr-TR").format(n);
