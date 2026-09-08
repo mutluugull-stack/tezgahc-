@@ -135,6 +135,169 @@ export const dict = {
     gramGold: e("Gram Altın", "Gold (gram)", "Gold (Gramm)"),
     newsTitle: e("Sanayi Haberleri", "Industry News", "Branchennachrichten"),
   },
+
+  categories: {
+    torna: e("CNC Torna", "CNC Lathe", "CNC-Drehmaschine"),
+    freze: e("CNC Freze / İşleme Merkezi", "CNC Mill / Machining Center", "CNC-Fräsmaschine / Bearbeitungszentrum"),
+    router: e("CNC Router", "CNC Router", "CNC-Router"),
+    lazer: e("Lazer Kesim", "Laser Cutting", "Laserschneiden"),
+    plazma: e("Plazma Kesim", "Plasma Cutting", "Plasmaschneiden"),
+    edm: e("Erozyon (EDM)", "EDM", "Erodiermaschine (EDM)"),
+    abkant: e("Abkant Pres", "Press Brake", "Abkantpresse"),
+    yag: e("Yağ ve Yağlama Ürünleri", "Oils & Lubricants", "Öle und Schmierstoffe"),
+    aparat: e("Aparat ve Bağlama Ekipmanları", "Fixtures & Clamping Equipment", "Vorrichtungen und Spannmittel"),
+    divizor: e("Divizör / Döner Tabla", "Rotary Table / Indexer", "Drehtisch / Teilapparat"),
+    "yedek-parca": e("Diğer Yedek Parçalar", "Other Spare Parts", "Sonstige Ersatzteile"),
+    diger: e("Diğer", "Other", "Sonstiges"),
+  },
+
+  conditions: {
+    SIFIR: e("Sıfır", "New", "Neu"),
+    IKINCI_EL: e("İkinci El", "Used", "Gebraucht"),
+    YENILENMIS: e("Yenilenmiş", "Refurbished", "Generalüberholt"),
+  },
+
+  listings: {
+    pageTitle: e("CNC Makine İlanları", "CNC Machine Listings", "CNC-Maschinenanzeigen"),
+    keyword: e("Anahtar Kelime", "Keyword", "Stichwort"),
+    keywordPlaceholder: e("Marka, model...", "Brand, model...", "Marke, Modell..."),
+    brand: e("Marka", "Brand", "Marke"),
+    brandPlaceholder: e(
+      "örn. Haas, DMG Mori, Mazak...",
+      "e.g. Haas, DMG Mori, Mazak...",
+      "z. B. Haas, DMG Mori, Mazak..."
+    ),
+    model: e("Model", "Model", "Modell"),
+    modelPlaceholder: e("örn. VF-2, NLX 2500...", "e.g. VF-2, NLX 2500...", "z. B. VF-2, NLX 2500..."),
+    modelPlaceholderGeneric: e("Model adı yazın", "Type a model name", "Modellname eingeben"),
+    all: e("Tümü", "All", "Alle"),
+    city: e("Şehir", "City", "Stadt"),
+    condition: e("Durum", "Condition", "Zustand"),
+    controller: e("Kontrolör", "Controller", "Steuerung"),
+    axisCount: e("Eksen Sayısı", "Number of Axes", "Achsenzahl"),
+    priceRange: e("Fiyat Aralığı (₺)", "Price Range (₺)", "Preisspanne (₺)"),
+    min: e("Min", "Min", "Min"),
+    max: e("Max", "Max", "Max"),
+    onlyDealer: e("Sadece Bayi İlanları", "Dealer Listings Only", "Nur Händleranzeigen"),
+    filter: e("Filtrele", "Filter", "Filtern"),
+    clear: e("Temizle", "Clear", "Zurücksetzen"),
+    resultsFound: e("ilan bulundu", "listings found", "Anzeigen gefunden"),
+    listView: e("Liste görünümü", "List view", "Listenansicht"),
+    gridView: e("Izgara görünümü", "Grid view", "Rasteransicht"),
+    sortNewest: e("En Yeni", "Newest", "Neueste"),
+    sortPriceAsc: e("Fiyat: Düşükten Yükseğe", "Price: Low to High", "Preis: Aufsteigend"),
+    sortPriceDesc: e("Fiyat: Yüksekten Düşüğe", "Price: High to Low", "Preis: Absteigend"),
+    emptyTitle: e(
+      "Aradığınız kriterlere uygun ilan bulunamadı",
+      "No listings match your criteria",
+      "Keine Anzeigen entsprechen Ihren Kriterien"
+    ),
+    emptyDesc: e(
+      "Filtreleri genişletmeyi veya farklı bir kategori denemeyi deneyin.",
+      "Try widening your filters or a different category.",
+      "Versuchen Sie, die Filter zu erweitern oder eine andere Kategorie."
+    ),
+    featuredBadge: e("Vitrin", "Featured", "Empfohlen"),
+    dealerBadge: e("Bayi", "Dealer", "Händler"),
+    soldBadge: e("Satıldı", "Sold", "Verkauft"),
+  },
+
+  listingDetail: {
+    backToListings: e("← Tüm ilanlara dön", "← Back to all listings", "← Zurück zu allen Anzeigen"),
+    description: e("Açıklama", "Description", "Beschreibung"),
+    specs: e("Teknik Özellikler", "Specifications", "Technische Daten"),
+    year: e("Üretim Yılı", "Year", "Baujahr"),
+    workArea: e("Çalışma Alanı", "Work Area", "Arbeitsbereich"),
+    condition: e("Durum", "Condition", "Zustand"),
+    views: e("görüntülenme", "views", "Aufrufe"),
+    verifiedDealer: e("Yetkili Bayi", "Verified Dealer", "Autorisierter Händler"),
+    individualSeller: e("Bireysel Satıcı", "Individual Seller", "Privatverkäufer"),
+  },
+
+  listingActions: {
+    markUnsold: e("Satıldı İşaretini Kaldır", "Remove Sold Mark", "Verkauft-Markierung entfernen"),
+    markSold: e("Satıldı Olarak İşaretle", "Mark as Sold", "Als verkauft markieren"),
+    removeFromShowcase: e("Vitrinden Kaldır", "Remove from Showcase", "Aus Vitrine entfernen"),
+    addToShowcase: e("Vitrine Ekle", "Add to Showcase", "Zur Vitrine hinzufügen"),
+    incomingMessages: e("Bu İlana Gelen Mesajlar", "Messages on This Listing", "Nachrichten zu dieser Anzeige"),
+    loading: e("Yükleniyor...", "Loading...", "Wird geladen..."),
+    noMessagesYet: e("Henüz mesaj yok.", "No messages yet.", "Noch keine Nachrichten."),
+    replyPlaceholder: e("Yanıt yazın...", "Write a reply...", "Antwort schreiben..."),
+    send: e("Gönder", "Send", "Senden"),
+    loginToMessagePrompt: e(
+      "Satıcıya mesaj göndermek için giriş yapın.",
+      "Log in to message the seller.",
+      "Melden Sie sich an, um dem Verkäufer eine Nachricht zu senden."
+    ),
+    login: e("Giriş Yap", "Log In", "Anmelden"),
+    messageSellerTitle: e("Satıcıya Mesaj Gönder", "Send a Message to the Seller", "Nachricht an den Verkäufer senden"),
+    messagePlaceholder: e(
+      "Tezgah hakkında merak ettiklerinizi yazın...",
+      "Write your questions about the machine...",
+      "Schreiben Sie Ihre Fragen zur Maschine..."
+    ),
+    messageSent: e("Mesajınız gönderildi.", "Your message has been sent.", "Ihre Nachricht wurde gesendet."),
+    listingSold: e("İlan Satıldı", "Listing Sold", "Anzeige verkauft"),
+    sending: e("Gönderiliyor...", "Sending...", "Wird gesendet..."),
+    sendMessage: e("Mesaj Gönder", "Send Message", "Nachricht senden"),
+    sendFailed: e("Mesaj gönderilemedi.", "Message could not be sent.", "Nachricht konnte nicht gesendet werden."),
+    connectionError: e("Bağlantı hatası. Tekrar deneyin.", "Connection error. Please try again.", "Verbindungsfehler. Bitte erneut versuchen."),
+  },
+
+  report: {
+    reportListing: e("İlanı Bildir", "Report Listing", "Anzeige melden"),
+    reasonFake: e("Sahte veya yanıltıcı ilan", "Fake or misleading listing", "Gefälschte oder irreführende Anzeige"),
+    reasonWrongCategory: e("Yanlış kategoride", "Wrong category", "Falsche Kategorie"),
+    reasonInappropriate: e("Uygunsuz içerik / fotoğraf", "Inappropriate content / photo", "Unangemessener Inhalt / Foto"),
+    reasonSoldNotRemoved: e("Satıldı ama kaldırılmamış", "Sold but not removed", "Verkauft, aber nicht entfernt"),
+    reasonOther: e("Diğer", "Other", "Sonstiges"),
+    thanks: e("Teşekkürler", "Thank you", "Vielen Dank"),
+    submitted: e(
+      "Bildiriminiz yönetici ekibine iletildi.",
+      "Your report has been sent to our admin team.",
+      "Ihre Meldung wurde an unser Admin-Team weitergeleitet."
+    ),
+    close: e("Kapat", "Close", "Schließen"),
+    reason: e("Sebep", "Reason", "Grund"),
+    descriptionOptional: e("Açıklama (opsiyonel)", "Description (optional)", "Beschreibung (optional)"),
+    explainPlaceholder: e("Kısaca açıklayın...", "Briefly explain...", "Kurz erklären..."),
+    cancel: e("Vazgeç", "Cancel", "Abbrechen"),
+    sending: e("Gönderiliyor...", "Sending...", "Wird gesendet..."),
+    submit: e("Bildir", "Report", "Melden"),
+    submitFailed: e("Bildirim gönderilemedi.", "The report could not be sent.", "Die Meldung konnte nicht gesendet werden."),
+    connectionError: e("Bağlantı hatası. Tekrar deneyin.", "Connection error. Please try again.", "Verbindungsfehler. Bitte erneut versuchen."),
+  },
+
+  favorite: {
+    remove: e("Favorilerden çıkar", "Remove from favorites", "Aus Favoriten entfernen"),
+    add: e("Favorilere ekle", "Add to favorites", "Zu Favoriten hinzufügen"),
+  },
+
+  preview: {
+    title: e("Makine Önizleme", "Machine Preview", "Maschinenvorschau"),
+    subtitle: e(
+      "Marka/model seçin, satıcısının paylaşıma onay verdiği yayındaki ilanların fotoğraflarını görün.",
+      "Pick a brand/model to see photos from live listings whose seller has approved sharing.",
+      "Wählen Sie Marke/Modell, um Fotos aus aktiven Anzeigen zu sehen, deren Verkäufer die Freigabe erlaubt hat."
+    ),
+    close: e("Kapat", "Close", "Schließen"),
+    selectBrandPrompt: e(
+      "Önizlemek istediğiniz markayı yukarıdan seçin.",
+      "Select the brand you'd like to preview above.",
+      "Wählen Sie oben die Marke, die Sie sich ansehen möchten."
+    ),
+    loading: e("Yükleniyor...", "Loading...", "Wird geladen..."),
+    noResultsSuffix: e(
+      "için şu anda önizlemeye açık (satıcısı fotoğraf paylaşımına onay vermiş) yayında ilan bulunamadı.",
+      "has no live listings open for preview right now (seller hasn't approved photo sharing).",
+      "hat derzeit keine für die Vorschau freigegebenen aktiven Anzeigen (Verkäufer hat die Fotofreigabe nicht erlaubt)."
+    ),
+    searchListings: e("İlanlarda Ara", "Search Listings", "In Anzeigen suchen"),
+    noPhotos: e("Bu ilana fotoğraf eklenmemiş.", "No photos added to this listing.", "Diesem Inserat wurden keine Fotos hinzugefügt."),
+    viewListing: e("İlanı Görüntüle →", "View Listing →", "Anzeige ansehen →"),
+    prevPhoto: e("Önceki fotoğraf", "Previous photo", "Vorheriges Foto"),
+    nextPhoto: e("Sonraki fotoğraf", "Next photo", "Nächstes Foto"),
+  },
 } as const;
 
 type DeepDict = typeof dict;
