@@ -1,3 +1,5 @@
+import { t, type Locale } from "./i18n/translations";
+
 export const CATEGORIES = [
   { key: "torna", label: "CNC Torna" },
   { key: "freze", label: "CNC Freze / İşleme Merkezi" },
@@ -86,11 +88,23 @@ export const CURRENCIES: { key: "TRY" | "USD" | "EUR"; label: string; symbol: st
   { key: "EUR", label: "Euro", symbol: "€" },
 ];
 
-export function catLabel(key: string): string {
+// Bu iki fonksiyon opsiyonel bir Locale kabul eder; verilmezse ya da "tr"
+// ise aşağıdaki Türkçe CATEGORIES/CONDITIONS dizilerinden okur (mevcut tüm
+// çağrı noktaları değişmeden çalışmaya devam eder). "en"/"de" verildiğinde
+// lib/i18n/translations.ts içindeki çeviri sözlüğüne bakar.
+export function catLabel(key: string, locale?: string): string {
+  if (locale && locale !== "tr") {
+    const translated = t(`categories.${key}`, locale as Locale);
+    if (translated !== `categories.${key}`) return translated;
+  }
   return CATEGORIES.find((c) => c.key === key)?.label || key;
 }
 
-export function conditionLabel(key: string): string {
+export function conditionLabel(key: string, locale?: string): string {
+  if (locale && locale !== "tr") {
+    const translated = t(`conditions.${key}`, locale as Locale);
+    if (translated !== `conditions.${key}`) return translated;
+  }
   return CONDITIONS.find((c) => c.key === key)?.label || key;
 }
 
