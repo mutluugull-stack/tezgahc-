@@ -9,6 +9,8 @@ import PwaRegister from "@/components/PwaRegister";
 import VisitTracker from "@/components/VisitTracker";
 import CookieConsent from "@/components/CookieConsent";
 import { FavoritesProvider } from "@/components/FavoritesProvider";
+import { LanguageProvider } from "@/components/i18n/LanguageProvider";
+import { getLocale } from "@/lib/i18n/locale-server";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -64,8 +66,9 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = getLocale();
   return (
-    <html lang="tr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${oswald.variable} ${plexSans.variable} ${plexMono.variable} font-body antialiased`}>
         <script
           // Tema tercihini ilk çizimden önce uygulayarak yanıp sönmeyi (FOUC) önler.
@@ -75,16 +78,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <PwaRegister />
         <VisitTracker />
-        <SessionProviderWrapper>
-          <FavoritesProvider>
-            <div className="flex min-h-screen flex-col">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-            <CookieConsent />
-          </FavoritesProvider>
-        </SessionProviderWrapper>
+        <LanguageProvider initialLocale={locale}>
+          <SessionProviderWrapper>
+            <FavoritesProvider>
+              <div className="flex min-h-screen flex-col">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+              <CookieConsent />
+            </FavoritesProvider>
+          </SessionProviderWrapper>
+        </LanguageProvider>
         <Analytics />
       </body>
     </html>

@@ -9,6 +9,8 @@ import AdSlot from "@/components/AdSlot";
 import HomeServiceCardsSection from "@/components/HomeServiceCardsSection";
 import MarketRatesStrip from "@/components/MarketRatesStrip";
 import IndustryNewsSection from "@/components/IndustryNewsSection";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t } from "@/lib/i18n/translations";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +52,8 @@ function NewsSkeleton() {
 
 export default async function LandingPage() {
   const { showcase, activeCount, dealerCount } = await getLandingData();
+  const locale = getLocale();
+  const tt = (key: Parameters<typeof t>[0]) => t(key, locale);
 
   return (
     <div>
@@ -57,15 +61,12 @@ export default async function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
           <div className="mx-auto max-w-3xl text-center">
             <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-blueprint">
-              Türkiye&apos;nin CNC Makine Pazarı
+              {tt("home.eyebrow")}
             </p>
             <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-5xl">
-              Tezgahınızı bulun, ilanınızı verin
+              {tt("home.title")}
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-              CNC torna, freze, router, lazer, plazma, EDM ve abkant pres tezgahları; yedek parça, yağ,
-              aparat ve divizör ürünleri için alıcı ve satıcıları buluşturan ilan platformu.
-            </p>
+            <p className="mx-auto mt-4 max-w-xl text-ink-muted">{tt("home.subtitle")}</p>
           </div>
 
           <form
@@ -77,9 +78,9 @@ export default async function LandingPage() {
               name="category"
               defaultValue="all"
               className="input rounded-lg px-3 py-2.5 text-sm sm:w-56"
-              aria-label="Kategori seçin"
+              aria-label={tt("common.category")}
             >
-              <option value="all">Tüm Kategoriler</option>
+              <option value="all">{tt("home.allCategories")}</option>
               {CATEGORIES.map((c) => (
                 <option key={c.key} value={c.key}>
                   {c.label}
@@ -89,27 +90,27 @@ export default async function LandingPage() {
             <input
               type="text"
               name="q"
-              placeholder="Marka, model veya anahtar kelime ara..."
+              placeholder={tt("home.searchPlaceholder")}
               className="input flex-1 rounded-lg px-3 py-2.5 text-sm"
             />
             <button type="submit" className="btn-accent flex items-center justify-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold">
               <SearchIcon className="h-4 w-4" />
-              Ara
+              {tt("common.search")}
             </button>
           </form>
 
           <div className="mx-auto mt-8 flex max-w-lg justify-around text-center">
             <div>
               <p className="font-mono-data text-2xl font-bold text-blueprint">{activeCount}+</p>
-              <p className="text-xs text-ink-muted">Aktif İlan</p>
+              <p className="text-xs text-ink-muted">{tt("home.statActiveListings")}</p>
             </div>
             <div>
               <p className="font-mono-data text-2xl font-bold text-blueprint">{dealerCount}+</p>
-              <p className="text-xs text-ink-muted">Onaylı Bayi</p>
+              <p className="text-xs text-ink-muted">{tt("home.statDealers")}</p>
             </div>
             <div>
               <p className="font-mono-data text-2xl font-bold text-blueprint">{CATEGORIES.length}</p>
-              <p className="text-xs text-ink-muted">Kategori</p>
+              <p className="text-xs text-ink-muted">{tt("home.statCategories")}</p>
             </div>
           </div>
         </div>
@@ -145,13 +146,13 @@ export default async function LandingPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-2xl font-bold">Vitrin Članlar</h2>
+          <h2 className="font-display text-2xl font-bold">{tt("home.showcaseTitle")}</h2>
           <Link href="/ilanlar" className="text-sm font-medium text-blueprint hover:underline">
-            Tüm ilanları gör →
+            {tt("home.viewAll")}
           </Link>
         </div>
         {showcase.length === 0 ? (
-          <EmptyState title="Henüz vitrin ilanı yok" description="İlk ilanı siz verin, burada öne çıksın." />
+          <EmptyState title={tt("home.emptyShowcaseTitle")} description={tt("home.emptyShowcaseDesc")} />
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
             {showcase.map((l) => (
