@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { fmtDateTime } from "@/lib/constants";
 import EmptyState from "@/components/EmptyState";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type ApiMessage = {
   id: string;
@@ -29,6 +30,7 @@ type Thread = {
 };
 
 export default function InboxPage() {
+  const t = useT();
   const { data: session, status } = useSession();
   const [threads, setThreads] = useState<Thread[] | null>(null);
   const [activeKey, setActiveKey] = useState<string | null>(null);
@@ -115,15 +117,15 @@ export default function InboxPage() {
   }
 
   if (status === "loading" || (status === "authenticated" && threads === null)) {
-    return <div className="mx-auto max-w-5xl px-4 py-16 text-center text-ink-muted">Yükleniyor...</div>;
+    return <div className="mx-auto max-w-5xl px-4 py-16 text-center text-ink-muted">{t("common.loading")}</div>;
   }
 
   if (status !== "authenticated") {
     return (
       <div className="mx-auto max-w-md px-4 py-16 text-center">
-        <h1 className="mb-2 font-display text-2xl font-bold">Mesajlarınızı görmek için giriş yapın</h1>
+        <h1 className="mb-2 font-display text-2xl font-bold">{t("messages.loginRequiredTitle")}</h1>
         <Link href="/giris?callbackUrl=/mesajlarim" className="btn-accent inline-block rounded-lg px-4 py-2 text-sm font-semibold">
-          Giriş Yap
+          {t("auth.loginTitle")}
         </Link>
       </div>
     );
@@ -131,10 +133,10 @@ export default function InboxPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
-      <h1 className="mb-5 font-display text-2xl font-bold">Mesajlarım</h1>
+      <h1 className="mb-5 font-display text-2xl font-bold">{t("messages.title")}</h1>
 
       {!threads || threads.length === 0 ? (
-        <EmptyState title="Henüz mesajınız yok" description="Bir ilana mesaj gönderdiğinizde ya da size mesaj geldiğinde burada görünecek." />
+        <EmptyState title={t("messages.emptyTitle")} description={t("messages.emptyDesc")} />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-[280px_1fr]">
           <div className="card flex max-h-[65vh] flex-col overflow-y-auto">
@@ -189,7 +191,7 @@ export default function InboxPage() {
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendReply(active)}
-                    placeholder="Yanıt yazın..."
+                    placeholder={t("messages.replyPlaceholder")}
                     className="input flex-1 rounded-lg px-3 py-2 text-sm"
                   />
                   <button
@@ -197,7 +199,7 @@ export default function InboxPage() {
                     disabled={sending}
                     className="btn-accent rounded-lg px-4 py-2 text-sm font-semibold"
                   >
-                    Gönder
+                    {t("common.send")}
                   </button>
                 </div>
               )}
