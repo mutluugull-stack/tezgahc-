@@ -4,8 +4,10 @@ import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 function LoginForm() {
+  const t = useT();
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -38,9 +40,9 @@ function LoginForm() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">
-      <h1 className="mb-1 text-center font-display text-2xl font-bold">Giriş Yap</h1>
+      <h1 className="mb-1 text-center font-display text-2xl font-bold">{t("auth.loginTitle")}</h1>
       <p className="mb-6 text-center text-sm text-ink-muted">
-        {adminOnly ? "Bu sayfaya erişmek için yönetici hesabıyla giriş yapın." : "Hesabınıza giriş yaparak devam edin."}
+        {adminOnly ? t("auth.loginSubtitleAdmin") : t("auth.loginSubtitle")}
       </p>
 
       <div className="mb-5 flex overflow-hidden rounded-lg border border-border">
@@ -51,7 +53,7 @@ function LoginForm() {
             accountType === "BIREYSEL" ? "bg-blueprint text-white" : "bg-surface text-ink-muted"
           }`}
         >
-          Kullanıcı Girişi
+          {t("auth.userLoginTab")}
         </button>
         <button
           type="button"
@@ -60,14 +62,14 @@ function LoginForm() {
             accountType === "BAYI" ? "bg-blueprint text-white" : "bg-surface text-ink-muted"
           }`}
         >
-          Bayi Girişi
+          {t("auth.dealerLoginTab")}
         </button>
       </div>
 
       <form onSubmit={handleSubmit} className="card flex flex-col gap-3 p-5">
         <div>
           <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-            Kullanıcı Adı
+            {t("auth.username")}
           </label>
           <input
             required
@@ -78,7 +80,7 @@ function LoginForm() {
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">Şifre</label>
+          <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">{t("auth.password")}</label>
           <input
             required
             type="password"
@@ -88,8 +90,7 @@ function LoginForm() {
             autoComplete="current-password"
           />
           <p className="mt-1.5 text-xs text-ink-muted">
-            Şifrenizi mi unuttunuz? Şu an için otomatik sıfırlama yok — yönetici ile iletişime geçin, sizin için yeni
-            bir şifre oluştursun.
+            {t("auth.forgotPasswordNote")}
           </p>
         </div>
         {error && <p className="text-sm text-red-500">{error}</p>}
@@ -98,14 +99,14 @@ function LoginForm() {
           disabled={busy}
           className="btn-accent mt-1 rounded-lg px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
         >
-          {busy ? "Giriş yapılıyor..." : "Giriş Yap"}
+          {busy ? t("auth.loggingIn") : t("auth.loginTitle")}
         </button>
       </form>
 
       <p className="mt-4 text-center text-sm text-ink-muted">
-        Hesabınız yok mu?{" "}
+        {t("auth.noAccount")}{" "}
         <Link href="/kayit" className="font-semibold text-blueprint hover:underline">
-          Üye olun
+          {t("auth.signUpLink")}
         </Link>
       </p>
     </div>
