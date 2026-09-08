@@ -5,6 +5,7 @@ import Link from "next/link";
 import { fmtDate } from "@/lib/constants";
 import EmptyState from "@/components/EmptyState";
 import { BackIcon, TrashIcon, PlusIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type Member = {
   id: string;
@@ -20,6 +21,7 @@ type Member = {
 const emptyForm = { username: "", email: "", password: "", fullName: "", role: "Müşteri Temsilcisi" };
 
 export default function BayiEkipPage() {
+  const t = useT();
   const [members, setMembers] = useState<Member[] | null>(null);
   const [error, setError] = useState("");
   const [form, setForm] = useState(emptyForm);
@@ -31,7 +33,7 @@ export default function BayiEkipPage() {
     fetch("/api/bayi/ekip")
       .then(async (r) => {
         const data = await r.json();
-        if (!r.ok) throw new Error(data.error || "Ekip listelenemedi.");
+        if (!r.ok) throw new Error(data.error || t("dealerPanel.teamListError"));
         return data;
       })
       .then((data) => setMembers(data.members))
@@ -54,7 +56,7 @@ export default function BayiEkipPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setFormError(data.error || "Ekip üyesi eklenemedi.");
+        setFormError(data.error || t("dealerPanel.addMemberError"));
         return;
       }
       setForm(emptyForm);
@@ -65,7 +67,7 @@ export default function BayiEkipPage() {
   }
 
   async function removeMember(id: string) {
-    if (!confirm("Bu ekip üyesini kaldırmak istediğinize emin misiniz? Hesap tamamen silinecek.")) return;
+    if (!confirm(t("dealerPanel.removeConfirm"))) return;
     setBusyId(id);
     try {
       const res = await fetch(`/api/bayi/ekip/${id}`, { method: "DELETE" });
@@ -78,23 +80,21 @@ export default function BayiEkipPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
       <Link href="/bayi-panel" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Bayi Panelim
+        <BackIcon className="h-4 w-4" /> {t("dealerPanel.myPanelTitle")}
       </Link>
-      <h1 className="mb-1 font-display text-2xl font-bold">Ekip</h1>
-      <p className="mb-5 text-sm text-ink-muted">
-        Firmanız adına ilan verip yönetebilecek ekip üyeleri (ör. Müşteri Temsilcisi) tanımlayın.
-      </p>
+      <h1 className="mb-1 font-display text-2xl font-bold">{t("dealerPanel.tileTeam")}</h1>
+      <p className="mb-5 text-sm text-ink-muted">{t("dealerPanel.teamSubtitle")}</p>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {!error && (
         <>
-          {!members && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+          {!members && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
           {members && (
             <div className="mb-6">
               {members.length === 0 ? (
-                <EmptyState title="Henüz ekip üyeniz yok" description="Aşağıdaki formla ilk üyeyi ekleyin." />
+                <EmptyState title={t("dealerPanel.emptyTeamTitle")} description={t("dealerPanel.emptyTeamDesc")} />
               ) : (
                 <div className="flex flex-col gap-2">
                   {members.map((m) => (
@@ -103,17 +103,17 @@ export default function BayiEkipPage() {
                         <p className="truncate font-medium">
                           {m.fullName || `@${m.username}`}
                           <span className="ml-2 rounded-full bg-surface2 px-2 py-0.5 text-[11px] font-semibold text-ink-muted">
-                            {m.role || "Ekip Üyesi"}
+                            {m.role || t("dealerProfile.teamMemberRole")}
                           </span>
                         </p>
                         <p className="text-xs text-ink-muted">
-                          @{m.username} · {m.email} · {m._count.listings} ilan · {fmtDate(m.createdAt)}
+                          @{m.username} · {m.email} · {t("dealerProfile.listingCount").replace("{n}", String(m._count.listings))} · {fmtDate(m.createdAt)}
                         </p>
                       </div>
                       <button
                         disabled={busyId === m.id}
                         onClick={() => removeMember(m.id)}
-                        title="Kaldır"
+                        title={t("dealerPanel.removeTooltip")}
                         className="input flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-500"
                       >
                         <TrashIcon className="h-4 w-4" />
@@ -127,12 +127,12 @@ export default function BayiEkipPage() {
 
           <form onSubmit={addMember} className="card flex flex-col gap-4 p-5">
             <h2 className="flex items-center gap-1.5 font-display text-lg font-semibold">
-              <PlusIcon className="h-4 w-4" /> Yeni Ekip Üyesi Ekle
+              <PlusIcon className="h-4 w-4" /> {t("dealerPanel.addMemberSectionTitle")}
             </h2>
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                  Ad Soyad *
+                  {t("dealerPanel.fullNameRequired")}
                 </label>
                 <input
                   required
@@ -143,7 +143,7 @@ export default function BayiEkipPage() {
               </div>
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                  Unvan
+                  {t("dealerPanel.roleLabel")}
                 </label>
                 <input
                   value={form.role}
@@ -154,7 +154,7 @@ export default function BayiEkipPage() {
               </div>
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                  Kullanıcı Adı *
+                  {t("dealerPanel.usernameRequired")}
                 </label>
                 <input
                   required
@@ -165,7 +165,7 @@ export default function BayiEkipPage() {
               </div>
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                  E-posta *
+                  {t("dealerPanel.emailRequired")}
                 </label>
                 <input
                   required
@@ -177,7 +177,7 @@ export default function BayiEkipPage() {
               </div>
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                  Geçici Şifre *
+                  {t("dealerPanel.tempPasswordRequired")}
                 </label>
                 <input
                   required
@@ -191,7 +191,7 @@ export default function BayiEkipPage() {
             </div>
             {formError && <p className="text-sm text-red-500">{formError}</p>}
             <button disabled={busy} type="submit" className="btn-accent self-start rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-60">
-              {busy ? "Ekleniyor..." : "Ekip Üyesi Ekle"}
+              {busy ? t("dealerPanel.adding") : t("dealerPanel.addMemberButton")}
             </button>
           </form>
         </>
