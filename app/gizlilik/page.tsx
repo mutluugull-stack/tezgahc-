@@ -1,138 +1,84 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t, type TranslationKey } from "@/lib/i18n/translations";
 
-export const metadata: Metadata = {
-  title: "Gizlilik Politikası ve KVKK Aydınlatma Metni | Tezgahçı",
-  description: "Tezgahçı'nın kişisel verilerinizi nasıl işlediğine dair KVKK aydınlatma metni ve gizlilik politikası.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = getLocale();
+  return {
+    title: `${t("legal.privacy.pageTitle", locale)} | Tezgahçı`,
+    description: t("legal.privacy.metaDescription", locale),
+  };
+}
 
 export default function GizlilikPage() {
+  const locale = getLocale();
+  const tt = (key: TranslationKey) => t(key, locale);
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-1 font-display text-2xl font-bold">Gizlilik Politikası ve KVKK Aydınlatma Metni</h1>
-      <p className="mb-8 text-sm text-ink-muted">Son güncelleme: 4 Eylül 2026</p>
+      <h1 className="mb-1 font-display text-2xl font-bold">{tt("legal.privacy.pageTitle")}</h1>
+      <p className="mb-8 text-sm text-ink-muted">{tt("legal.privacy.lastUpdated")}</p>
 
       <div className="flex flex-col gap-6 text-sm leading-relaxed text-ink">
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">1. Veri Sorumlusu</h2>
-          <p className="text-ink-muted">
-            6698 sayılı Kişisel Verilerin Korunması Kanunu (&quot;KVKK&quot;) uyarınca, Tezgahçı platformunu
-            (&quot;Tezgahçı&quot;, &quot;Platform&quot;, www.tezgahci.com.tr) işleten <strong className="text-ink">MELİS DİJİTAL</strong> veri sorumlusu sıfatıyla hareket etmektedir. Bu metin, Platform üzerinden
-            topladığımız kişisel verilerin hangi amaçlarla işlendiğini, kimlerle paylaşılabileceğini ve
-            haklarınızı ne şekilde kullanabileceğinizi açıklamak amacıyla hazırlanmıştır.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section1Title")}</h2>
+          <p className="text-ink-muted" dangerouslySetInnerHTML={{ __html: tt("legal.privacy.section1Body") }} />
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">2. İşlenen Kişisel Veriler</h2>
-          <p className="mb-2 text-ink-muted">Üyelik ve ilan işlemleri sırasında aşağıdaki veriler işlenebilir:</p>
-          <p className="text-ink-muted">
-            Kimlik ve iletişim bilgileri (ad soyad veya firma unvanı, kullanıcı adı, e-posta, telefon,
-            adres, şehir); bayi hesapları için güncel faaliyet belgesi ve imza sirküleri gibi resmi
-            belgeler; ilan içerikleri ve fotoğraflar; alıcı-satıcı arasındaki mesajlaşma içerikleri; hesap
-            güvenliği için şifrenin şifrelenmiş (hash&apos;lenmiş) hâli; site kullanımına dair teknik veriler
-            (yaklaşık konum, cihaz ve tarayıcı bilgisi, görüntülenme istatistikleri — ayrıntılar için bkz.
-            Madde 3).
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section2Title")}</h2>
+          <p className="mb-2 text-ink-muted">{tt("legal.privacy.section2Intro")}</p>
+          <p className="text-ink-muted">{tt("legal.privacy.section2Body")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">3. Site Trafiği, Yaklaşık Konum ve Cihaz Bilgileri</h2>
-          <p className="mb-2 text-ink-muted">
-            Platform&apos;u ziyaret ettiğinizde, trafik istatistiklerini ölçmek ve hizmet kalitesini
-            artırmak amacıyla, üyelik gerektirmeden ve sizi bireysel olarak hedeflemeden, otomatik olarak
-            aşağıdaki teknik veriler toplanır:
-          </p>
-          <p className="mb-2 text-ink-muted">
-            <strong className="text-ink">Yaklaşık konum bilgisi:</strong> Ziyaretinizin geldiği ülke, il/bölge
-            ve şehir bilgisi, barındırma altyapımızın (Vercel) sunucu düzeyinde sağladığı IP tabanlı konum
-            tahmininden elde edilir. Ham IP adresiniz veritabanımızda saklanmaz; yalnızca bu bilgiden
-            türetilen yaklaşık il/bölge kaydedilir. Bu bilgi kesin olmayabilir; özellikle VPN veya mobil
-            operatör ağları kullanan ziyaretçilerde farklı bir il/bölge görünebilir.
-          </p>
-          <p className="mb-2 text-ink-muted">
-            <strong className="text-ink">Cihaz bilgisi:</strong> Tarayıcınızın gönderdiği teknik bilgilerden
-            (User-Agent) cihaz türü (mobil telefon/tablet/bilgisayar), işletim sistemi, tarayıcı ve mümkün
-            olduğunda cihaz modeli (ör. &quot;Samsung SM-G991B&quot;) tespit edilir. Apple&apos;ın güvenlik
-            politikası gereği iPhone cihazlarda model bilgisi paylaşılmaz; bu cihazlar yalnızca
-            &quot;iPhone&quot; olarak görünür.
-          </p>
-          <p className="text-ink-muted">
-            Bu veriler kullanıcı hesabınızla veya kimliğinizle eşleştirilmez; yalnızca toplu istatistik
-            olarak (hangi bölgelerden ve hangi cihazlardan erişildiğini anlamak, Platform&apos;u bu
-            doğrultuda iyileştirmek ve kötüye kullanımı önlemek amacıyla) yönetici panelimizde
-            görüntülenir.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section3Title")}</h2>
+          <p className="mb-2 text-ink-muted">{tt("legal.privacy.section3Intro")}</p>
+          <p className="mb-2 text-ink-muted" dangerouslySetInnerHTML={{ __html: tt("legal.privacy.section3Location") }} />
+          <p className="mb-2 text-ink-muted" dangerouslySetInnerHTML={{ __html: tt("legal.privacy.section3Device") }} />
+          <p className="text-ink-muted">{tt("legal.privacy.section3Note")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">4. İşleme Amaçları</h2>
-          <p className="text-ink-muted">
-            Kişisel verileriniz; üyelik oluşturma ve kimlik doğrulama, ilan yayınlama ve yönetme,
-            alıcı-satıcı arasında iletişim kurulmasını sağlama, bayi başvurularının incelenip
-            onaylanması, dolandırıcılık ve kötüye kullanımın önlenmesi, site trafiğinin ve ziyaretçi
-            istatistiklerinin (yaklaşık konum ve cihaz dağılımı dâhil) analiz edilmesi, yasal
-            yükümlülüklerin yerine getirilmesi ve Platform&apos;un güvenliğinin sağlanması amaçlarıyla
-            işlenir.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section4Title")}</h2>
+          <p className="text-ink-muted">{tt("legal.privacy.section4Body")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">5. Aktarım</h2>
-          <p className="text-ink-muted">
-            Kişisel verileriniz, yalnızca hizmetin sunulması için gerekli olduğu ölçüde barındırma
-            (hosting), bulut depolama ve altyapı hizmeti aldığımız tedarikçilerimizle (ör. Vercel) ve
-            yasal zorunluluk hâlinde yetkili kamu kurum ve kuruluşlarıyla paylaşılabilir. Verileriniz
-            pazarlama amacıyla üçüncü taraflara satılmaz veya kiralanmaz.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section5Title")}</h2>
+          <p className="text-ink-muted">{tt("legal.privacy.section5Body")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">6. Saklama Süresi</h2>
-          <p className="text-ink-muted">
-            Kişisel veriler, ilgili işleme amacının gerektirdiği süre boyunca ve mevzuatta öngörülen
-            yasal saklama süreleri boyunca muhafaza edilir; bu sürelerin sonunda silinir, yok edilir
-            veya anonim hâle getirilir.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section6Title")}</h2>
+          <p className="text-ink-muted">{tt("legal.privacy.section6Body")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">7. Çerezler</h2>
-          <p className="text-ink-muted">
-            Platform, oturumunuzu yönetmek ve tercihlerinizi hatırlamak amacıyla zorunlu çerezler
-            kullanır. Sitede gezinmeye devam ederek çerez kullanımını kabul etmiş olursunuz; tarayıcı
-            ayarlarınızdan çerezleri yönetebilir veya silebilirsiniz.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section7Title")}</h2>
+          <p className="text-ink-muted">{tt("legal.privacy.section7Body")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">8. KVKK Kapsamındaki Haklarınız</h2>
-          <p className="mb-2 text-ink-muted">KVKK&apos;nın 11. maddesi uyarınca her veri sahibi;</p>
-          <p className="text-ink-muted">
-            kişisel verisinin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme,
-            işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya
-            yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmişse düzeltilmesini
-            isteme, silinmesini veya yok edilmesini isteme, bu işlemlerin aktarıldığı üçüncü kişilere
-            bildirilmesini isteme, işlenen verilerin münhasıran otomatik sistemler ile analiz edilmesi
-            nedeniyle aleyhine bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı işlenmesi
-            sebebiyle zarara uğraması hâlinde zararın giderilmesini talep etme haklarına sahiptir.
-          </p>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section8Title")}</h2>
+          <p className="mb-2 text-ink-muted">{tt("legal.privacy.section8Intro")}</p>
+          <p className="text-ink-muted">{tt("legal.privacy.section8Body")}</p>
         </section>
 
         <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">9. Başvuru ve İletişim</h2>
+          <h2 className="mb-2 font-display text-lg font-semibold">{tt("legal.privacy.section9Title")}</h2>
           <p className="text-ink-muted">
-            Yukarıdaki haklarınızı kullanmak için taleplerinizi, kayıtlı e-posta adresinizden{" "}
-            <strong className="text-ink">[iletişim e-postası buraya eklenecek]</strong> adresine
-            iletebilirsiniz. Talepleriniz, mevzuatta öngörülen süreler içinde değerlendirilip
-            sonuçlandırılır.
+            {tt("legal.privacy.section9BodyPrefix")}{" "}
+            <strong className="text-ink">{tt("legal.privacy.contactEmailPlaceholder")}</strong>{" "}
+            {tt("legal.privacy.section9BodySuffix")}
           </p>
         </section>
       </div>
 
       <div className="mt-10 border-t border-border pt-4 text-sm">
         <Link href="/kullanim-sartlari" className="font-semibold text-blueprint hover:underline">
-          Kullanım Şartları →
+          {tt("legal.privacy.footerLink")}
         </Link>
       </div>
     </div>
