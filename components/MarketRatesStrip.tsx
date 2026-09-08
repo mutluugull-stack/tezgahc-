@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ChartIcon } from "./Icons";
+import { useT } from "./i18n/LanguageProvider";
 
 type RateItem = { buy: number; sell: number; changePercent: number };
 type MarketRates = {
@@ -15,7 +16,7 @@ type MarketRates = {
 
 const numberFmt = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-function RateBox({ label, item }: { label: string; item: RateItem }) {
+function RateBox({ label, item, buyLabel }: { label: string; item: RateItem; buyLabel: string }) {
   const isUp = item.changePercent >= 0;
   return (
     <div className="card flex flex-col gap-1 px-4 py-3">
@@ -32,7 +33,7 @@ function RateBox({ label, item }: { label: string; item: RateItem }) {
       <p className="font-mono-data text-xl font-bold text-ink">
         {numberFmt.format(item.sell)} <span className="text-xs font-normal text-ink-muted">TL</span>
       </p>
-      <p className="font-mono-data text-[11px] text-ink-muted">Alış {numberFmt.format(item.buy)}</p>
+      <p className="font-mono-data text-[11px] text-ink-muted">{buyLabel} {numberFmt.format(item.buy)}</p>
     </div>
   );
 }
@@ -44,6 +45,7 @@ function SkeletonBox() {
 export default function MarketRatesStrip() {
   const [data, setData] = useState<MarketRates | null>(null);
   const [error, setError] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     let cancelled = false;
@@ -77,7 +79,7 @@ export default function MarketRatesStrip() {
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex items-center gap-1.5 font-display text-lg font-bold">
           <ChartIcon className="h-5 w-5 text-blueprint" />
-          Güncel Kurlar
+          {t("market.ratesTitle")}
         </h2>
         <span className="flex items-center gap-1.5 text-xs text-ink-muted">
           <span
@@ -85,16 +87,20 @@ export default function MarketRatesStrip() {
               error ? "" : "animate-pulse"
             }`}
           />
-          {error ? "Bağlantı sorunu" : lastUpdateLabel ? `Son güncelleme: ${lastUpdateLabel}` : "Yükleniyor..."}
+          {error
+            ? t("market.connectionIssue")
+            : lastUpdateLabel
+            ? `${t("market.lastUpdate")}: ${lastUpdateLabel}`
+            : t("market.loadingRates")}
         </span>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {data ? (
           <>
-            <RateBox label="USD" item={data.usd} />
-            <RateBox label="EUR" item={data.eur} />
-            <RateBox label="GBP" item={data.gbp} />
-            <RateBox label="Gram Altın" item={data.gramAltin} />
+            <RateBox label="USD" item={data.usd} buyLabel={t("market.buy")} />
+            <RateBox label="EUR" item={data.eur} buyLabel={t("market.buy")} />
+            <RateBox label="GBP" item={data.gbp} buyLabel={t("market.buy")} />
+            <RateBox label={t("market.gramGold")} item={data.gramAltin} buyLabel={t("market.buy")} />
           </>
         ) : (
           <>

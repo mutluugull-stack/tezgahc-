@@ -1,5 +1,7 @@
 import { MegaphoneIcon, LinkIcon } from "./Icons";
 import { getSanayiHaberleri } from "@/lib/sanayiHaberleri";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t } from "@/lib/i18n/translations";
 
 function timeAgo(pubDate: string): string {
   const date = new Date(pubDate);
@@ -16,6 +18,7 @@ function timeAgo(pubDate: string): string {
 
 export default async function IndustryNewsSection() {
   const news = await getSanayiHaberleri(6);
+  const locale = getLocale();
 
   if (news.length === 0) {
     return null;
@@ -26,7 +29,7 @@ export default async function IndustryNewsSection() {
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex items-center gap-1.5 font-display text-lg font-bold">
           <MegaphoneIcon className="h-5 w-5 text-blueprint" />
-          Sanayi Haberleri
+          {t("market.newsTitle", locale)}
         </h2>
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

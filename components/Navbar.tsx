@@ -9,11 +9,14 @@ import { HandshakeIcon, PlusIcon, HomeIcon, HeartIcon } from "./Icons";
 import ThemeToggle from "./ThemeToggle";
 import MachinePreviewDrawer from "./MachinePreviewDrawer";
 import UserMenu from "./UserMenu";
+import LanguageSwitcher from "./i18n/LanguageSwitcher";
+import { useT } from "./i18n/LanguageProvider";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [unread, setUnread] = useState(0);
+  const t = useT();
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -58,19 +61,19 @@ export default function Navbar() {
               TEZGAHÇI
             </span>
             <span className="hidden text-[10px] font-medium uppercase tracking-widest text-ink-muted sm:block">
-              CNC Makine Pazarı
+              {t("nav.tagline")}
             </span>
           </span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {navLink("/", "Ana Sayfa", <HomeIcon className="h-4 w-4" />)}
-          {navLink("/ilanlar", "İlanlar")}
-          {navLink("/ilan-ver", "İlan Ver", <PlusIcon className="h-4 w-4" />)}
+          {navLink("/", t("nav.home"), <HomeIcon className="h-4 w-4" />)}
+          {navLink("/ilanlar", t("nav.listings"))}
+          {navLink("/ilan-ver", t("nav.postListing"), <PlusIcon className="h-4 w-4" />)}
           {status === "authenticated" &&
             navLink(
               "/mesajlarim",
-              "Mesajlarım",
+              t("nav.messages"),
               <span className="relative">
                 <HandshakeIcon className="text-base" />
                 {unread > 0 && (
@@ -81,16 +84,17 @@ export default function Navbar() {
               </span>
             )}
           {status === "authenticated" &&
-            navLink("/favorilerim", "Favorilerim", <HeartIcon className="h-4 w-4" />)}
+            navLink("/favorilerim", t("nav.favorites"), <HeartIcon className="h-4 w-4" />)}
           {status === "authenticated" &&
             session.user.accountType === "BAYI" &&
-            navLink("/bayi-panel", "Bayi Panelim")}
+            navLink("/bayi-panel", t("nav.dealerPanel"))}
           {status === "authenticated" &&
             session.user.isAdmin &&
-            navLink("/admin", "Panel")}
+            navLink("/admin", t("nav.adminPanel"))}
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <MachinePreviewDrawer />
           <ThemeToggle />
           {status === "authenticated" ? (
@@ -98,23 +102,23 @@ export default function Navbar() {
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/giris" className="input rounded-lg px-3 py-1.5 text-sm font-medium">
-                Giriş Yap
+                {t("nav.login")}
               </Link>
               <Link href="/kayit" className="btn-accent rounded-lg px-3 py-1.5 text-sm font-semibold">
-                Üye Ol
+                {t("nav.register")}
               </Link>
             </div>
           )}
         </div>
       </div>
       <nav className="flex items-center gap-1 overflow-x-auto border-t border-border px-3 py-1.5 md:hidden">
-        {navLink("/", "Ana Sayfa")}
-        {navLink("/ilanlar", "İlanlar")}
-        {navLink("/ilan-ver", "İlan Ver")}
-        {status === "authenticated" && navLink("/mesajlarim", "Mesajlar")}
-        {status === "authenticated" && navLink("/favorilerim", "Favorilerim")}
-        {status === "authenticated" && session.user.accountType === "BAYI" && navLink("/bayi-panel", "Bayi Panelim")}
-        {status === "authenticated" && session.user.isAdmin && navLink("/admin", "Panel")}
+        {navLink("/", t("nav.home"))}
+        {navLink("/ilanlar", t("nav.listings"))}
+        {navLink("/ilan-ver", t("nav.postListing"))}
+        {status === "authenticated" && navLink("/mesajlarim", t("nav.messagesShort"))}
+        {status === "authenticated" && navLink("/favorilerim", t("nav.favorites"))}
+        {status === "authenticated" && session.user.accountType === "BAYI" && navLink("/bayi-panel", t("nav.dealerPanel"))}
+        {status === "authenticated" && session.user.isAdmin && navLink("/admin", t("nav.adminPanel"))}
       </nav>
     </header>
   );
