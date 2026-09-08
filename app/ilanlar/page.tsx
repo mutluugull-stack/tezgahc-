@@ -271,7 +271,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               {listings.map((l, i) => (
                 <Fragment key={l.id}>
-                  <ListingCard listing={{ ...l, createdAt: l.createdAt.toISOString() }} />
+                  <ListingCard listing={{ ...l, createdAt: l.createdAt.toISOString() }} locale={locale} />
                   {(i + 1) % 8 === 0 && i !== listings.length - 1 && (
                     <AdSlot
                       placement="LISTING_INFEED"
@@ -286,7 +286,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Sea
             <div className="flex flex-col gap-3">
               {listings.map((l, i) => (
                 <Fragment key={l.id}>
-                  <ListingRow listing={{ ...l, createdAt: l.createdAt.toISOString() }} />
+                  <ListingRow listing={{ ...l, createdAt: l.createdAt.toISOString() }} locale={locale} />
                   {(i + 1) % 8 === 0 && i !== listings.length - 1 && (
                     <AdSlot placement="LISTING_INFEED" category={adCategory} />
                   )}
