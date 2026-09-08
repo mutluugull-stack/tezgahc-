@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CNC_BRANDS, CNC_BRAND_NAMES, CNC_ALL_MODELS } from "@/lib/cnc-brands";
+import { useT } from "./i18n/LanguageProvider";
 
 function normalize(s: string): string {
   return s
@@ -30,6 +31,7 @@ type Props = {
 // input'ları ile katılır — sayfa bir server component olduğu için burada
 // controlled değil, kendi kendine yeten (self-contained) bir istemci bileşeni.
 export default function BrandModelFilterFields({ defaultBrand = "", defaultModel = "" }: Props) {
+  const t = useT();
   const [brand, setBrand] = useState(defaultBrand);
   const [model, setModel] = useState(defaultModel);
   const [brandOpen, setBrandOpen] = useState(false);
@@ -74,12 +76,12 @@ export default function BrandModelFilterFields({ defaultBrand = "", defaultModel
   return (
     <>
       <div className="relative">
-        <label className={labelClass}>Marka</label>
+        <label className={labelClass}>{t("listings.brand")}</label>
         <input
           name="brand"
           value={brand}
           autoComplete="off"
-          placeholder="örn. Haas, DMG Mori, Mazak..."
+          placeholder={t("listings.brandPlaceholder")}
           onChange={(e) => {
             setBrand(e.target.value);
             setBrandOpen(true);
@@ -123,12 +125,12 @@ export default function BrandModelFilterFields({ defaultBrand = "", defaultModel
       </div>
 
       <div className="relative">
-        <label className={labelClass}>Model</label>
+        <label className={labelClass}>{t("listings.model")}</label>
         <input
           name="model"
           value={model}
           autoComplete="off"
-          placeholder={selectedBrandEntry ? "örn. VF-2, NLX 2500..." : "Model adı yazın"}
+          placeholder={selectedBrandEntry ? t("listings.modelPlaceholder") : t("listings.modelPlaceholderGeneric")}
           onChange={(e) => {
             setModel(e.target.value);
             setModelOpen(true);

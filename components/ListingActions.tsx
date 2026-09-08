@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { fmtDateTime } from "@/lib/constants";
+import { useT } from "./i18n/LanguageProvider";
 
 type Thread = {
   otherId: string;
@@ -24,6 +25,7 @@ export default function ListingActions({
   isSold: boolean;
   isVitrin: boolean;
 }) {
+  const tt = useT();
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const isOwner = status === "authenticated" && session.user.id === sellerId;
@@ -109,13 +111,13 @@ export default function ListingActions({
       });
       const data = await res.json();
       if (!res.ok) {
-        setMsgError(data.error || "Mesaj gönderilemedi.");
+        setMsgError(data.error || tt("listingActions.sendFailed"));
       } else {
         setMsgOk(true);
         setMsgDraft("");
       }
     } catch {
-      setMsgError("Bağlantı hatası. Tekrar deneyin.");
+      setMsgError(tt("listingActions.connectionError"));
     } finally {
       setMsgBusy(false);
     }
@@ -151,7 +153,7 @@ export default function ListingActions({
               sold ? "input" : "btn-blueprint"
             }`}
           >
-            {sold ? "Satıldı İşaretini Kaldır" : "Satıldı Olarak İşaretle"}
+            {sold ? tt("listingActions.markUnsold") : tt("listingActions.markSold")}
           </button>
           <button
             type="button"
@@ -159,16 +161,16 @@ export default function ListingActions({
             onClick={() => toggle("isVitrin", !vitrin)}
             className="input rounded-lg px-4 py-2.5 text-sm font-semibold"
           >
-            {vitrin ? "Vitrinden Kaldır" : "Vitrine Ekle"}
+            {vitrin ? tt("listingActions.removeFromShowcase") : tt("listingActions.addToShowcase")}
           </button>
         </div>
 
         <div className="mt-6">
-          <h2 className="mb-2 font-display text-base font-semibold">Bu İlana Gelen Mesajlar</h2>
+          <h2 className="mb-2 font-display text-base font-semibold">{tt("listingActions.incomingMessages")}</h2>
           {threads === null ? (
-            <p className="text-sm text-ink-muted">Yükleniyor...</p>
+            <p className="text-sm text-ink-muted">{tt("listingActions.loading")}</p>
           ) : threads.length === 0 ? (
-            <p className="text-sm text-ink-muted">Henüz mesaj yok.</p>
+            <p className="text-sm text-ink-muted">{tt("listingActions.noMessagesYet")}</p>
           ) : (
             <div className="flex flex-col gap-4">
               {threads.map((t) => (
@@ -196,7 +198,7 @@ export default function ListingActions({
                       onChange={(e) =>
                         setReplyDrafts((d) => ({ ...d, [t.senderUsername]: e.target.value }))
                       }
-                      placeholder="Yanıt yazın..."
+                      placeholder={tt("listingActions.replyPlaceholder")}
                       className="input flex-1 rounded-lg px-3 py-1.5 text-sm"
                     />
                     <button
@@ -205,7 +207,7 @@ export default function ListingActions({
                       onClick={() => sendReply(t.senderUsername, t.otherId)}
                       className="btn-accent rounded-lg px-3 py-1.5 text-sm font-semibold"
                     >
-                      Gönder
+                      {tt("listingActions.send")}
                     </button>
                   </div>
                 </div>
@@ -222,12 +224,12 @@ export default function ListingActions({
   if (status !== "authenticated") {
     return (
       <div className="mt-5 rounded-lg border border-dashed border-border p-4 text-center">
-        <p className="mb-2 text-sm text-ink-muted">Satıcıya mesaj göndermek için giriş yapın.</p>
+        <p className="mb-2 text-sm text-ink-muted">{tt("listingActions.loginToMessagePrompt")}</p>
         <Link
           href={`/giris?callbackUrl=${encodeURIComponent(pathname)}`}
           className="btn-accent inline-block rounded-lg px-4 py-2 text-sm font-semibold"
         >
-          Giriş Yap
+          {tt("listingActions.login")}
         </Link>
       </div>
     );
@@ -235,22 +237,22 @@ export default function ListingActions({
 
   return (
     <form onSubmit={sendMessage} className="mt-5">
-      <h2 className="mb-2 font-display text-base font-semibold">Satıcıya Mesaj Gönder</h2>
+      <h2 className="mb-2 font-display text-base font-semibold">{tt("listingActions.messageSellerTitle")}</h2>
       <textarea
         value={msgDraft}
         onChange={(e) => setMsgDraft(e.target.value)}
         rows={3}
-        placeholder="Tezgah hakkında merak ettiklerinizi yazın..."
+        placeholder={tt("listingActions.messagePlaceholder")}
         className="input w-full resize-none rounded-lg px-3 py-2 text-sm"
       />
       {msgError && <p className="mt-1 text-xs text-red-500">{msgError}</p>}
-      {msgOk && <p className="mt-1 text-xs text-emerald-600">Mesajınız gönderildi.</p>}
+      {msgOk && <p className="mt-1 text-xs text-emerald-600">{tt("listingActions.messageSent")}</p>}
       <button
         type="submit"
         disabled={msgBusy || sold}
         className="btn-accent mt-2 w-full rounded-lg px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
       >
-        {sold ? "İlan Satıldı" : msgBusy ? "Gönderiliyor..." : "Mesaj Gönder"}
+        {sold ? tt("listingActions.listingSold") : msgBusy ? tt("listingActions.sending") : tt("listingActions.sendMessage")}
       </button>
     </form>
   );

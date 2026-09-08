@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CNC_BRANDS, CNC_BRAND_NAMES, CNC_ALL_MODELS } from "@/lib/cnc-brands";
+import { useT } from "./i18n/LanguageProvider";
 
 function normalize(s: string): string {
   return s
@@ -28,6 +29,7 @@ type Props = {
 };
 
 export default function BrandModelFields({ brand, model, onBrandChange, onModelChange }: Props) {
+  const t = useT();
   const [brandOpen, setBrandOpen] = useState(false);
   const [modelOpen, setModelOpen] = useState(false);
   const [brandHi, setBrandHi] = useState(0);
@@ -70,11 +72,11 @@ export default function BrandModelFields({ brand, model, onBrandChange, onModelC
   return (
     <div className="grid grid-cols-2 gap-3">
       <div className="relative">
-        <label className={labelClass}>Marka</label>
+        <label className={labelClass}>{t("listings.brand")}</label>
         <input
           value={brand}
           autoComplete="off"
-          placeholder="örn. Haas, DMG Mori, Mazak..."
+          placeholder={t("listings.brandPlaceholder")}
           onChange={(e) => {
             onBrandChange(e.target.value);
             setBrandOpen(true);
@@ -118,11 +120,11 @@ export default function BrandModelFields({ brand, model, onBrandChange, onModelC
       </div>
 
       <div className="relative">
-        <label className={labelClass}>Model</label>
+        <label className={labelClass}>{t("listings.model")}</label>
         <input
           value={model}
           autoComplete="off"
-          placeholder={selectedBrandEntry ? "örn. VF-2, NLX 2500..." : "Model adı yazın"}
+          placeholder={selectedBrandEntry ? t("listings.modelPlaceholder") : t("listings.modelPlaceholderGeneric")}
           onChange={(e) => {
             onModelChange(e.target.value);
             setModelOpen(true);

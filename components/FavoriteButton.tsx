@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { useFavorites } from "./FavoritesProvider";
 import { HeartIcon } from "./Icons";
+import { useT } from "./i18n/LanguageProvider";
 
 export default function FavoriteButton({
   listingId,
@@ -12,6 +13,7 @@ export default function FavoriteButton({
   listingId: string;
   size?: "sm" | "md";
 }) {
+  const t = useT();
   const { status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
@@ -24,7 +26,7 @@ export default function FavoriteButton({
   return (
     <button
       type="button"
-      aria-label={favorited ? "Favorilerden çıkar" : "Favorilere ekle"}
+      aria-label={favorited ? t("favorite.remove") : t("favorite.add")}
       aria-pressed={favorited}
       onClick={(e) => {
         e.preventDefault();

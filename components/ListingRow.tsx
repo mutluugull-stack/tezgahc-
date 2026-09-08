@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import MachineArt from "./MachineArt";
 import { catLabel, fmtDate, fmtPrice, conditionLabel } from "@/lib/constants";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t } from "@/lib/i18n/translations";
 
 type ListingRowData = {
   id: string;
@@ -22,7 +24,8 @@ type ListingRowData = {
 
 export default function ListingRow({ listing }: { listing: ListingRowData }) {
   const cover = listing.images?.[0]?.url;
-  const specs = [listing.brand, listing.year, conditionLabel(listing.condition)].filter(Boolean).join(" · ");
+  const locale = getLocale();
+  const specs = [listing.brand, listing.year, conditionLabel(listing.condition, locale)].filter(Boolean).join(" · ");
   return (
     <Link
       href={`/ilan/${listing.id}`}
@@ -37,7 +40,7 @@ export default function ListingRow({ listing }: { listing: ListingRowData }) {
         {listing.isSold && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/55">
             <span className="rounded border border-white px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">
-              Satıldı
+              {t("listings.soldBadge", locale)}
             </span>
           </div>
         )}
@@ -45,16 +48,16 @@ export default function ListingRow({ listing }: { listing: ListingRowData }) {
       <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[11px] font-medium uppercase tracking-wide text-ink-muted">
-            {catLabel(listing.category)}
+            {catLabel(listing.category, locale)}
           </span>
           {listing.isVitrin && !listing.isSold && (
             <span className="rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-semibold text-accent-ink">
-              Vitrin
+              {t("listings.featuredBadge", locale)}
             </span>
           )}
           {listing.seller?.accountType === "BAYI" && (
             <span className="rounded-full bg-blueprint px-1.5 py-0.5 text-[10px] font-semibold text-white">
-              Bayi
+              {t("listings.dealerBadge", locale)}
             </span>
           )}
         </div>

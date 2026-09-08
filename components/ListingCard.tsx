@@ -3,6 +3,8 @@ import Image from "next/image";
 import MachineArt from "./MachineArt";
 import FavoriteButton from "./FavoriteButton";
 import { catLabel, fmtDate, fmtPrice } from "@/lib/constants";
+import { getLocale } from "@/lib/i18n/locale-server";
+import { t } from "@/lib/i18n/translations";
 
 type ListingCardData = {
   id: string;
@@ -21,6 +23,7 @@ type ListingCardData = {
 
 export default function ListingCard({ listing }: { listing: ListingCardData }) {
   const cover = listing.images?.[0]?.url;
+  const locale = getLocale();
   return (
     <Link
       href={`/ilan/${listing.id}`}
@@ -35,19 +38,19 @@ export default function ListingCard({ listing }: { listing: ListingCardData }) {
         <div className="absolute left-2 top-2 flex gap-1.5">
           {listing.isVitrin && !listing.isSold && (
             <span className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-semibold text-accent-ink">
-              Vitrin
+              {t("listings.featuredBadge", locale)}
             </span>
           )}
           {listing.seller?.accountType === "BAYI" && (
             <span className="rounded-full bg-blueprint px-2 py-0.5 text-[11px] font-semibold text-white">
-              Bayi
+              {t("listings.dealerBadge", locale)}
             </span>
           )}
         </div>
         {listing.isSold && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/55">
             <span className="rounded-full border-2 border-white px-3 py-1 text-sm font-bold uppercase tracking-wider text-white">
-              Satıldı
+              {t("listings.soldBadge", locale)}
             </span>
           </div>
         )}
@@ -57,7 +60,7 @@ export default function ListingCard({ listing }: { listing: ListingCardData }) {
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-3.5">
         <span className="text-[11px] font-medium uppercase tracking-wide text-ink-muted">
-          {catLabel(listing.category)}
+          {catLabel(listing.category, locale)}
         </span>
         <h3 className="line-clamp-2 font-display text-base font-semibold leading-tight">{listing.title}</h3>
         <div className="mt-auto flex items-end justify-between pt-2">

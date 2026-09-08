@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useT } from "./i18n/LanguageProvider";
 
 export default function SortSelect({ defaultValue }: { defaultValue: string }) {
+  const t = useT();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -18,11 +20,11 @@ export default function SortSelect({ defaultValue }: { defaultValue: string }) {
       defaultValue={defaultValue}
       onChange={onChange}
       className="input rounded-lg px-3 py-1.5 text-sm"
-      aria-label="Sıralama"
+      aria-label={t("common.filter")}
     >
-      <option value="date_desc">En Yeni</option>
-      <option value="price_asc">Fiyat: Düşükten Yükseğe</option>
-      <option value="price_desc">Fiyat: Yüksekten Düşüğe</option>
+      <option value="date_desc">{t("listings.sortNewest")}</option>
+      <option value="price_asc">{t("listings.sortPriceAsc")}</option>
+      <option value="price_desc">{t("listings.sortPriceDesc")}</option>
     </select>
   );
 }

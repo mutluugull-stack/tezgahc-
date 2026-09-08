@@ -6,6 +6,7 @@ import Link from "next/link";
 import BrandModelFields from "./BrandModelFields";
 import { CategoryIcon, EyeIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
 import { catLabel, fmtPrice } from "@/lib/constants";
+import { useLanguage } from "./i18n/LanguageProvider";
 
 type PreviewListing = {
   id: string;
@@ -27,6 +28,7 @@ type Lightbox = { images: string[]; index: number };
 // gösterilmesine açıkça izin vermiş ilanların gerçek fotoğraflarını galeri
 // halinde gösterir.
 export default function MachinePreviewDrawer() {
+  const { t, locale } = useLanguage();
   const [open, setOpen] = useState(false);
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
@@ -48,7 +50,7 @@ export default function MachinePreviewDrawer() {
     }
     let cancelled = false;
     setLoading(true);
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       const params = new URLSearchParams({ brand: brand.trim() });
       if (model.trim()) params.set("model", model.trim());
       fetch(`/api/machine-preview?${params.toString()}`)
@@ -65,7 +67,7 @@ export default function MachinePreviewDrawer() {
     }, 300);
     return () => {
       cancelled = true;
-      clearTimeout(t);
+      clearTimeout(timer);
     };
   }, [open, brand, model]);
 
@@ -98,8 +100,8 @@ export default function MachinePreviewDrawer() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Makine Önizleme"
-        title="Makine Önizleme"
+        aria-label={t("preview.title")}
+        title={t("preview.title")}
         className="input flex h-9 w-9 items-center justify-center rounded-full"
       >
         <EyeIcon className="h-4 w-4" />
@@ -111,15 +113,13 @@ export default function MachinePreviewDrawer() {
           <aside className="relative flex h-full w-full max-w-md flex-col bg-surface shadow-2xl sm:border-l sm:border-border">
             <div className="flex items-start justify-between gap-3 border-b border-border px-4 py-3">
               <div>
-                <h2 className="font-display text-lg font-bold">Makine Önizleme</h2>
-                <p className="mt-0.5 text-xs text-ink-muted">
-                  Marka/model seçin, satıcısının paylaşıma onay verdiği yayındaki ilanların fotoğraflarını görün.
-                </p>
+                <h2 className="font-display text-lg font-bold">{t("preview.title")}</h2>
+                <p className="mt-0.5 text-xs text-ink-muted">{t("preview.subtitle")}</p>
               </div>
               <button
                 type="button"
                 onClick={close}
-                aria-label="Kapat"
+                aria-label={t("preview.close")}
                 className="input flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
               >
                 <CloseIcon className="h-4 w-4" />
@@ -132,21 +132,18 @@ export default function MachinePreviewDrawer() {
 
             <div className="flex-1 overflow-y-auto p-4">
               {!brand.trim() && (
-                <p className="mt-8 text-center text-sm text-ink-muted">
-                  Önizlemek istediğiniz markayı yukarıdan seçin.
-                </p>
+                <p className="mt-8 text-center text-sm text-ink-muted">{t("preview.selectBrandPrompt")}</p>
               )}
 
               {brand.trim() && loading && (
-                <p className="mt-8 text-center text-sm text-ink-muted">Yükleniyor...</p>
+                <p className="mt-8 text-center text-sm text-ink-muted">{t("preview.loading")}</p>
               )}
 
               {brand.trim() && !loading && results && results.length === 0 && (
                 <div className="mt-8 flex flex-col items-center gap-2 text-center">
                   <CategoryIcon category="diger" className="h-10 w-10 text-ink-muted" />
                   <p className="text-sm text-ink-muted">
-                    {model.trim() ? `${brand.trim()} ${model.trim()}` : brand.trim()} için şu anda
-                    önizlemeye açık (satıcısı fotoğraf paylaşımına onay vermiş) yayında ilan bulunamadı.
+                    {model.trim() ? `${brand.trim()} ${model.trim()}` : brand.trim()} {t("preview.noResultsSuffix")}
                   </p>
                   <Link
                     href={`/ilanlar?brand=${encodeURIComponent(brand.trim())}${
@@ -155,7 +152,7 @@ export default function MachinePreviewDrawer() {
                     onClick={close}
                     className="btn-accent mt-1 rounded-lg px-3 py-1.5 text-xs font-semibold"
                   >
-                    İlanlarda Ara
+                    {t("preview.searchListings")}
                   </Link>
                 </div>
               )}
@@ -168,7 +165,7 @@ export default function MachinePreviewDrawer() {
                         <div>
                           <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
                             <CategoryIcon category={l.category} className="h-3.5 w-3.5" />
-                            {catLabel(l.category)}
+                            {catLabel(l.category, locale)}
                           </div>
                           <p className="text-sm font-semibold leading-snug">{l.title}</p>
                           <p className="text-xs text-ink-muted">{l.city}</p>
@@ -192,7 +189,7 @@ export default function MachinePreviewDrawer() {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-ink-muted">Bu ilana fotoğraf eklenmemiş.</p>
+                        <p className="text-xs text-ink-muted">{t("preview.noPhotos")}</p>
                       )}
 
                       <Link
@@ -200,7 +197,7 @@ export default function MachinePreviewDrawer() {
                         onClick={close}
                         className="mt-2 inline-block text-xs font-semibold text-blueprint hover:underline"
                       >
-                        İlanı Görüntüle →
+                        {t("preview.viewListing")}
                       </Link>
                     </div>
                   ))}
@@ -220,7 +217,7 @@ export default function MachinePreviewDrawer() {
           <button
             type="button"
             onClick={() => setLightbox(null)}
-            aria-label="Kapat"
+            aria-label={t("preview.close")}
             className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             <CloseIcon className="h-5 w-5" />
@@ -233,7 +230,7 @@ export default function MachinePreviewDrawer() {
                   e.stopPropagation();
                   setLightbox((s) => (s ? { ...s, index: (s.index - 1 + s.images.length) % s.images.length } : s));
                 }}
-                aria-label="Önceki fotoğraf"
+                aria-label={t("preview.prevPhoto")}
                 className="absolute left-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
               >
                 <ChevronLeftIcon className="h-5 w-5" />
@@ -244,7 +241,7 @@ export default function MachinePreviewDrawer() {
                   e.stopPropagation();
                   setLightbox((s) => (s ? { ...s, index: (s.index + 1) % s.images.length } : s));
                 }}
-                aria-label="Sonraki fotoğraf"
+                aria-label={t("preview.nextPhoto")}
                 className="absolute right-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
               >
                 <ChevronRightIcon className="h-5 w-5" />
