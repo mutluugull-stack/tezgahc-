@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import EmptyState from "@/components/EmptyState";
 import { BackIcon, TrashIcon, LinkIcon, ChevronRightIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type AdminUser = {
   id: string;
@@ -25,6 +26,7 @@ type AdminUser = {
 };
 
 export default function AdminDealersPage() {
+  const t = useT();
   const [users, setUsers] = useState<AdminUser[] | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export default function AdminDealersPage() {
   function load() {
     fetch("/api/admin/users")
       .then((r) => {
-        if (!r.ok) throw new Error("Yetkisiz erişim.");
+        if (!r.ok) throw new Error(t("admin.unauthorizedError"));
         return r.json();
       })
       .then((data) => setUsers(data.users))
@@ -68,7 +70,7 @@ export default function AdminDealersPage() {
         load();
       } else {
         const data = await res.json().catch(() => ({}));
-        setError(data.error || "Bayi silinemedi.");
+        setError(data.error || t("admin.dealerDeleteFailed"));
       }
     } finally {
       setBusyId(null);
@@ -87,27 +89,27 @@ export default function AdminDealersPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
-      <h1 className="mb-5 font-display text-2xl font-bold">Bayiler</h1>
+      <h1 className="mb-5 font-display text-2xl font-bold">{t("admin.dealersTitle")}</h1>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
-      {!error && !users && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !users && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {users && (
         <div className="card overflow-x-auto">
           {dealers.length === 0 ? (
-            <EmptyState title="Henüz bayi başvurusu yok" />
+            <EmptyState title={t("admin.noDealerApplications")} />
           ) : (
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-surface2 text-left text-xs uppercase tracking-wide text-ink-muted">
-                  <th className="px-4 py-2.5">Firma</th>
-                  <th className="px-4 py-2.5">E-posta</th>
-                  <th className="px-4 py-2.5">Telefon</th>
-                  <th className="px-4 py-2.5">Şehir</th>
-                  <th className="px-4 py-2.5">İlan</th>
-                  <th className="px-4 py-2.5">Durum</th>
+                  <th className="px-4 py-2.5">{t("admin.colCompany")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colEmail")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colPhone")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colCity")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colListings")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colStatus")}</th>
                   <th className="px-4 py-2.5" />
                 </tr>
               </thead>
@@ -149,7 +151,7 @@ export default function AdminDealersPage() {
                               d.approved ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
                             }`}
                           >
-                            {d.approved ? "Onaylı" : "Onay Bekliyor"}
+                            {d.approved ? t("admin.dealerApproved") : t("admin.dealerPendingApproval")}
                           </span>
                         </td>
                         <td className="px-4 py-2.5 text-right">
@@ -157,22 +159,24 @@ export default function AdminDealersPage() {
                             <div className="flex items-center justify-end gap-1.5">
                               <span className="text-xs text-ink-muted">
                                 {d._count.listings > 0 || d._count.teamMembers > 0
-                                  ? `${d._count.listings} ilan, ${d._count.teamMembers} ekip üyesi de silinecek.`
-                                  : "Emin misiniz?"}
+                                  ? t("admin.deleteWillAlsoRemove")
+                                      .replace("{listings}", String(d._count.listings))
+                                      .replace("{members}", String(d._count.teamMembers))
+                                  : t("admin.confirmQuestion")}
                               </span>
                               <button
                                 disabled={busyId === d.id}
                                 onClick={() => deleteDealer(d.id)}
                                 className="rounded-lg bg-red-600 px-2.5 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
                               >
-                                Evet, Sil
+                                {t("admin.yesDelete")}
                               </button>
                               <button
                                 disabled={busyId === d.id}
                                 onClick={() => setConfirmDeleteId(null)}
                                 className="input rounded-lg px-2.5 py-1.5 text-xs font-semibold"
                               >
-                                Vazgeç
+                                {t("common.cancel")}
                               </button>
                             </div>
                           ) : (
@@ -184,12 +188,12 @@ export default function AdminDealersPage() {
                                   d.approved ? "input" : "btn-accent"
                                 }`}
                               >
-                                {d.approved ? "Onayı Kaldır" : "Onayla"}
+                                {d.approved ? t("admin.removeApprovalButton") : t("common.approve")}
                               </button>
                               <button
                                 disabled={busyId === d.id}
                                 onClick={() => setConfirmDeleteId(d.id)}
-                                title="Bayiyi Sil"
+                                title={t("admin.deleteDealerTooltip")}
                                 className="input flex h-8 w-8 items-center justify-center rounded-lg text-ink-muted hover:text-red-600 disabled:opacity-60"
                               >
                                 <TrashIcon className="h-4 w-4" />
@@ -204,13 +208,13 @@ export default function AdminDealersPage() {
                             <div className="grid gap-4 sm:grid-cols-2">
                               <div>
                                 <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                                  Açık Adres
+                                  {t("admin.openAddress")}
                                 </p>
-                                <p className="text-sm">{d.address || "Adres girilmemiş."}</p>
+                                <p className="text-sm">{d.address || t("admin.noAddressEntered")}</p>
                               </div>
                               <div>
                                 <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                                  Resmi Evraklar
+                                  {t("admin.officialDocuments")}
                                 </p>
                                 <div className="flex flex-col gap-1">
                                   {d.activityCertificateUrl ? (
@@ -220,10 +224,10 @@ export default function AdminDealersPage() {
                                       rel="noopener noreferrer"
                                       className="inline-flex w-fit items-center gap-1 text-sm font-medium text-blueprint hover:underline"
                                     >
-                                      <LinkIcon className="h-3.5 w-3.5" /> Güncel Faaliyet Belgesi
+                                      <LinkIcon className="h-3.5 w-3.5" /> {t("admin.currentActivityCertificate")}
                                     </a>
                                   ) : (
-                                    <span className="text-sm text-ink-muted">Faaliyet belgesi yok</span>
+                                    <span className="text-sm text-ink-muted">{t("admin.noActivityCertificate")}</span>
                                   )}
                                   {d.signatureCircularUrl ? (
                                     <a
@@ -232,28 +236,28 @@ export default function AdminDealersPage() {
                                       rel="noopener noreferrer"
                                       className="inline-flex w-fit items-center gap-1 text-sm font-medium text-blueprint hover:underline"
                                     >
-                                      <LinkIcon className="h-3.5 w-3.5" /> İmza Sirküleri
+                                      <LinkIcon className="h-3.5 w-3.5" /> {t("admin.signatureCircular")}
                                     </a>
                                   ) : (
-                                    <span className="text-sm text-ink-muted">İmza sirküleri yok</span>
+                                    <span className="text-sm text-ink-muted">{t("admin.noSignatureCircular")}</span>
                                   )}
                                 </div>
                               </div>
                               <div className="sm:col-span-2">
                                 <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                                  İlgili Kişiler ({members.length})
+                                  {t("admin.relatedPersons")} ({members.length})
                                 </p>
                                 {members.length === 0 ? (
-                                  <p className="text-sm text-ink-muted">Kayıtlı ekip üyesi yok.</p>
+                                  <p className="text-sm text-ink-muted">{t("admin.noRegisteredTeamMember")}</p>
                                 ) : (
                                   <div className="overflow-hidden rounded-lg border border-border">
                                     <table className="w-full text-sm">
                                       <thead>
                                         <tr className="bg-surface text-left text-xs uppercase tracking-wide text-ink-muted">
-                                          <th className="px-3 py-2">Ad Soyad</th>
-                                          <th className="px-3 py-2">Unvan</th>
-                                          <th className="px-3 py-2">E-posta</th>
-                                          <th className="px-3 py-2">Kullanıcı Adı</th>
+                                          <th className="px-3 py-2">{t("admin.colFullName")}</th>
+                                          <th className="px-3 py-2">{t("admin.colTitleUnvan")}</th>
+                                          <th className="px-3 py-2">{t("admin.colEmail")}</th>
+                                          <th className="px-3 py-2">{t("admin.colUsername")}</th>
                                         </tr>
                                       </thead>
                                       <tbody>
