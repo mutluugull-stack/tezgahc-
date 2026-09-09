@@ -124,6 +124,27 @@ export const dict = {
       "Be the first to post a listing and get featured here.",
       "Geben Sie die erste Anzeige auf und werden Sie hier vorgestellt."
     ),
+    serviceCardsTitle: e("Hizmet İlanları", "Service Listings", "Dienstleistungsanzeigen"),
+    serviceCardsSubtitle: e(
+      "Tezgah taşıma, teknik servis ve ekipman için güvenilir çözüm ortakları.",
+      "Trusted partners for machine transport, technical service and equipment.",
+      "Vertrauenswürdige Partner für Maschinentransport, technischen Service und Ausrüstung."
+    ),
+    sponsoredBadge: e("Reklam", "Ad", "Anzeige"),
+    getQuoteLink: e("Teklif alın →", "Get a quote →", "Angebot einholen →"),
+  },
+
+  userMenu: {
+    teamListLabel: e("Ekip Listesi", "Team List", "Teamliste"),
+    siteAdminRole: e("Site Yöneticisi", "Site Admin", "Website-Administrator"),
+    dealerAccountRole: e("Bayi Hesabı", "Dealer Account", "Händlerkonto"),
+    memberRole: e("Üye", "Member", "Mitglied"),
+    logout: e("Çıkış", "Log Out", "Abmelden"),
+  },
+
+  themeToggle: {
+    switchToLight: e("Aydınlık temaya geç", "Switch to light theme", "Zum hellen Design wechseln"),
+    switchToDark: e("Karanlık temaya geç", "Switch to dark theme", "Zum dunklen Design wechseln"),
   },
 
   market: {
@@ -1126,6 +1147,16 @@ export const dict = {
       "iPhone models appear only as \"iPhone\" since Apple's browser info does not include the model; Android models are usually shown in full.",
       "iPhone-Modelle erscheinen nur als „iPhone“, da Apples Browserinformationen das Modell nicht enthalten; Android-Modelle werden meist vollständig angezeigt."
     ),
+  },
+  cookieConsent: {
+    message: e(
+      "Tezgahçı, oturumunuzu yönetmek ve deneyiminizi iyileştirmek için zorunlu çerezler kullanır. Detaylar için",
+      "Tezgahçı uses essential cookies to manage your session and improve your experience. For details, see the",
+      "Tezgahçı verwendet notwendige Cookies, um Ihre Sitzung zu verwalten und Ihr Erlebnis zu verbessern. Details finden Sie in der"
+    ),
+    privacyPolicyLink: e("Gizlilik Politikası", "Privacy Policy", "Datenschutzerklärung"),
+    messageSuffix: e("'nı inceleyebilirsiniz.", ".", "."),
+    acceptButton: e("Anladım", "Got it", "Verstanden"),
   },
 } as const;
 
