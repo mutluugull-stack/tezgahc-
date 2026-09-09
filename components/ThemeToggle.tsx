@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 export default function ThemeToggle() {
+  const t = useT();
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label={dark ? "Aydınlık temaya geç" : "Karanlık temaya geç"}
+      aria-label={dark ? t("themeToggle.switchToLight") : t("themeToggle.switchToDark")}
       className="input flex h-9 w-9 items-center justify-center rounded-full text-sm"
       type="button"
     >

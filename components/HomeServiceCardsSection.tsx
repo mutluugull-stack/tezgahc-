@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { TruckIcon } from "./Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type Ad = {
   id: string;
@@ -13,6 +14,7 @@ type Ad = {
 };
 
 function ServiceCard({ ad }: { ad: Ad }) {
+  const t = useT();
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const fired = useRef(false);
 
@@ -45,7 +47,7 @@ function ServiceCard({ ad }: { ad: Ad }) {
       className="card relative flex items-start gap-4 p-5 transition-shadow hover:shadow-md"
     >
       <span className="absolute right-3 top-3 rounded-full bg-surface2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
-        Reklam
+        {t("home.sponsoredBadge")}
       </span>
       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-blueprint/10">
         {ad.imageUrlDesktop ? (
@@ -59,7 +61,7 @@ function ServiceCard({ ad }: { ad: Ad }) {
         <h3 className="font-display text-lg font-semibold">{ad.advertiserName}</h3>
         <p className="mt-1 text-sm text-ink-muted">{ad.altText}</p>
         <span className="mt-3 inline-block text-sm font-semibold text-blueprint hover:underline">
-          Teklif alın →
+          {t("home.getQuoteLink")}
         </span>
       </div>
     </a>
@@ -72,6 +74,7 @@ function ServiceCard({ ad }: { ad: Ad }) {
  * tamamı gizlenir (boşluk bırakmaz).
  */
 export default function HomeServiceCardsSection() {
+  const t = useT();
   const [ads, setAds] = useState<Ad[] | null>(null);
 
   useEffect(() => {
@@ -93,8 +96,8 @@ export default function HomeServiceCardsSection() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-10">
-      <h2 className="mb-1 font-display text-2xl font-bold">Hizmet İlanları</h2>
-      <p className="mb-4 text-sm text-ink-muted">Tezgah taşıma, teknik servis ve ekipman için güvenilir çözüm ortakları.</p>
+      <h2 className="mb-1 font-display text-2xl font-bold">{t("home.serviceCardsTitle")}</h2>
+      <p className="mb-4 text-sm text-ink-muted">{t("home.serviceCardsSubtitle")}</p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {ads.map((ad) => (
           <ServiceCard key={ad.id} ad={ad} />

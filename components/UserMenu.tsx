@@ -6,10 +6,12 @@ import { signOut } from "next-auth/react";
 import type { Session } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import { UserIcon, GearIcon, GridViewIcon, UsersIcon, ChevronDownIcon } from "./Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type MenuItem = { href: string; label: string; icon: React.ReactNode };
 
 export default function UserMenu({ session }: { session: Session }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -39,25 +41,25 @@ const user = session.user;
 
 const items: MenuItem[] = [];
   if (user.isAdmin) {
-    items.push({ href: "/admin", label: "Yönetici Paneli", icon: <GridViewIcon className="h-4 w-4" /> });
-    items.push({ href: "/admin/ayarlar", label: "Ayarlar", icon: <GearIcon className="h-4 w-4" /> });
+    items.push({ href: "/admin", label: t("admin.panelTitle"), icon: <GridViewIcon className="h-4 w-4" /> });
+    items.push({ href: "/admin/ayarlar", label: t("settings.title"), icon: <GearIcon className="h-4 w-4" /> });
   } else if (user.accountType === "BAYI") {
-    items.push({ href: "/bayi-panel", label: "Bayi Panelim", icon: <GridViewIcon className="h-4 w-4" /> });
+    items.push({ href: "/bayi-panel", label: t("nav.dealerPanel"), icon: <GridViewIcon className="h-4 w-4" /> });
     if (!isTeamMember) {
-      items.push({ href: "/bayi-panel/ekip", label: "Ekip Listesi", icon: <UsersIcon className="h-4 w-4" /> });
+      items.push({ href: "/bayi-panel/ekip", label: t("userMenu.teamListLabel"), icon: <UsersIcon className="h-4 w-4" /> });
     }
-    items.push({ href: "/bayi-panel/ayarlar", label: "Ayarlar", icon: <GearIcon className="h-4 w-4" /> });
+    items.push({ href: "/bayi-panel/ayarlar", label: t("settings.title"), icon: <GearIcon className="h-4 w-4" /> });
   } else {
-    items.push({ href: "/ayarlar", label: "Ayarlar", icon: <GearIcon className="h-4 w-4" /> });
+    items.push({ href: "/ayarlar", label: t("settings.title"), icon: <GearIcon className="h-4 w-4" /> });
   }
 
 const roleLabel = user.isAdmin
-  ? "Site Yöneticisi"
+  ? t("userMenu.siteAdminRole")
   : user.accountType === "BAYI"
   ? isTeamMember
-  ? "Ekip Üyesi"
-  : "Bayi Hesabı"
-  : "Üye";
+  ? t("dealerProfile.teamMemberRole")
+  : t("userMenu.dealerAccountRole")
+  : t("userMenu.memberRole");
 
 return (
   <div className="relative" ref={ref}>
@@ -100,7 +102,7 @@ return (
             onClick={() => signOut({ callbackUrl: "/" })}
             className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm font-medium text-red-500 transition-colors hover:bg-surface2"
             >
-          Çıkış
+          {t("userMenu.logout")}
           </button>
           </div>
           </div>

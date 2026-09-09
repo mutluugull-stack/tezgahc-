@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 const STORAGE_KEY = "tezgahci_cerez_onay";
 
 export default function CookieConsent() {
+  const t = useT();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -33,19 +35,18 @@ export default function CookieConsent() {
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-surface/98 px-4 py-3.5 pb-[calc(env(safe-area-inset-bottom)+0.875rem)] shadow-[0_-4px_16px_rgba(0,0,0,0.08)] backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
         <p className="text-center text-sm text-ink-muted sm:text-left">
-          Tezgahçı, oturumunuzu yönetmek ve deneyiminizi iyileştirmek için zorunlu çerezler kullanır.
-          Detaylar için{" "}
+          {t("cookieConsent.message")}{" "}
           <Link href="/gizlilik" className="font-semibold text-blueprint hover:underline">
-            Gizlilik Politikası
+            {t("cookieConsent.privacyPolicyLink")}
           </Link>
-          &apos;nı inceleyebilirsiniz.
+          {t("cookieConsent.messageSuffix")}
         </p>
         <button
           type="button"
           onClick={accept}
           className="btn-accent shrink-0 rounded-lg px-5 py-2 text-sm font-semibold"
         >
-          Anladım
+          {t("cookieConsent.acceptButton")}
         </button>
       </div>
     </div>
