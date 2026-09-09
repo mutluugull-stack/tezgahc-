@@ -5,6 +5,7 @@ import Link from "next/link";
 import { fmtDateTime } from "@/lib/constants";
 import EmptyState from "@/components/EmptyState";
 import { BackIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type AdminMessage = {
   id: string;
@@ -21,6 +22,7 @@ function displayName(p: { username: string; fullName: string | null; companyName
 }
 
 export default function AdminMessagesPage() {
+  const t = useT();
   const [messages, setMessages] = useState<AdminMessage[] | null>(null);
   const [stats, setStats] = useState<{ total: number; unread: number } | null>(null);
   const [error, setError] = useState("");
@@ -28,7 +30,7 @@ export default function AdminMessagesPage() {
   useEffect(() => {
     fetch("/api/admin/messages")
       .then((r) => {
-        if (!r.ok) throw new Error("Yetkisiz erişim.");
+        if (!r.ok) throw new Error(t("admin.unauthorizedError"));
         return r.json();
       })
       .then((data) => {
@@ -41,32 +43,32 @@ export default function AdminMessagesPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
-      <h1 className="mb-1 font-display text-2xl font-bold">Mesajlar</h1>
+      <h1 className="mb-1 font-display text-2xl font-bold">{t("admin.messagesTitle")}</h1>
       <p className="mb-5 text-sm text-ink-muted">
-        Alıcı-satıcı yazışmalarının gözetimi (salt okunur).
+        {t("admin.messagesSubtitle")}
       </p>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
-      {!error && !messages && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !messages && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {stats && (
         <div className="mb-5 grid grid-cols-2 gap-3 sm:w-80">
           <div className="card p-3.5">
             <p className="font-mono-data text-2xl font-bold text-blueprint">{stats.total}</p>
-            <p className="text-xs text-ink-muted">Toplam Mesaj</p>
+            <p className="text-xs text-ink-muted">{t("admin.totalMessages")}</p>
           </div>
           <div className="card p-3.5">
             <p className="font-mono-data text-2xl font-bold text-blueprint">{stats.unread}</p>
-            <p className="text-xs text-ink-muted">Okunmamış</p>
+            <p className="text-xs text-ink-muted">{t("admin.unreadLabel")}</p>
           </div>
         </div>
       )}
 
       {messages && (
         messages.length === 0 ? (
-          <EmptyState title="Henüz mesaj yok" />
+          <EmptyState title={t("admin.noMessagesYet")} />
         ) : (
           <div className="flex flex-col gap-2">
             {messages.map((m) => (
