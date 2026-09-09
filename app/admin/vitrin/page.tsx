@@ -5,6 +5,7 @@ import Link from "next/link";
 import { catLabel, fmtPrice } from "@/lib/constants";
 import EmptyState from "@/components/EmptyState";
 import { BackIcon, StarIcon, SearchIcon } from "@/components/Icons";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 type Listing = {
   id: string;
@@ -18,6 +19,7 @@ type Listing = {
 };
 
 export default function AdminVitrinPage() {
+  const { t, locale } = useLanguage();
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [q, setQ] = useState("");
@@ -27,7 +29,7 @@ export default function AdminVitrinPage() {
     fetch("/api/listings?limit=200")
       .then((r) => r.json())
       .then((data) => setListings(data.listings))
-      .catch(() => setError("İlanlar yüklenemedi."));
+      .catch(() => setError(t("admin.listingsLoadFailed")));
   }
 
   useEffect(() => {
@@ -64,7 +66,7 @@ export default function AdminVitrinPage() {
             {l.title}
           </Link>
           <p className="text-xs text-ink-muted">
-            {catLabel(l.category)} · {l.city} · {l.seller.companyName || l.seller.fullName || `@${l.seller.username}`}
+            {catLabel(l.category, locale)} · {l.city} · {l.seller.companyName || l.seller.fullName || `@${l.seller.username}`}
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
@@ -74,7 +76,7 @@ export default function AdminVitrinPage() {
             onClick={() => toggleVitrin(l.id, !l.isVitrin)}
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${l.isVitrin ? "input" : "btn-accent"}`}
           >
-            {l.isVitrin ? "Vitrinden Kaldır" : "Vitrine Ekle"}
+            {l.isVitrin ? t("admin.removeFromVitrin") : t("admin.addToVitrin")}
           </button>
         </div>
       </div>
@@ -84,24 +86,24 @@ export default function AdminVitrinPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
-      <h1 className="mb-1 font-display text-2xl font-bold">Vitrin Yönetimi</h1>
+      <h1 className="mb-1 font-display text-2xl font-bold">{t("admin.vitrinManagementTitle")}</h1>
       <p className="mb-5 text-sm text-ink-muted">
-        Ana sayfada öne çıkarılacak ilanları seçin.
+        {t("admin.vitrinManagementSubtitle")}
       </p>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
-      {!error && !listings && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !listings && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {listings && (
         <>
           <div className="mb-6">
             <h2 className="mb-2.5 flex items-center gap-1.5 font-display text-lg font-semibold">
-              <StarIcon className="h-4 w-4 text-amber-500" /> Vitrindeki İlanlar ({vitrinListings.length})
+              <StarIcon className="h-4 w-4 text-amber-500" /> {t("admin.vitrinListingsHeading").replace("{n}", String(vitrinListings.length))}
             </h2>
             {vitrinListings.length === 0 ? (
-              <EmptyState title="Vitrinde ilan yok" description="Aşağıdan bir ilan seçip vitrine ekleyin." />
+              <EmptyState title={t("admin.noVitrinListings")} description={t("admin.noVitrinListingsDesc")} />
             ) : (
               <div className="flex flex-col gap-2">
                 {vitrinListings.map((l) => (
@@ -112,13 +114,13 @@ export default function AdminVitrinPage() {
           </div>
 
           <div>
-            <h2 className="mb-2.5 font-display text-lg font-semibold">İlan Ekle</h2>
+            <h2 className="mb-2.5 font-display text-lg font-semibold">{t("admin.addListingHeading")}</h2>
             <div className="input mb-3 flex items-center gap-2 rounded-lg px-3 py-2">
               <SearchIcon className="h-4 w-4 text-ink-muted" />
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="İlan başlığına göre ara..."
+                placeholder={t("admin.searchByTitlePlaceholder")}
                 className="w-full bg-transparent text-sm outline-none"
               />
             </div>
@@ -126,7 +128,7 @@ export default function AdminVitrinPage() {
               {otherListings.map((l) => (
                 <Row key={l.id} l={l} />
               ))}
-              {otherListings.length === 0 && <p className="text-sm text-ink-muted">Sonuç bulunamadı.</p>}
+              {otherListings.length === 0 && <p className="text-sm text-ink-muted">{t("admin.noResultsFound")}</p>}
             </div>
           </div>
         </>
