@@ -798,6 +798,335 @@ export const dict = {
     statTotalViews: e("Toplam Görüntülenme", "Total Views", "Aufrufe gesamt"),
     statTotalMessages: e("Toplam Mesaj", "Total Messages", "Nachrichten gesamt"),
   },
+  admin: {
+    panelTitle: e("Yönetici Paneli", "Admin Panel", "Admin-Bereich"),
+    dashboardSubtitle: e("Pazar yerini buradan yönetin.", "Manage the marketplace from here.", "Verwalten Sie den Marktplatz von hier aus."),
+    unauthorizedError: e("Yetkisiz erişim.", "Unauthorized access.", "Nicht autorisierter Zugriff."),
+    statIndividualUsers: e("Bireysel Üye", "Individual Members", "Einzelmitglieder"),
+    statDealerUsers: e("Bayi Üye", "Dealer Members", "Händlermitglieder"),
+    statPendingDealers: e("Onay Bekleyen Bayi", "Pending Dealers", "Ausstehende Händler"),
+    tileUsers: e("Kullanıcılar", "Users", "Benutzer"),
+    tileDealers: e("Bayiler", "Dealers", "Händler"),
+    tileListings: e("İlanlar", "Listings", "Anzeigen"),
+    tileCategories: e("Kategoriler", "Categories", "Kategorien"),
+    tileMessages: e("Mesajlar", "Messages", "Nachrichten"),
+    tileVitrin: e("Vitrin Yönetimi", "Showcase Management", "Vitrine-Verwaltung"),
+    tileAds: e("Reklamlar", "Advertisements", "Anzeigen (Werbung)"),
+    tileReports: e("Şikayetler", "Reports", "Meldungen"),
+    tileVisits: e("Ziyaretler", "Visits", "Besuche"),
+    tileAnalytics: e("Raporlar", "Analytics", "Berichte"),
+
+    dealersTitle: e("Bayiler", "Dealers", "Händler"),
+    dealerDeleteFailed: e("Bayi silinemedi.", "Could not delete dealer.", "Händler konnte nicht gelöscht werden."),
+    noDealerApplications: e("Henüz bayi başvurusu yok", "No dealer applications yet", "Noch keine Händleranträge"),
+    colCompany: e("Firma", "Company", "Firma"),
+    colEmail: e("E-posta", "Email", "E-Mail"),
+    colPhone: e("Telefon", "Phone", "Telefon"),
+    colCity: e("Şehir", "City", "Stadt"),
+    colListings: e("İlan", "Listings", "Anzeigen"),
+    colStatus: e("Durum", "Status", "Status"),
+    dealerApproved: e("Onaylı", "Approved", "Genehmigt"),
+    dealerPendingApproval: e("Onay Bekliyor", "Pending Approval", "Genehmigung ausstehend"),
+    deleteWillAlsoRemove: e(
+      "{listings} ilan, {members} ekip üyesi de silinecek.",
+      "{listings} listings and {members} team members will also be deleted.",
+      "{listings} Anzeigen und {members} Teammitglieder werden ebenfalls gelöscht."
+    ),
+    confirmQuestion: e("Emin misiniz?", "Are you sure?", "Sind Sie sicher?"),
+    yesDelete: e("Evet, Sil", "Yes, Delete", "Ja, löschen"),
+    removeApprovalButton: e("Onayı Kaldır", "Remove Approval", "Genehmigung entziehen"),
+    deleteDealerTooltip: e("Bayiyi Sil", "Delete Dealer", "Händler löschen"),
+    openAddress: e("Açık Adres", "Full Address", "Vollständige Adresse"),
+    noAddressEntered: e("Adres girilmemiş.", "No address entered.", "Keine Adresse eingegeben."),
+    officialDocuments: e("Resmi Evraklar", "Official Documents", "Offizielle Dokumente"),
+    currentActivityCertificate: e("Güncel Faaliyet Belgesi", "Current Activity Certificate", "Aktuelle Tätigkeitsbescheinigung"),
+    noActivityCertificate: e("Faaliyet belgesi yok", "No activity certificate", "Keine Tätigkeitsbescheinigung"),
+    signatureCircular: e("İmza Sirküleri", "Signature Circular", "Unterschriftenzirkular"),
+    noSignatureCircular: e("İmza sirküleri yok", "No signature circular", "Kein Unterschriftenzirkular"),
+    relatedPersons: e("İlgili Kişiler", "Related Persons", "Zugehörige Personen"),
+    noRegisteredTeamMember: e("Kayıtlı ekip üyesi yok.", "No registered team members.", "Keine registrierten Teammitglieder."),
+    colFullName: e("Ad Soyad", "Full Name", "Vollständiger Name"),
+    colTitleUnvan: e("Unvan", "Title", "Position"),
+    colUsername: e("Kullanıcı Adı", "Username", "Benutzername"),
+
+    listingsPageTitle: e("İlanlar", "Listings", "Anzeigen"),
+    listingsPageSubtitle: e(
+      "Tüm ilanları görüntüleyin, vitrine ekleyin/çıkarın veya kaldırın.",
+      "View all listings, add/remove them from the showcase, or delete them.",
+      "Alle Anzeigen anzeigen, zur Vitrine hinzufügen/entfernen oder löschen."
+    ),
+    listingsLoadFailed: e("İlanlar yüklenemedi.", "Could not load listings.", "Anzeigen konnten nicht geladen werden."),
+    noListingsYet: e("Henüz ilan yok", "No listings yet", "Noch keine Anzeigen"),
+    colListing: e("İlan", "Listing", "Anzeige"),
+    colSeller: e("Satıcı", "Seller", "Verkäufer"),
+    colPrice: e("Fiyat", "Price", "Preis"),
+    removeFromVitrin: e("Vitrinden Kaldır", "Remove from Showcase", "Aus Vitrine entfernen"),
+    addToVitrin: e("Vitrine Ekle", "Add to Showcase", "Zur Vitrine hinzufügen"),
+    markSold: e("Satıldı İşaretle", "Mark as Sold", "Als verkauft markieren"),
+
+    categoriesTitle: e("Kategoriler", "Categories", "Kategorien"),
+    categoriesSubtitle: e("Kategoriye göre ilan dağılımı.", "Listing distribution by category.", "Anzeigenverteilung nach Kategorie."),
+
+    allUsersTitle: e("Tüm Kullanıcılar", "All Users", "Alle Benutzer"),
+    passwordResetCreatedFor: e(
+      "@{username} için yeni şifre oluşturuldu",
+      "New password created for @{username}",
+      "Neues Passwort für @{username} erstellt"
+    ),
+    passwordShownOnce: e(
+      "Bu şifre yalnızca bir kez gösteriliyor. Kullanıcıya güvenli bir kanaldan (telefon, doğrulanmış iletişim vb.) iletin.",
+      "This password is shown only once. Share it with the user through a secure channel (phone, verified contact, etc.).",
+      "Dieses Passwort wird nur einmal angezeigt. Teilen Sie es dem Benutzer über einen sicheren Kanal mit (Telefon, verifizierter Kontakt usw.)."
+    ),
+    copyButton: e("Kopyala", "Copy", "Kopieren"),
+    copiedLabel: e("Kopyalandı", "Copied", "Kopiert"),
+    passwordResetFailed: e("Şifre sıfırlanamadı.", "Could not reset password.", "Passwort konnte nicht zurückgesetzt werden."),
+    connectionErrorRetry: e("Bağlantı hatası. Tekrar deneyin.", "Connection error. Please try again.", "Verbindungsfehler. Bitte versuchen Sie es erneut."),
+    noUsersYet: e("Henüz kullanıcı yok", "No users yet", "Noch keine Benutzer"),
+    colType: e("Tür", "Type", "Typ"),
+    colRegisterDate: e("Kayıt Tarihi", "Registration Date", "Registrierungsdatum"),
+    colPassword: e("Şifre", "Password", "Passwort"),
+    typeDealer: e("Bayi", "Dealer", "Händler"),
+    typeIndividual: e("Bireysel", "Individual", "Privatperson"),
+    resetPasswordButton: e("Şifre Sıfırla", "Reset Password", "Passwort zurücksetzen"),
+    adminBadge: e("Admin", "Admin", "Admin"),
+
+    messagesTitle: e("Mesajlar", "Messages", "Nachrichten"),
+    messagesSubtitle: e(
+      "Alıcı-satıcı yazışmalarının gözetimi (salt okunur).",
+      "Oversight of buyer-seller correspondence (read-only).",
+      "Überwachung der Käufer-Verkäufer-Korrespondenz (nur lesend)."
+    ),
+    totalMessages: e("Toplam Mesaj", "Total Messages", "Nachrichten gesamt"),
+    unreadLabel: e("Okunmamış", "Unread", "Ungelesen"),
+    noMessagesYet: e("Henüz mesaj yok", "No messages yet", "Noch keine Nachrichten"),
+
+    reportsPageTitle: e("Raporlar", "Analytics", "Berichte"),
+    reportsPageSubtitle: e("Pazar yerinin genel eğilimleri.", "Overall trends of the marketplace.", "Allgemeine Trends des Marktplatzes."),
+    totalListings: e("Toplam İlan", "Total Listings", "Anzeigen gesamt"),
+    totalMembers: e("Toplam Üye", "Total Members", "Mitglieder gesamt"),
+    dealerCount: e("Bayi Sayısı", "Number of Dealers", "Anzahl der Händler"),
+    avgListingPrice: e("Ortalama İlan Fiyatı (TL)", "Average Listing Price (TRY)", "Durchschnittlicher Anzeigenpreis (TRY)"),
+    newListingsLast6Months: e("Son 6 Ayda Yeni İlanlar", "New Listings in the Last 6 Months", "Neue Anzeigen in den letzten 6 Monaten"),
+    newMembersLast6Months: e("Son 6 Ayda Yeni Üyeler", "New Members in the Last 6 Months", "Neue Mitglieder in den letzten 6 Monaten"),
+    listingsByCityTop8: e("Şehre Göre İlan Dağılımı (İlk 8)", "Listings by City (Top 8)", "Anzeigen nach Stadt (Top 8)"),
+
+    adsTitle: e("Reklamlar", "Advertisements", "Anzeigen (Werbung)"),
+    adsSubtitle: e(
+      "Ana sayfa ve ilan listelerindeki reklam alanlarını buradan yönetin.",
+      "Manage the ad slots on the homepage and listing pages from here.",
+      "Verwalten Sie die Werbeflächen auf der Startseite und den Anzeigenlisten von hier aus."
+    ),
+    newAdButton: e("Yeni Reklam", "New Ad", "Neue Anzeige (Werbung)"),
+    editAdTitle: e("Reklamı Düzenle", "Edit Ad", "Anzeige bearbeiten"),
+    newAdTitle: e("Yeni Reklam", "New Ad", "Neue Anzeige (Werbung)"),
+    advertiserNameLabel: e("Reklamveren Adı *", "Advertiser Name *", "Name des Werbetreibenden *"),
+    advertiserNamePlaceholder: e("örn. ABC Nakliyat", "e.g. ABC Logistics", "z. B. ABC Logistik"),
+    placementFieldLabel: e("Gösterileceği Alan *", "Placement *", "Platzierung *"),
+    recommendedSize: e("Önerilen ölçü: {size}", "Recommended size: {size}", "Empfohlene Größe: {size}"),
+    categoryTargetingLabel: e("Kategori Hedefleme", "Category Targeting", "Kategorie-Targeting"),
+    allCategoriesOption: e("Tüm kategoriler", "All categories", "Alle Kategorien"),
+    categoryTargetingNote: e(
+      "Yalnızca ilan listesi alanları için geçerlidir.",
+      "Only applies to listing page slots.",
+      "Gilt nur für Anzeigenlisten-Platzierungen."
+    ),
+    desktopImageLabel: e("Masaüstü Görseli *", "Desktop Image *", "Desktop-Bild *"),
+    desktopPreviewAlt: e("Masaüstü önizleme", "Desktop preview", "Desktop-Vorschau"),
+    mobileImageLabel: e("Mobil Görseli (opsiyonel)", "Mobile Image (optional)", "Mobiles Bild (optional)"),
+    mobilePreviewAlt: e("Mobil önizleme", "Mobile preview", "Mobile Vorschau"),
+    mobileImageNote: e(
+      "Verilmezse mobilde masaüstü görseli kullanılır.",
+      "If not provided, the desktop image is used on mobile.",
+      "Falls nicht angegeben, wird auf Mobilgeräten das Desktop-Bild verwendet."
+    ),
+    publishPreviewLabel: e("Yayın Önizlemesi", "Publish Preview", "Veröffentlichungsvorschau"),
+    adPreviewAlt: e("Reklam önizleme", "Ad preview", "Anzeigenvorschau"),
+    altTextLabel: e("Alternatif Metin / Kısa Açıklama *", "Alt Text / Short Description *", "Alt-Text / Kurzbeschreibung *"),
+    altTextPlaceholder: e(
+      "örn. Sigortalı, vinçli tezgah nakliyesi — Türkiye geneli",
+      "e.g. Insured, crane machine transport — nationwide",
+      "z. B. Versicherter Maschinentransport mit Kran — landesweit"
+    ),
+    altTextNote: e(
+      "Görselin ekran okuyucularda okunacak açıklaması; hizmet kartlarında ayrıca kısa tanıtım metni olarak gösterilir.",
+      "The image's description for screen readers; also shown as a short promo text on service cards.",
+      "Die Beschreibung des Bildes für Bildschirmleser; wird auf Servicekarten auch als kurzer Werbetext angezeigt."
+    ),
+    targetLinkLabel: e("Hedef Bağlantı *", "Target Link *", "Ziel-Link *"),
+    startDateLabel: e("Başlangıç Tarihi", "Start Date", "Startdatum"),
+    endDateLabel: e("Bitiş Tarihi", "End Date", "Enddatum"),
+    priorityLabel: e("Gösterim Önceliği", "Display Priority", "Anzeigepriorität"),
+    priorityNote: e(
+      "Aynı alanda birden fazla reklam varsa rotasyonda ağırlık.",
+      "Weight in rotation when multiple ads exist in the same slot.",
+      "Gewichtung in der Rotation, wenn mehrere Anzeigen in derselben Platzierung vorhanden sind."
+    ),
+    adLiveCheckbox: e("Reklam yayında (aktif)", "Ad is live (active)", "Anzeige ist live (aktiv)"),
+    savingButton: e("Kaydediliyor...", "Saving...", "Wird gespeichert..."),
+    saveChangesButton: e("Değişiklikleri Kaydet", "Save Changes", "Änderungen speichern"),
+    createAdButton: e("Reklamı Oluştur", "Create Ad", "Anzeige erstellen"),
+    desktopImageRequiredError: e(
+      "Masaüstü görseli yüklemeden reklamı kaydedemezsiniz.",
+      "You cannot save the ad without uploading a desktop image.",
+      "Sie können die Anzeige nicht speichern, ohne ein Desktop-Bild hochzuladen."
+    ),
+    imageUploadFailed: e("Görsel yüklenemedi.", "Could not upload image.", "Bild konnte nicht hochgeladen werden."),
+    adSaveFailed: e("Reklam kaydedilemedi.", "Could not save ad.", "Anzeige konnte nicht gespeichert werden."),
+    adsLoadFailed: e("Reklamlar yüklenemedi.", "Could not load ads.", "Anzeigen konnten nicht geladen werden."),
+    deleteAdConfirm: e(
+      "Bu reklamı kalıcı olarak silmek istediğinize emin misiniz?",
+      "Are you sure you want to permanently delete this ad?",
+      "Möchten Sie diese Anzeige wirklich dauerhaft löschen?"
+    ),
+    areaFilterLabel: e("Alan:", "Slot:", "Platzierung:"),
+    allFilterOption: e("Tümü ({n})", "All ({n})", "Alle ({n})"),
+    noAdsYet: e("Henüz reklam yok", "No ads yet", "Noch keine Anzeigen"),
+    noAdsDesc: e(
+      "Yukarıdaki “Yeni Reklam” ile ilk reklamınızı oluşturun.",
+      "Create your first ad using “New Ad” above.",
+      "Erstellen Sie Ihre erste Anzeige über „Neue Anzeige“ oben."
+    ),
+    stopButton: e("Durdur", "Stop", "Stoppen"),
+    startButton: e("Başlat", "Start", "Starten"),
+    impressionsClicksCtr: e(
+      "{impressions} gösterim · {clicks} tıklama · %{ctr} CTR",
+      "{impressions} impressions · {clicks} clicks · {ctr}% CTR",
+      "{impressions} Impressionen · {clicks} Klicks · {ctr}% CTR"
+    ),
+    indefiniteLabel: e("süresiz", "indefinite", "unbefristet"),
+    priorityInline: e("Öncelik {n}", "Priority {n}", "Priorität {n}"),
+    adStatusInactive: e("Pasif", "Inactive", "Inaktiv"),
+    adStatusScheduled: e("Planlanmış", "Scheduled", "Geplant"),
+    adStatusExpired: e("Süresi Geçmiş", "Expired", "Abgelaufen"),
+    adStatusActive: e("Aktif", "Active", "Aktiv"),
+
+    placementHomeSearchBanner: e(
+      "Ana Sayfa — Arama Altı Banner",
+      "Homepage — Below-Search Banner",
+      "Startseite — Banner unter der Suche"
+    ),
+    placementHomeAfterVitrin: e(
+      "Ana Sayfa — Vitrin Sonrası Alan",
+      "Homepage — After-Showcase Slot",
+      "Startseite — Bereich nach der Vitrine"
+    ),
+    placementHomeServiceCard: e(
+      "Ana Sayfa — Sponsorlu Hizmet Kartı",
+      "Homepage — Sponsored Service Card",
+      "Startseite — Gesponserte Service-Karte"
+    ),
+    placementListingTopBanner: e(
+      "İlan Listesi — Üst Banner",
+      "Listing Page — Top Banner",
+      "Anzeigenliste — Oberes Banner"
+    ),
+    placementListingInfeed: e(
+      "İlan Listesi — Akış İçi (Her 8 İlanda Bir)",
+      "Listing Page — In-Feed (Every 8 Listings)",
+      "Anzeigenliste — Im Feed (alle 8 Anzeigen)"
+    ),
+    placementListingSidebar: e(
+      "İlan Listesi — Sağ Sidebar (Masaüstü)",
+      "Listing Page — Right Sidebar (Desktop)",
+      "Anzeigenliste — Rechte Seitenleiste (Desktop)"
+    ),
+    recommendedSizeBanner: e(
+      "1200×150 px (masaüstü) · 600×200 px (mobil)",
+      "1200×150 px (desktop) · 600×200 px (mobile)",
+      "1200×150 px (Desktop) · 600×200 px (Mobil)"
+    ),
+    recommendedSizeServiceCard: e(
+      "160×160 px kare logo/görsel",
+      "160×160 px square logo/image",
+      "160×160 px quadratisches Logo/Bild"
+    ),
+    recommendedSizeSidebar: e("300×600 px (dikey)", "300×600 px (vertical)", "300×600 px (vertikal)"),
+
+    listingReportsTitle: e("İlan Şikayetleri", "Listing Reports", "Anzeigenmeldungen"),
+    listingReportsSubtitle: e(
+      "Kullanıcıların bildirdiği ilanları inceleyin.",
+      "Review listings reported by users.",
+      "Überprüfen Sie die von Benutzern gemeldeten Anzeigen."
+    ),
+    noReportsYet: e("Henüz şikayet yok", "No reports yet", "Noch keine Meldungen"),
+    noReportsDesc: e(
+      "Kullanıcılar bir ilanı bildirdiğinde burada görünecek.",
+      "This will appear here when users report a listing.",
+      "Dies wird hier angezeigt, sobald Benutzer eine Anzeige melden."
+    ),
+    colReason: e("Sebep", "Reason", "Grund"),
+    colDescription: e("Açıklama", "Description", "Beschreibung"),
+    colReporter: e("Bildiren", "Reported By", "Gemeldet von"),
+    colActionSingle: e("İşlem", "Action", "Aktion"),
+    deletedListing: e("Silinmiş ilan", "Deleted listing", "Gelöschte Anzeige"),
+    anonymousLabel: e("Anonim", "Anonymous", "Anonym"),
+    markReviewedButton: e("İncelendi", "Reviewed", "Überprüft"),
+    reasonSahteYaniltici: e("Sahte veya yanıltıcı ilan", "Fake or misleading listing", "Gefälschte oder irreführende Anzeige"),
+    reasonYanlisKategori: e("Yanlış kategoride", "Wrong category", "Falsche Kategorie"),
+    reasonUygunsuzIcerik: e("Uygunsuz içerik / fotoğraf", "Inappropriate content / photo", "Unangemessener Inhalt / Foto"),
+    reasonSatildiKaldirilmadi: e("Satıldı ama kaldırılmamış", "Sold but not removed", "Verkauft, aber nicht entfernt"),
+    reasonDiger: e("Diğer", "Other", "Sonstiges"),
+    reportStatusBeklemede: e("Beklemede", "Pending", "Ausstehend"),
+    reportStatusIncelendi: e("İncelendi", "Reviewed", "Überprüft"),
+    reportStatusReddedildi: e("Reddedildi", "Rejected", "Abgelehnt"),
+
+    vitrinManagementTitle: e("Vitrin Yönetimi", "Showcase Management", "Vitrine-Verwaltung"),
+    vitrinManagementSubtitle: e(
+      "Ana sayfada öne çıkarılacak ilanları seçin.",
+      "Choose the listings to feature on the homepage.",
+      "Wählen Sie die auf der Startseite hervorzuhebenden Anzeigen aus."
+    ),
+    vitrinListingsHeading: e("Vitrindeki İlanlar ({n})", "Showcased Listings ({n})", "Anzeigen in der Vitrine ({n})"),
+    noVitrinListings: e("Vitrinde ilan yok", "No listings in the showcase", "Keine Anzeigen in der Vitrine"),
+    noVitrinListingsDesc: e(
+      "Aşağıdan bir ilan seçip vitrine ekleyin.",
+      "Select a listing below and add it to the showcase.",
+      "Wählen Sie unten eine Anzeige aus und fügen Sie sie zur Vitrine hinzu."
+    ),
+    addListingHeading: e("İlan Ekle", "Add Listing", "Anzeige hinzufügen"),
+    searchByTitlePlaceholder: e("İlan başlığına göre ara...", "Search by listing title...", "Nach Anzeigentitel suchen..."),
+    noResultsFound: e("Sonuç bulunamadı.", "No results found.", "Keine Ergebnisse gefunden."),
+
+    visitsTitle: e("Ziyaretler", "Visits", "Besuche"),
+    visitsSubtitle: e(
+      "Sitenin ziyaretçi trafiği (yönetici panel sayfaları hariç).",
+      "The site's visitor traffic (excluding admin panel pages).",
+      "Der Besucherverkehr der Website (ohne Admin-Bereich-Seiten)."
+    ),
+    todayLabel: e("Bugün", "Today", "Heute"),
+    last7DaysLabel: e("Son 7 Gün", "Last 7 Days", "Letzte 7 Tage"),
+    last30DaysLabel: e("Son 30 Gün", "Last 30 Days", "Letzte 30 Tage"),
+    visitsLast14Days: e("Son 14 Günde Ziyaret", "Visits in the Last 14 Days", "Besuche in den letzten 14 Tagen"),
+    topPagesLast30Days: e(
+      "En Çok Görüntülenen Sayfalar (Son 30 Gün)",
+      "Most Viewed Pages (Last 30 Days)",
+      "Meistgesehene Seiten (letzte 30 Tage)"
+    ),
+    noDataYet: e("Henüz veri yok.", "No data yet.", "Noch keine Daten."),
+    trafficSourcesLast30Days: e(
+      "Trafik Kaynakları (Son 30 Gün)",
+      "Traffic Sources (Last 30 Days)",
+      "Traffic-Quellen (letzte 30 Tage)"
+    ),
+    visitsByProvinceLast30Days: e(
+      "İllere Göre Ziyaret (Son 30 Gün)",
+      "Visits by Province (Last 30 Days)",
+      "Besuche nach Provinz (letzte 30 Tage)"
+    ),
+    locationEstimateNote: e(
+      "Konum, ziyaretçinin IP adresinden yaklaşık olarak tahmin edilir; kesin olmayabilir.",
+      "Location is roughly estimated from the visitor's IP address; it may not be exact.",
+      "Der Standort wird ungefähr anhand der IP-Adresse des Besuchers geschätzt und ist möglicherweise nicht genau."
+    ),
+    deviceTypeLast30Days: e("Cihaz Türü (Son 30 Gün)", "Device Type (Last 30 Days)", "Gerätetyp (letzte 30 Tage)"),
+    deviceModelsLast30Days: e("Cihaz Modelleri (Son 30 Gün)", "Device Models (Last 30 Days)", "Gerätemodelle (letzte 30 Tage)"),
+    deviceModelsNote: e(
+      "iPhone modelleri Apple'ın tarayıcı bilgisinde yer almadığından yalnızca \"iPhone\" olarak görünür; Android modelleri genellikle tam olarak görünür.",
+      "iPhone models appear only as \"iPhone\" since Apple's browser info does not include the model; Android models are usually shown in full.",
+      "iPhone-Modelle erscheinen nur als „iPhone“, da Apples Browserinformationen das Modell nicht enthalten; Android-Modelle werden meist vollständig angezeigt."
+    ),
+  },
 } as const;
 
 type DeepDict = typeof dict;
