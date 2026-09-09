@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fmtPrice } from "@/lib/constants";
 import { BackIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type Reports = {
   listingsByMonth: { label: string; count: number }[];
@@ -26,13 +27,14 @@ function BarRow({ label, count, max }: { label: string; count: number; max: numb
 }
 
 export default function AdminReportsPage() {
+  const t = useT();
   const [data, setData] = useState<Reports | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/reports")
       .then((r) => {
-        if (!r.ok) throw new Error("Yetkisiz erişim.");
+        if (!r.ok) throw new Error(t("admin.unauthorizedError"));
         return r.json();
       })
       .then(setData)
@@ -42,22 +44,22 @@ export default function AdminReportsPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
-      <h1 className="mb-1 font-display text-2xl font-bold">Raporlar</h1>
-      <p className="mb-5 text-sm text-ink-muted">Pazar yerinin genel eğilimleri.</p>
+      <h1 className="mb-1 font-display text-2xl font-bold">{t("admin.reportsPageTitle")}</h1>
+      <p className="mb-5 text-sm text-ink-muted">{t("admin.reportsPageSubtitle")}</p>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
-      {!error && !data && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !data && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {data && (
         <div className="flex flex-col gap-5">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { label: "Toplam İlan", value: data.totals.listings },
-              { label: "Satılan İlan", value: data.totals.soldListings },
-              { label: "Toplam Üye", value: data.totals.users },
-              { label: "Bayi Sayısı", value: data.totals.dealers },
+              { label: t("admin.totalListings"), value: data.totals.listings },
+              { label: t("dealerProfile.statSoldListings"), value: data.totals.soldListings },
+              { label: t("admin.totalMembers"), value: data.totals.users },
+              { label: t("admin.dealerCount"), value: data.totals.dealers },
             ].map((s) => (
               <div key={s.label} className="card p-3.5">
                 <p className="font-mono-data text-2xl font-bold text-blueprint">{s.value}</p>
@@ -67,12 +69,12 @@ export default function AdminReportsPage() {
           </div>
 
           <div className="card p-3.5">
-            <p className="text-xs text-ink-muted">Ortalama İlan Fiyatı (TL)</p>
+            <p className="text-xs text-ink-muted">{t("admin.avgListingPrice")}</p>
             <p className="font-mono-data text-2xl font-bold text-blueprint">{fmtPrice(data.avgPriceTRY, "TRY")}</p>
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">Son 6 Ayda Yeni İlanlar</h2>
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.newListingsLast6Months")}</h2>
             <div className="flex flex-col gap-2.5">
               {data.listingsByMonth.map((m) => (
                 <BarRow key={m.label} label={m.label} count={m.count} max={Math.max(1, ...data.listingsByMonth.map((x) => x.count))} />
@@ -81,7 +83,7 @@ export default function AdminReportsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">Son 6 Ayda Yeni Üyeler</h2>
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.newMembersLast6Months")}</h2>
             <div className="flex flex-col gap-2.5">
               {data.usersByMonth.map((m) => (
                 <BarRow key={m.label} label={m.label} count={m.count} max={Math.max(1, ...data.usersByMonth.map((x) => x.count))} />
@@ -90,7 +92,7 @@ export default function AdminReportsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">Şehre Göre İlan Dağılımı (İlk 8)</h2>
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.listingsByCityTop8")}</h2>
             <div className="flex flex-col gap-2.5">
               {data.topCities.map((c) => (
                 <BarRow key={c.city} label={c.city} count={c.count} max={Math.max(1, ...data.topCities.map((x) => x.count))} />
