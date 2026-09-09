@@ -5,6 +5,7 @@ import Link from "next/link";
 import { fmtDate } from "@/lib/constants";
 import EmptyState from "@/components/EmptyState";
 import { BackIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type AdminUser = {
   id: string;
@@ -19,6 +20,7 @@ type AdminUser = {
 };
 
 export default function AdminUsersPage() {
+  const t = useT();
   const [users, setUsers] = useState<AdminUser[] | null>(null);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -29,7 +31,7 @@ export default function AdminUsersPage() {
   useEffect(() => {
     fetch("/api/admin/users")
       .then((r) => {
-        if (!r.ok) throw new Error("Yetkisiz erişim.");
+        if (!r.ok) throw new Error(t("admin.unauthorizedError"));
         return r.json();
       })
       .then((data) => setUsers(data.users))
@@ -44,12 +46,12 @@ export default function AdminUsersPage() {
       const res = await fetch(`/api/admin/users/${user.id}/reset-password`, { method: "POST" });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setResetError(data.error || "Şifre sıfırlanamadı.");
+        setResetError(data.error || t("admin.passwordResetFailed"));
         return;
       }
       setResetResult({ username: data.username, password: data.password });
     } catch {
-      setResetError("Bağlantı hatası. Tekrar deneyin.");
+      setResetError(t("admin.connectionErrorRetry"));
     } finally {
       setBusyId(null);
     }
@@ -58,18 +60,17 @@ export default function AdminUsersPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
-      <h1 className="mb-5 font-display text-2xl font-bold">Tüm Kullanıcılar</h1>
+      <h1 className="mb-5 font-display text-2xl font-bold">{t("admin.allUsersTitle")}</h1>
 
       {resetResult && (
         <div className="card mb-4 border-blueprint/40 bg-blueprint/5 p-4">
           <p className="mb-1 text-sm font-semibold">
-            @{resetResult.username} için yeni şifre oluşturuldu
+            {t("admin.passwordResetCreatedFor").replace("{username}", resetResult.username)}
           </p>
           <p className="mb-3 text-xs text-ink-muted">
-            Bu şifre yalnızca bir kez gösteriliyor. Kullanıcıya güvenli bir kanaldan (telefon, doğrulanmış iletişim vb.)
-            iletin.
+            {t("admin.passwordShownOnce")}
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <code className="font-mono-data rounded-lg bg-surface2 px-3 py-1.5 text-sm">{resetResult.password}</code>
@@ -80,14 +81,14 @@ export default function AdminUsersPage() {
               }}
               className="input rounded-lg px-3 py-1.5 text-xs font-semibold"
             >
-              {copied ? "Kopyalandı" : "Kopyala"}
+              {copied ? t("admin.copiedLabel") : t("admin.copyButton")}
             </button>
             <button
               type="button"
               onClick={() => setResetResult(null)}
               className="rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted hover:text-ink"
             >
-              Kapat
+              {t("common.close")}
             </button>
           </div>
         </div>
@@ -96,23 +97,23 @@ export default function AdminUsersPage() {
 
       {error && <p className="text-sm text-red-500">{error}</p>}
 
-      {!error && !users && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !users && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {users && (
         <div className="card overflow-x-auto">
           {users.length === 0 ? (
-            <EmptyState title="Henüz kullanıcı yok" />
+            <EmptyState title={t("admin.noUsersYet")} />
           ) : (
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-surface2 text-left text-xs uppercase tracking-wide text-ink-muted">
-                  <th className="px-4 py-2.5">Ad</th>
-                  <th className="px-4 py-2.5">Kullanıcı Adı</th>
-                  <th className="px-4 py-2.5">Tür</th>
-                  <th className="px-4 py-2.5">Şehir</th>
-                  <th className="px-4 py-2.5">İlan</th>
-                  <th className="px-4 py-2.5">Kayıt Tarihi</th>
-                  <th className="px-4 py-2.5">Şifre</th>
+                  <th className="px-4 py-2.5">{t("common.name")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colUsername")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colType")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colCity")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colListings")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colRegisterDate")}</th>
+                  <th className="px-4 py-2.5">{t("admin.colPassword")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -122,12 +123,12 @@ export default function AdminUsersPage() {
                       {u.fullName || u.companyName || "—"}
                       {u.isAdmin && (
                         <span className="ml-1.5 rounded-full bg-blueprint px-1.5 py-0.5 text-[10px] font-semibold text-white">
-                          Admin
+                          {t("admin.adminBadge")}
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-2.5 text-ink-muted">@{u.username}</td>
-                    <td className="px-4 py-2.5">{u.accountType === "BAYI" ? "Bayi" : "Bireysel"}</td>
+                    <td className="px-4 py-2.5">{u.accountType === "BAYI" ? t("admin.typeDealer") : t("admin.typeIndividual")}</td>
                     <td className="px-4 py-2.5 text-ink-muted">{u.city || "—"}</td>
                     <td className="font-mono-data px-4 py-2.5">{u._count.listings}</td>
                     <td className="px-4 py-2.5 text-ink-muted">{fmtDate(u.createdAt)}</td>
@@ -138,7 +139,7 @@ export default function AdminUsersPage() {
                         onClick={() => resetPassword(u)}
                         className="input rounded-lg px-2.5 py-1 text-xs font-semibold disabled:opacity-60"
                       >
-                        {busyId === u.id ? "..." : "Şifre Sıfırla"}
+                        {busyId === u.id ? "..." : t("admin.resetPasswordButton")}
                       </button>
                     </td>
                   </tr>
