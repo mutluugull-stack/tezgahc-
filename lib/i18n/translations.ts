@@ -719,6 +719,85 @@ export const dict = {
       ),
     },
   },
+  dealerPanel: {
+    loginRequiredTitle: e("Bayi paneline erişmek için giriş yapın", "Log in to access the dealer panel", "Melden Sie sich an, um auf den Händlerbereich zuzugreifen"),
+    individualOnlyTitle: e("Bu panel yalnızca bayi hesapları içindir", "This panel is for dealer accounts only", "Dieser Bereich ist nur für Händlerkonten"),
+    individualOnlyDesc: e(
+      "Bireysel hesabınızla bayi paneline erişemezsiniz.",
+      "You cannot access the dealer panel with an individual account.",
+      "Mit einem Einzelkonto können Sie nicht auf den Händlerbereich zugreifen."
+    ),
+    pendingApprovalTitle: e("Bayi hesabınız onay bekliyor", "Your dealer account is pending approval", "Ihr Händlerkonto wartet auf Genehmigung"),
+    pendingApprovalDesc: e(
+      "Hesabınız yönetici onayından geçtikten sonra bayi paneline erişebilirsiniz.",
+      "You can access the dealer panel once your account has been approved by an administrator.",
+      "Sie können auf den Händlerbereich zugreifen, sobald Ihr Konto von einem Administrator genehmigt wurde."
+    ),
+    myPanelTitle: e("Bayi Panelim", "My Dealer Panel", "Mein Händlerbereich"),
+    tileListings: e("İlanlarım", "My Listings", "Meine Anzeigen"),
+    tileTeam: e("Ekip", "Team", "Team"),
+    tileStats: e("İstatistikler", "Statistics", "Statistiken"),
+    teamSubtitle: e(
+      "Firmanız adına ilan verip yönetebilecek ekip üyeleri (ör. Müşteri Temsilcisi) tanımlayın.",
+      "Define team members (e.g. Customer Representative) who can post and manage listings on behalf of your company.",
+      "Definieren Sie Teammitglieder (z. B. Kundenberater), die im Namen Ihres Unternehmens Anzeigen erstellen und verwalten können."
+    ),
+    teamListError: e("Ekip listelenemedi.", "Could not load the team list.", "Team konnte nicht geladen werden."),
+    addMemberError: e("Ekip üyesi eklenemedi.", "Could not add team member.", "Teammitglied konnte nicht hinzugefügt werden."),
+    removeConfirm: e(
+      "Bu ekip üyesini kaldırmak istediğinize emin misiniz? Hesap tamamen silinecek.",
+      "Are you sure you want to remove this team member? The account will be permanently deleted.",
+      "Möchten Sie dieses Teammitglied wirklich entfernen? Das Konto wird vollständig gelöscht."
+    ),
+    emptyTeamTitle: e("Henüz ekip üyeniz yok", "You have no team members yet", "Sie haben noch keine Teammitglieder"),
+    emptyTeamDesc: e(
+      "Aşağıdaki formla ilk üyeyi ekleyin.",
+      "Add your first member using the form below.",
+      "Fügen Sie Ihr erstes Mitglied über das untenstehende Formular hinzu."
+    ),
+    removeTooltip: e("Kaldır", "Remove", "Entfernen"),
+    addMemberSectionTitle: e("Yeni Ekip Üyesi Ekle", "Add New Team Member", "Neues Teammitglied hinzufügen"),
+    fullNameRequired: e("Ad Soyad *", "Full Name *", "Vollständiger Name *"),
+    roleLabel: e("Unvan", "Title", "Position"),
+    usernameRequired: e("Kullanıcı Adı *", "Username *", "Benutzername *"),
+    emailRequired: e("E-posta *", "Email *", "E-Mail *"),
+    tempPasswordRequired: e("Geçici Şifre *", "Temporary Password *", "Vorübergehendes Passwort *"),
+    adding: e("Ekleniyor...", "Adding...", "Wird hinzugefügt..."),
+    addMemberButton: e("Ekip Üyesi Ekle", "Add Team Member", "Teammitglied hinzufügen"),
+    myListingsSubtitle: e(
+      "Bayinize ait tüm ilanlar (ekip üyelerinin verdikleri dahil).",
+      "All listings belonging to your dealership (including those posted by team members).",
+      "Alle Anzeigen Ihres Händlerbetriebs (einschließlich der von Teammitgliedern erstellten)."
+    ),
+    newListingButton: e("Yeni İlan", "New Listing", "Neue Anzeige"),
+    permissionError: e("Bu sayfayı görüntüleme yetkiniz yok.", "You do not have permission to view this page.", "Sie sind nicht berechtigt, diese Seite anzuzeigen."),
+    emptyListingsTitle: e("Henüz ilanınız yok", "You have no listings yet", "Sie haben noch keine Anzeigen"),
+    emptyListingsDesc: e(
+      "İlk ilanınızı vererek başlayın.",
+      "Get started by posting your first listing.",
+      "Beginnen Sie mit Ihrer ersten Anzeige."
+    ),
+    viewsCount: e("{n} görüntülenme", "{n} views", "{n} Aufrufe"),
+    statusActive: e("Aktif", "Active", "Aktiv"),
+    vitrinBadge: e("Vitrin", "Showcase", "Vitrine"),
+    deleteConfirm: e(
+      "Bu ilanı kalıcı olarak silmek istediğinize emin misiniz?",
+      "Are you sure you want to permanently delete this listing?",
+      "Möchten Sie diese Anzeige wirklich dauerhaft löschen?"
+    ),
+    markActiveButton: e("Aktife Al", "Mark Active", "Als aktiv markieren"),
+    deleteTooltip: e("Sil", "Delete", "Löschen"),
+    statsSubtitle: e(
+      "Firmanızın pazar yerindeki performansı.",
+      "Your company's performance on the marketplace.",
+      "Die Leistung Ihres Unternehmens auf dem Marktplatz."
+    ),
+    statsError: e("İstatistikler alınamadı.", "Could not load statistics.", "Statistiken konnten nicht geladen werden."),
+    statTotal: e("Toplam İlan", "Total Listings", "Anzeigen gesamt"),
+    statVitrin: e("Vitrindeki İlan", "Showcased Listings", "Anzeigen in der Vitrine"),
+    statTotalViews: e("Toplam Görüntülenme", "Total Views", "Aufrufe gesamt"),
+    statTotalMessages: e("Toplam Mesaj", "Total Messages", "Nachrichten gesamt"),
+  },
 } as const;
 
 type DeepDict = typeof dict;
