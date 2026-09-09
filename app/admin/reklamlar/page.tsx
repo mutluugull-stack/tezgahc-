@@ -3,9 +3,24 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CATEGORIES, catLabel, fmtDateTime } from "@/lib/constants";
-import { PLACEMENTS, PLACEMENT_LABELS, type Placement } from "@/lib/adValidation";
+import { PLACEMENTS, type Placement } from "@/lib/adValidation";
 import EmptyState from "@/components/EmptyState";
 import { BackIcon, PlusIcon, TrashIcon, MegaphoneIcon, LinkIcon } from "@/components/Icons";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { t as translate, type Locale } from "@/lib/i18n/translations";
+
+const PLACEMENT_KEY: Record<Placement, string> = {
+  HOME_SEARCH_BANNER: "admin.placementHomeSearchBanner",
+  HOME_AFTER_VITRIN: "admin.placementHomeAfterVitrin",
+  HOME_SERVICE_CARD: "admin.placementHomeServiceCard",
+  LISTING_TOP_BANNER: "admin.placementListingTopBanner",
+  LISTING_INFEED: "admin.placementListingInfeed",
+  LISTING_SIDEBAR: "admin.placementListingSidebar",
+};
+
+function placementLabel(placement: Placement, locale: Locale): string {
+  return translate(PLACEMENT_KEY[placement], locale);
+}
 
 type Ad = {
   id: string;
@@ -25,14 +40,18 @@ type Ad = {
   createdAt: string;
 };
 
-const RECOMMENDED_SIZE: Record<Placement, string> = {
-  HOME_SEARCH_BANNER: "1200×150 px (masaüstü) · 600×200 px (mobil)",
-  HOME_AFTER_VITRIN: "1200×150 px (masaüstü) · 600×200 px (mobil)",
-  HOME_SERVICE_CARD: "160×160 px kare logo/görsel",
-  LISTING_TOP_BANNER: "1200×150 px (masaüstü) · 600×200 px (mobil)",
-  LISTING_INFEED: "1200×150 px (masaüstü) · 600×200 px (mobil)",
-  LISTING_SIDEBAR: "300×600 px (dikey)",
+const RECOMMENDED_SIZE_KEY: Record<Placement, string> = {
+  HOME_SEARCH_BANNER: "admin.recommendedSizeBanner",
+  HOME_AFTER_VITRIN: "admin.recommendedSizeBanner",
+  HOME_SERVICE_CARD: "admin.recommendedSizeServiceCard",
+  LISTING_TOP_BANNER: "admin.recommendedSizeBanner",
+  LISTING_INFEED: "admin.recommendedSizeBanner",
+  LISTING_SIDEBAR: "admin.recommendedSizeSidebar",
 };
+
+function recommendedSize(placement: Placement, locale: Locale): string {
+  return translate(RECOMMENDED_SIZE_KEY[placement], locale);
+}
 
 const PREVIEW_ASPECT: Record<Placement, string> = {
   HOME_SEARCH_BANNER: "aspect-[8/1]",
@@ -50,16 +69,16 @@ function toLocalInputValue(iso: string | null): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-function computeStatus(ad: Ad): { label: string; className: string } {
-  if (!ad.active) return { label: "Pasif", className: "bg-surface2 text-ink-muted" };
+function computeStatus(ad: Ad, locale: Locale): { label: string; className: string } {
+  if (!ad.active) return { label: translate("admin.adStatusInactive", locale), className: "bg-surface2 text-ink-muted" };
   const now = new Date();
   if (ad.startDate && new Date(ad.startDate) > now) {
-    return { label: "Planlanmış", className: "bg-blue-100 text-blue-700" };
+    return { label: translate("admin.adStatusScheduled", locale), className: "bg-blue-100 text-blue-700" };
   }
   if (ad.endDate && new Date(ad.endDate) < now) {
-    return { label: "Süresi Geçmiş", className: "bg-red-100 text-red-600" };
+    return { label: translate("admin.adStatusExpired", locale), className: "bg-red-100 text-red-600" };
   }
-  return { label: "Aktif", className: "bg-emerald-100 text-emerald-700" };
+  return { label: translate("admin.adStatusActive", locale), className: "bg-emerald-100 text-emerald-700" };
 }
 
 const emptyForm = {
@@ -77,6 +96,7 @@ const emptyForm = {
 };
 
 export default function AdminReklamlarPage() {
+  const { t, locale } = useLanguage();
   const [ads, setAds] = useState<Ad[] | null>(null);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -97,7 +117,7 @@ export default function AdminReklamlarPage() {
     fetch("/api/admin/ads")
       .then(async (r) => {
         const data = await r.json();
-        if (!r.ok) throw new Error(data.error || "Reklamlar yüklenemedi.");
+        if (!r.ok) throw new Error(data.error || t("admin.adsLoadFailed"));
         return data;
       })
       .then((data) => setAds(data.ads))
@@ -119,7 +139,7 @@ export default function AdminReklamlarPage() {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) {
-        setFormError(data.error || "Görsel yüklenemedi.");
+        setFormError(data.error || t("admin.imageUploadFailed"));
         return;
       }
       set(which === "desktop" ? "imageUrlDesktop" : "imageUrlMobile", data.url);
@@ -158,7 +178,7 @@ export default function AdminReklamlarPage() {
     e.preventDefault();
     setFormError("");
     if (!form.imageUrlDesktop) {
-      setFormError("Masaüstü görseli yüklemeden reklamı kaydedemezsiniz.");
+      setFormError(t("admin.desktopImageRequiredError"));
       return;
     }
     setBusy(true);
@@ -175,7 +195,7 @@ export default function AdminReklamlarPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setFormError(data.error || "Reklam kaydedilemedi.");
+        setFormError(data.error || t("admin.adSaveFailed"));
         return;
       }
       setShowForm(false);
@@ -201,7 +221,7 @@ export default function AdminReklamlarPage() {
   }
 
   async function remove(id: string) {
-    if (!confirm("Bu reklamı kalıcı olarak silmek istediğinize emin misiniz?")) return;
+    if (!confirm(t("admin.deleteAdConfirm"))) return;
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/ads/${id}`, { method: "DELETE" });
@@ -220,20 +240,20 @@ export default function AdminReklamlarPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
       <div className="mb-5 flex items-center justify-between gap-3">
         <div>
           <h1 className="flex items-center gap-2 font-display text-2xl font-bold">
-            <MegaphoneIcon className="h-6 w-6 text-blueprint" /> Reklamlar
+            <MegaphoneIcon className="h-6 w-6 text-blueprint" /> {t("admin.adsTitle")}
           </h1>
           <p className="text-sm text-ink-muted">
-            Ana sayfa ve ilan listelerindeki reklam alanlarını buradan yönetin.
+            {t("admin.adsSubtitle")}
           </p>
         </div>
         {!showForm && (
           <button onClick={startCreate} className="btn-accent flex shrink-0 items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold">
-            <PlusIcon className="h-4 w-4" /> Yeni Reklam
+            <PlusIcon className="h-4 w-4" /> {t("admin.newAdButton")}
           </button>
         )}
       </div>
@@ -242,17 +262,17 @@ export default function AdminReklamlarPage() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="card mb-6 flex flex-col gap-4 p-5">
-          <h2 className="font-display text-lg font-semibold">{editingId ? "Reklamı Düzenle" : "Yeni Reklam"}</h2>
+          <h2 className="font-display text-lg font-semibold">{editingId ? t("admin.editAdTitle") : t("admin.newAdTitle")}</h2>
 
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Reklamveren Adı *
+              {t("admin.advertiserNameLabel")}
             </label>
             <input
               required
               value={form.advertiserName}
               onChange={(e) => set("advertiserName", e.target.value)}
-              placeholder="örn. ABC Nakliyat"
+              placeholder={t("admin.advertiserNamePlaceholder")}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
           </div>
@@ -260,7 +280,7 @@ export default function AdminReklamlarPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Gösterileceği Alan *
+                {t("admin.placementFieldLabel")}
               </label>
               <select
                 value={form.placement}
@@ -269,36 +289,36 @@ export default function AdminReklamlarPage() {
               >
                 {PLACEMENTS.map((p) => (
                   <option key={p} value={p}>
-                    {PLACEMENT_LABELS[p]}
+                    {placementLabel(p, locale)}
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-[11px] text-ink-muted">Önerilen ölçü: {RECOMMENDED_SIZE[form.placement]}</p>
+              <p className="mt-1 text-[11px] text-ink-muted">{t("admin.recommendedSize").replace("{size}", recommendedSize(form.placement, locale))}</p>
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Kategori Hedefleme
+                {t("admin.categoryTargetingLabel")}
               </label>
               <select
                 value={form.category}
                 onChange={(e) => set("category", e.target.value)}
                 className="input w-full rounded-lg px-3 py-2.5 text-sm"
               >
-                <option value="">Tüm kategoriler</option>
+                <option value="">{t("admin.allCategoriesOption")}</option>
                 {CATEGORIES.map((c) => (
                   <option key={c.key} value={c.key}>
                     {c.label}
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-[11px] text-ink-muted">Yalnızca ilan listesi alanları için geçerlidir.</p>
+              <p className="mt-1 text-[11px] text-ink-muted">{t("admin.categoryTargetingNote")}</p>
             </div>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Masaüstü Görseli *
+                {t("admin.desktopImageLabel")}
               </label>
               <input
                 type="file"
@@ -311,15 +331,15 @@ export default function AdminReklamlarPage() {
                 }}
                 className="input w-full rounded-lg px-3 py-2 text-sm"
               />
-              {uploadingDesktop && <p className="mt-1 text-xs text-ink-muted">Yükleniyor...</p>}
+              {uploadingDesktop && <p className="mt-1 text-xs text-ink-muted">{t("common.loading")}</p>}
               {form.imageUrlDesktop && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={form.imageUrlDesktop} alt="Masaüstü önizleme" className="mt-2 h-16 rounded-lg border border-border object-cover" />
+                <img src={form.imageUrlDesktop} alt={t("admin.desktopPreviewAlt")} className="mt-2 h-16 rounded-lg border border-border object-cover" />
               )}
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Mobil Görseli (opsiyonel)
+                {t("admin.mobileImageLabel")}
               </label>
               <input
                 type="file"
@@ -332,46 +352,46 @@ export default function AdminReklamlarPage() {
                 }}
                 className="input w-full rounded-lg px-3 py-2 text-sm"
               />
-              {uploadingMobile && <p className="mt-1 text-xs text-ink-muted">Yükleniyor...</p>}
+              {uploadingMobile && <p className="mt-1 text-xs text-ink-muted">{t("common.loading")}</p>}
               {form.imageUrlMobile && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={form.imageUrlMobile} alt="Mobil önizleme" className="mt-2 h-16 rounded-lg border border-border object-cover" />
+                <img src={form.imageUrlMobile} alt={t("admin.mobilePreviewAlt")} className="mt-2 h-16 rounded-lg border border-border object-cover" />
               )}
-              <p className="mt-1 text-[11px] text-ink-muted">Verilmezse mobilde masaüstü görseli kullanılır.</p>
+              <p className="mt-1 text-[11px] text-ink-muted">{t("admin.mobileImageNote")}</p>
             </div>
           </div>
 
           {form.imageUrlDesktop && (
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Yayın Önizlemesi
+                {t("admin.publishPreviewLabel")}
               </label>
               <div className={`overflow-hidden rounded-xl border border-border bg-surface2 ${PREVIEW_ASPECT[form.placement]}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={form.imageUrlDesktop} alt={form.altText || "Reklam önizleme"} className="h-full w-full object-cover" />
+                <img src={form.imageUrlDesktop} alt={form.altText || t("admin.adPreviewAlt")} className="h-full w-full object-cover" />
               </div>
             </div>
           )}
 
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Alternatif Metin / Kısa Açıklama *
+              {t("admin.altTextLabel")}
             </label>
             <input
               required
               value={form.altText}
               onChange={(e) => set("altText", e.target.value)}
-              placeholder="örn. Sigortalı, vinçli tezgah nakliyesi — Türkiye geneli"
+              placeholder={t("admin.altTextPlaceholder")}
               className="input w-full rounded-lg px-3 py-2.5 text-sm"
             />
             <p className="mt-1 text-[11px] text-ink-muted">
-              Görselin ekran okuyucularda okunacak açıklaması; hizmet kartlarında ayrıca kısa tanıtım metni olarak gösterilir.
+              {t("admin.altTextNote")}
             </p>
           </div>
 
           <div>
             <label className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              <LinkIcon className="h-3.5 w-3.5" /> Hedef Bağlantı *
+              <LinkIcon className="h-3.5 w-3.5" /> {t("admin.targetLinkLabel")}
             </label>
             <input
               required
@@ -386,7 +406,7 @@ export default function AdminReklamlarPage() {
           <div className="grid gap-3 sm:grid-cols-3">
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Başlangıç Tarihi
+                {t("admin.startDateLabel")}
               </label>
               <input
                 type="datetime-local"
@@ -397,7 +417,7 @@ export default function AdminReklamlarPage() {
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Bitiş Tarihi
+                {t("admin.endDateLabel")}
               </label>
               <input
                 type="datetime-local"
@@ -408,7 +428,7 @@ export default function AdminReklamlarPage() {
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                Gösterim Önceliği
+                {t("admin.priorityLabel")}
               </label>
               <input
                 type="number"
@@ -418,7 +438,7 @@ export default function AdminReklamlarPage() {
                 onChange={(e) => set("priority", Number(e.target.value))}
                 className="input w-full rounded-lg px-3 py-2.5 text-sm"
               />
-              <p className="mt-1 text-[11px] text-ink-muted">Aynı alanda birden fazla reklam varsa rotasyonda ağırlık.</p>
+              <p className="mt-1 text-[11px] text-ink-muted">{t("admin.priorityNote")}</p>
             </div>
           </div>
 
@@ -429,14 +449,14 @@ export default function AdminReklamlarPage() {
               onChange={(e) => set("active", e.target.checked)}
               className="h-4 w-4 rounded"
             />
-            Reklam yayında (aktif)
+            {t("admin.adLiveCheckbox")}
           </label>
 
           {formError && <p className="text-sm text-red-500">{formError}</p>}
 
           <div className="flex gap-2">
             <button disabled={busy} type="submit" className="btn-accent rounded-lg px-4 py-2.5 text-sm font-semibold disabled:opacity-60">
-              {busy ? "Kaydediliyor..." : editingId ? "Değişiklikleri Kaydet" : "Reklamı Oluştur"}
+              {busy ? t("admin.savingButton") : editingId ? t("admin.saveChangesButton") : t("admin.createAdButton")}
             </button>
             <button
               type="button"
@@ -446,38 +466,38 @@ export default function AdminReklamlarPage() {
               }}
               className="input rounded-lg px-4 py-2.5 text-sm font-medium"
             >
-              Vazgeç
+              {t("common.cancel")}
             </button>
           </div>
         </form>
       )}
 
-      {!error && !ads && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !ads && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {ads && (
         <>
           <div className="mb-3 flex items-center gap-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Alan:</label>
+            <label className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t("admin.areaFilterLabel")}</label>
             <select
               value={filterPlacement}
               onChange={(e) => setFilterPlacement(e.target.value)}
               className="input rounded-lg px-2.5 py-1.5 text-xs"
             >
-              <option value="all">Tümü ({ads.length})</option>
+              <option value="all">{t("admin.allFilterOption").replace("{n}", String(ads.length))}</option>
               {PLACEMENTS.map((p) => (
                 <option key={p} value={p}>
-                  {PLACEMENT_LABELS[p]} ({ads.filter((a) => a.placement === p).length})
+                  {placementLabel(p, locale)} ({ads.filter((a) => a.placement === p).length})
                 </option>
               ))}
             </select>
           </div>
 
           {filtered.length === 0 ? (
-            <EmptyState title="Henüz reklam yok" description="Yukarıdaki “Yeni Reklam” ile ilk reklamınızı oluşturun." />
+            <EmptyState title={t("admin.noAdsYet")} description={t("admin.noAdsDesc")} />
           ) : (
             <div className="flex flex-col gap-2.5">
               {filtered.map((ad) => {
-                const status = computeStatus(ad);
+                const status = computeStatus(ad, locale);
                 const ctr = ad.impressions > 0 ? ((ad.clicks / ad.impressions) * 100).toFixed(1) : "0.0";
                 return (
                   <div key={ad.id} className="card flex flex-col gap-3 p-3.5 sm:flex-row sm:items-center">
@@ -495,15 +515,18 @@ export default function AdminReklamlarPage() {
                         </span>
                       </div>
                       <p className="text-xs text-ink-muted">
-                        {PLACEMENT_LABELS[ad.placement]}
-                        {ad.category ? ` · ${catLabel(ad.category)}` : ""} · Öncelik {ad.priority}
+                        {placementLabel(ad.placement, locale)}
+                        {ad.category ? ` · ${catLabel(ad.category, locale)}` : ""} · {t("admin.priorityInline").replace("{n}", String(ad.priority))}
                       </p>
                       <p className="font-mono-data text-xs text-ink-muted">
-                        {ad.impressions} gösterim · {ad.clicks} tıklama · %{ctr} CTR
+                        {t("admin.impressionsClicksCtr")
+                          .replace("{impressions}", String(ad.impressions))
+                          .replace("{clicks}", String(ad.clicks))
+                          .replace("{ctr}", ctr)}
                       </p>
                       {(ad.startDate || ad.endDate) && (
                         <p className="text-[11px] text-ink-muted">
-                          {ad.startDate ? fmtDateTime(ad.startDate) : "—"} → {ad.endDate ? fmtDateTime(ad.endDate) : "süresiz"}
+                          {ad.startDate ? fmtDateTime(ad.startDate) : "—"} → {ad.endDate ? fmtDateTime(ad.endDate) : t("admin.indefiniteLabel")}
                         </p>
                       )}
                     </div>
@@ -512,19 +535,19 @@ export default function AdminReklamlarPage() {
                         onClick={() => startEdit(ad)}
                         className="input rounded-lg px-2.5 py-1.5 text-xs font-semibold"
                       >
-                        Düzenle
+                        {t("common.edit")}
                       </button>
                       <button
                         disabled={busyId === ad.id}
                         onClick={() => toggleActive(ad)}
                         className="input rounded-lg px-2.5 py-1.5 text-xs font-semibold"
                       >
-                        {ad.active ? "Durdur" : "Başlat"}
+                        {ad.active ? t("admin.stopButton") : t("admin.startButton")}
                       </button>
                       <button
                         disabled={busyId === ad.id}
                         onClick={() => remove(ad.id)}
-                        title="Sil"
+                        title={t("common.delete")}
                         className="input flex h-8 w-8 items-center justify-center rounded-lg text-red-500"
                       >
                         <TrashIcon className="h-4 w-4" />
