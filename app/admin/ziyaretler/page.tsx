@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { BackIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LanguageProvider";
 
 type Visits = {
   totals: { today: number; last7Days: number; last30Days: number };
@@ -41,13 +42,14 @@ function RankRow({ label, count, max }: { label: string; count: number; max: num
 }
 
 export default function AdminVisitsPage() {
+  const t = useT();
   const [data, setData] = useState<Visits | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/visits")
       .then((r) => {
-        if (!r.ok) throw new Error("Yetkisiz erişim.");
+        if (!r.ok) throw new Error(t("admin.unauthorizedError"));
         return r.json();
       })
       .then(setData)
@@ -57,21 +59,21 @@ export default function AdminVisitsPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link href="/admin" className="mb-3 inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink">
-        <BackIcon className="h-4 w-4" /> Yönetici Paneli
+        <BackIcon className="h-4 w-4" /> {t("admin.panelTitle")}
       </Link>
-      <h1 className="mb-1 font-display text-2xl font-bold">Ziyaretler</h1>
-      <p className="mb-5 text-sm text-ink-muted">Sitenin ziyaretçi trafiği (yönetici panel sayfaları hariç).</p>
+      <h1 className="mb-1 font-display text-2xl font-bold">{t("admin.visitsTitle")}</h1>
+      <p className="mb-5 text-sm text-ink-muted">{t("admin.visitsSubtitle")}</p>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
-      {!error && !data && <p className="text-sm text-ink-muted">Yükleniyor...</p>}
+      {!error && !data && <p className="text-sm text-ink-muted">{t("common.loading")}</p>}
 
       {data && (
         <div className="flex flex-col gap-5">
           <div className="grid grid-cols-3 gap-3">
             {[
-              { label: "Bugün", value: data.totals.today },
-              { label: "Son 7 Gün", value: data.totals.last7Days },
-              { label: "Son 30 Gün", value: data.totals.last30Days },
+              { label: t("admin.todayLabel"), value: data.totals.today },
+              { label: t("admin.last7DaysLabel"), value: data.totals.last7Days },
+              { label: t("admin.last30DaysLabel"), value: data.totals.last30Days },
             ].map((s) => (
               <div key={s.label} className="card p-3.5">
                 <p className="font-mono-data text-2xl font-bold text-blueprint">{s.value}</p>
@@ -81,7 +83,7 @@ export default function AdminVisitsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">Son 14 Günde Ziyaret</h2>
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.visitsLast14Days")}</h2>
             <div className="flex flex-col gap-2.5">
               {data.visitsByDay.map((d) => (
                 <BarRow key={d.label} label={d.label} count={d.count} max={Math.max(1, ...data.visitsByDay.map((x) => x.count))} />
@@ -90,8 +92,8 @@ export default function AdminVisitsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">En Çok Görüntülenen Sayfalar (Son 30 Gün)</h2>
-            {data.topPages.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.topPagesLast30Days")}</h2>
+            {data.topPages.length === 0 && <p className="text-sm text-ink-muted">{t("admin.noDataYet")}</p>}
             <div className="flex flex-col gap-2.5">
               {data.topPages.map((p) => (
                 <RankRow key={p.path} label={p.path} count={p.count} max={Math.max(1, ...data.topPages.map((x) => x.count))} />
@@ -100,8 +102,8 @@ export default function AdminVisitsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">Trafik Kaynakları (Son 30 Gün)</h2>
-            {data.topReferrers.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.trafficSourcesLast30Days")}</h2>
+            {data.topReferrers.length === 0 && <p className="text-sm text-ink-muted">{t("admin.noDataYet")}</p>}
             <div className="flex flex-col gap-2.5">
               {data.topReferrers.map((r) => (
                 <RankRow key={r.source} label={r.source} count={r.count} max={Math.max(1, ...data.topReferrers.map((x) => x.count))} />
@@ -110,9 +112,9 @@ export default function AdminVisitsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-1 font-display text-lg font-semibold">İllere Göre Ziyaret (Son 30 Gün)</h2>
-            <p className="mb-4 text-xs text-ink-muted">Konum, ziyaretçinin IP adresinden yaklaşık olarak tahmin edilir; kesin olmayabilir.</p>
-            {data.topProvinces.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <h2 className="mb-1 font-display text-lg font-semibold">{t("admin.visitsByProvinceLast30Days")}</h2>
+            <p className="mb-4 text-xs text-ink-muted">{t("admin.locationEstimateNote")}</p>
+            {data.topProvinces.length === 0 && <p className="text-sm text-ink-muted">{t("admin.noDataYet")}</p>}
             <div className="flex flex-col gap-2.5">
               {data.topProvinces.map((p) => (
                 <RankRow
@@ -126,8 +128,8 @@ export default function AdminVisitsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-4 font-display text-lg font-semibold">Cihaz Türü (Son 30 Gün)</h2>
-            {data.deviceTypes.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            <h2 className="mb-4 font-display text-lg font-semibold">{t("admin.deviceTypeLast30Days")}</h2>
+            {data.deviceTypes.length === 0 && <p className="text-sm text-ink-muted">{t("admin.noDataYet")}</p>}
             <div className="flex flex-col gap-2.5">
               {data.deviceTypes.map((d) => (
                 <RankRow key={d.type} label={d.type} count={d.count} max={Math.max(1, ...data.deviceTypes.map((x) => x.count))} />
@@ -136,12 +138,11 @@ export default function AdminVisitsPage() {
           </div>
 
           <div className="card p-5">
-            <h2 className="mb-1 font-display text-lg font-semibold">Cihaz Modelleri (Son 30 Gün)</h2>
+            <h2 className="mb-1 font-display text-lg font-semibold">{t("admin.deviceModelsLast30Days")}</h2>
             <p className="mb-4 text-xs text-ink-muted">
-              iPhone modelleri Apple'ın tarayıcı bilgisinde yer almadığından yalnızca &quot;iPhone&quot; olarak görünür; Android
-              modelleri genellikle tam olarak görünür.
+              {t("admin.deviceModelsNote")}
             </p>
-            {data.topDeviceModels.length === 0 && <p className="text-sm text-ink-muted">Henüz veri yok.</p>}
+            {data.topDeviceModels.length === 0 && <p className="text-sm text-ink-muted">{t("admin.noDataYet")}</p>}
             <div className="flex flex-col gap-2.5">
               {data.topDeviceModels.map((m) => (
                 <RankRow
